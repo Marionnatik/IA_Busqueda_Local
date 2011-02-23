@@ -7,7 +7,7 @@ public class Centre {
 	
 	public Centre()
 	{
-		for(int i = 0 ; i < 11 ; i++)
+		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport() ;
 		}
@@ -17,7 +17,7 @@ public class Centre {
 	{
 		int b = 0 ;
 		// CASO 0!!!
-		for(int i = 1 ; i < 11 ; i++)
+		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
 			
 			b += hores[i].getBenefici(i+7);
