@@ -24,16 +24,15 @@ public class Estat {
 			case 'a': 
 				  this.mes_aviat_posible();
 			break;
-		}
-		//Més aviat pondrem els camions amb més capacitat
-		  
-	    }
+		} 
+	}
 		  
 	private void mes_aviat_posible() {
 		// TODO Auto-generated method stub
 		int i, j, k, cont;
 		cont = distriCap[0];
 		  k = 0;
+		  //Més aviat pondrem els camions amb més capacitat
 		  for(j = 1 ; j< Constants.ht+1; j++){
 			 for(i = 0 ; i < Constants.nc ; i++){
 				if(cont==0){
@@ -47,7 +46,8 @@ public class Estat {
 			 }
 		  }
 		  for(i = 0 ; i < Constants.nc ; i++){
-			  
+			  centres[i].ordena_noassign();
+			  centres[i].greedy();
 		  }
 	}
 

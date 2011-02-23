@@ -20,16 +20,41 @@ public class Centre {
 		// CASO 0!!!
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
-			
 			b += hores[i].getBenefici(i+7);
 		}
 		
 		return b ;
 	}
 	
-	public void set_camion(int h, int c){
-		
-		hores[h].setCap(c);
+	public boolean set_camion(int h, int c){
+		return hores[h].setCap(c);
+	}
+	
+	public void ordena_noassign(){
+		hores[0].ordenar();
 	}
 
+	public void greedy() {
+		
+		
+	}
+	
+	public boolean desplazar_peticio(Peticio p, int h1, int h2){
+//		int ba = hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2);
+		boolean be;
+		be = hores[h2].add_peticio(p);
+		if(be)hores[h1].remove_peticio(p);
+//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
+		return be;
+	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
 }
