@@ -3,6 +3,7 @@ package transports;
 public class Centre {
 	
 	private Transport[] hores ;
+
 	
 	public Centre()
 	{
@@ -23,6 +24,11 @@ public class Centre {
 		}
 		
 		return b ;
+	}
+	
+	public void set_camion(int h, int c){
+		
+		hores[h].setCap(c);
 	}
 
 }
