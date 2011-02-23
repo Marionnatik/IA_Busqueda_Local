@@ -19,7 +19,24 @@ public class Estat {
 			centres[i] = new Centre() ;
 		}		
 	}
-
+	
+	public Estat(int[] dc, char t){
+		// V és per generar una tipologia de estat inicial
+		int i, j, cont;
+		if(t=='v'){
+			for(int i = 0 ; i < 6 ; i++)
+			{
+				centres[i] = new Centre() ;
+			}
+		//Més aviat pondrem els camions amb més capacitat
+		for(j = 0; j < distriCap.length; j++)
+			for(cont = dc[0]; cont > 0; cont--)
+				for(i = 1 ; i< 11; i++){
+				for
+			}
+		}
+		
+	}
 	public int getBenefici()
 	{
 		int b = 0 ;

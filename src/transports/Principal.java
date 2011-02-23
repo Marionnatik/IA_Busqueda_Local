@@ -2,14 +2,13 @@ package transports;
 
 import java.util.Scanner;
 
-public class Principal {
-
+public class Principal {	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// crear el estat inicial
-		
+		new Constants();
 		
 	}
 	
