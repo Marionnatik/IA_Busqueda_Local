@@ -1,6 +1,6 @@
 package transports;
 
-public class Peticio implements Comparable{
+public class Peticio implements Comparable<Peticio>{
 	
 	private int id;
 	private int cantidad;
@@ -28,10 +28,15 @@ public class Peticio implements Comparable{
 	public int getPre() { return precio ; }
 	public int getH() { return hora ; }
 
-	@Override
-	public int compareTo(Object o) {
 
-		return 0;
+
+	@Override
+	public int compareTo(Peticio o) {
+		// TODO Auto-generated method stub
+		if(hora!=o.getH())return hora - o.getH();
+		else if(precio!=o.getPre()) return o.getPre() - precio;
+		else if(id!=o.getID()) return id - o.getID();
+		else return 0;
 	}
 		
 }
