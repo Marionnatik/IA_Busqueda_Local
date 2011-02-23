@@ -6,9 +6,9 @@ public class Estat {
 	// distriCap[0] = numero de transportes de 500kgs
 	// distriCap[1] = numero de transportes de 1000kgs
 	// distriCap[2] = numero de transportes de 2000kgs
-	public int[] distriCap ;
+	public int[] distriCap = new int[Constants.numCap];
 	
-	private Centre[] centres ;
+	private Centre[] centres = new Centre[Constants.numCentres];
 	
 	public Estat(int[] capacitats)
 	{

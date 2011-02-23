@@ -1,11 +1,14 @@
 package transports;
 
 public class Constants {
-	public static int cap[];
+	public static int numCap = 3 ;
+	public static int numCentres = 6 ;
+	public static int[] cap = new int[numCap];
 	public static int h_min;
 	public static int h_max;
 	public static int nc;
 	public static int ht;
+	
 	public Constants(){
 		cap[0] = 500;
 		cap[1] = 1000;

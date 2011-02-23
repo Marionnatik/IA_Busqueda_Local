@@ -2,12 +2,12 @@ package transports;
 
 public class Centre {
 	
-	private Transport[] hores ;
+	private Transport[] hores = new Transport[Constants.ht+1];
 
 	
 	public Centre()
 	{
-		for(int i = 1 ; i < Constants.ht+1 ; i++)
+		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport() ;
 		}
