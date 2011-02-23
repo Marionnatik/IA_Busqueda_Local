@@ -24,7 +24,8 @@ public class Principal {
 		
 		nbPeticions = getIntegerInput(sc, "Introduïu el nombre de peticions : ");
 		
-		int i = chooseOption(sc, 2, "Tria la distribució de les capacitats de transport que desitgi :\n1-Equiprobale\n2-Manual");
+		int i = chooseOption(sc, 2,
+				"Tria la repartició de les capacitats de transport que desitgi :\n  1-Equiprobale\n  2-Manual");
 		switch(i)
 		{
 		case 1 :
@@ -41,20 +42,37 @@ public class Principal {
 			System.exit(1);	
 		}
 		
+		i = chooseOption(sc, 2,
+				"Tria la repartició de les peticions entre las hores que desitgi :\n  1-Equiprobale\n  2-Manual");
+		switch(i)
+		{
+		case 1 :
+			for(int j = 0 ; j < probaHoras.length ; j++)
+			{
+				probaHoras[j] = 1/probaHoras.length ;
+			}
+			break;
+		case 2 :
+			System.out.println("Introduïu successivament la probabilitat de repartició de las peticions que desitja per cada hora.");
+			floatRepartition(sc, probaHoras, 1);
+			break;			
+		default :
+			System.out.println("Error : Wrong option number.");
+			System.exit(1);			
+		}
+		
 		return new Estat(capTransports);
 	}
 	
 	private static int chooseOption(Scanner sc, int numOp, String s)
 	{
-		System.out.println(s);
 		int i = getIntegerInput(sc, s);
 		
 		if(i < 0 || i > numOp)
 		{
 			System.out.println("Entreu el nombre de la opció desitjada (entre 1 i " + numOp + ").");
 			i = chooseOption(sc, numOp, s);
-		}
-		
+		}		
 		return i;
 	}
 	
