@@ -31,8 +31,4 @@ public class Transport {
 		
 		return b ;
 	}
-	public void ordenar(){
-		Comparador<Peticio> horaPrecio = new Comparador<Peticio>();
-		Collections.sort(peti, horaPrecio);
-	}
 }
