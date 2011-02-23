@@ -10,8 +10,10 @@ public class Estat {
 	
 	private Centre[] centres ;
 	
-	public Estat()
+	public Estat(int[] capacitats)
 	{
+		distriCap = capacitats ;
+		
 		for(int i = 0 ; i < 6 ; i++)
 		{
 			centres[i] = new Centre() ;
