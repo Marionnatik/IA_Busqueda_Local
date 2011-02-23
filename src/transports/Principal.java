@@ -11,5 +11,10 @@ public class Principal {
 		
 	}
 	
+	private generadorProblema()
+	{
+		
+	}
+	
 	
 }

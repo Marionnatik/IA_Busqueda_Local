@@ -2,6 +2,12 @@ package transports;
 
 public class Estat {
 	
+	// distribucion de capacidades de los transportes
+	// distriCap[0] = numero de transportes de 500kgs
+	// distriCap[1] = numero de transportes de 1000kgs
+	// distriCap[2] = numero de transportes de 2000kgs
+	public int[] distriCap ;
+	
 	private Centre[] centres ;
 	
 	public Estat()
