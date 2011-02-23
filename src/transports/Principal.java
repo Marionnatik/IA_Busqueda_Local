@@ -8,7 +8,6 @@ public class Principal {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// crear el estat inicial
 		new Constants();
 		Estat inicial = generadorProblema();
 		//inicial.estat_inicial("t");
@@ -25,26 +24,45 @@ public class Principal {
 		
 		nbPeticions = getIntegerInput(sc, "Introduïu el nombre de peticions : ");
 		
-		int i = getIntegerInput(sc, "Tria la distribució de les capacitats de transport que desitgi :\n1-Equiprobale\n2-Manual");
+		int i = chooseOption(sc, 2, "Tria la distribució de les capacitats de transport que desitgi :\n1-Equiprobale\n2-Manual");
 		switch(i)
 		{
 		case 1 :
 			capTransports[0] = 20 ;
 			capTransports[1] = 20 ;
-			capTransports[1] = 20 ;
+			capTransports[2] = 20 ;
+			break;
 		case 2 :
 			System.out.println("Introduïu successivament el nombre de transports que desitja per las capacitats 500, 1000 i 2000kgs.");
-			getAndCheckIntRepartition(sc, capTransports, 60);
+			intRepartition(sc, capTransports, 60);
+			break;			
+		default :
+			System.out.println("Error : Wrong option number.");
+			System.exit(1);	
 		}
 		
 		return new Estat(capTransports);
 	}
 	
-	private static void getAndCheckIntRepartition(Scanner sc, int[] rep, int limit)
+	private static int chooseOption(Scanner sc, int numOp, String s)
+	{
+		System.out.println(s);
+		int i = getIntegerInput(sc, s);
+		
+		if(i < 0 || i > numOp)
+		{
+			System.out.println("Entreu el nombre de la opció desitjada (entre 1 i " + numOp + ").");
+			i = chooseOption(sc, numOp, s);
+		}
+		
+		return i;
+	}
+	
+	private static void intRepartition(Scanner sc, int[] rep, int limit)
 	{
 		int total = 0 ;
 		
-		System.out.println("Recorda que el total no pot exedir " + limit + ".");
+		System.out.println("Recordeu que el total ha de ser exactament " + limit + ".");
 		
 		for(int i = 0 ; i < rep.length ; i++)
 		{
@@ -55,7 +73,26 @@ public class Principal {
 		if(total != limit)
 		{
 			System.out.println("El total no es igual a " + limit + ". Si us plau, recomenceu.");
-			getAndCheckIntRepartition(sc, rep, limit);
+			intRepartition(sc, rep, limit);
+		}		
+	}
+	
+	private static void floatRepartition(Scanner sc, float[] rep, float limit)
+	{
+		float total = 0 ;
+		
+		System.out.println("Recordeu que el total ha de ser exactament " + limit + ".");
+		
+		for(int i = 0 ; i < rep.length ; i++)
+		{
+			rep[i] = getFloatInput(sc, i + " : ");
+			total += rep[i];
+		}
+		
+		if(total != limit)
+		{
+			System.out.println("El total no es igual a " + limit + ". Si us plau, recomenceu.");
+			floatRepartition(sc, rep, limit);
 		}		
 	}
 
@@ -70,9 +107,23 @@ public class Principal {
 		{
 			System.out.println("S'ha d'introduir un nombre enter.");
 			i = getIntegerInput(sc, s);
-		}			
-		System.out.println(i);
+		}
 		return i;
+	}
+
+	private static float getFloatInput(Scanner sc, String s)
+	{
+		float f ;
+		try
+		{
+			System.out.print(s);
+			f = sc.nextFloat();
+		} catch (InputMismatchException e)
+		{
+			System.out.println("S'ha d'introduir un nombre enter.");
+			f = getFloatInput(sc, s);
+		}
+		return f;
 	}
 	
 }

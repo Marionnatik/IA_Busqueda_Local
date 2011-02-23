@@ -47,6 +47,7 @@ public class Transport {
 		}
 		return b ;
 	}
+
 	public void ordenar(){
 		Collections.sort(peti);
 	}
