@@ -1,5 +1,7 @@
 package transports;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -29,5 +31,8 @@ public class Transport {
 		
 		return b ;
 	}
-	
+	public void ordenar(){
+		Comparador<Peticio> horaPrecio = new Comparador<Peticio>();
+		Collections.sort(peti, horaPrecio);
+	}
 }

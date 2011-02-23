@@ -1,6 +1,6 @@
 package transports;
 
-public class Peticio {
+public class Peticio implements Comparable{
 	
 	private int id;
 	private int cantidad;
@@ -27,5 +27,11 @@ public class Peticio {
 	public int getCan() { return cantidad ; }
 	public int getPre() { return precio ; }
 	public int getH() { return hora ; }
-	
+
+	@Override
+	public int compareTo(Object o) {
+
+		return 0;
+	}
+		
 }
