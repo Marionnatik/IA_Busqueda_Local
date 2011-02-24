@@ -20,8 +20,17 @@ public class Transport {
 	}
 	
 	public int getCap(){
-		return capacidad ; 
+		return capacidad; 
 	}
+	
+	public int getCapO(){
+		return capacidad_ocupada; 
+	}
+	
+	public int getCapR(){
+		return capacidad_residual; 
+	}
+
 	public boolean setCap(int c){
 		if(capacidad_ocupada <= c){
 		  capacidad = c;
@@ -71,5 +80,13 @@ public class Transport {
 		  capacidad_ocupada -= cnp;
 		  capacidad_residual += cnp;
 		}	
+	}
+/*	
+	public Peticio get_peticio(int i){
+		return peti.get(i);
+    }
+*/	
+	public LinkedList<Peticio> get_peticiones(){
+		return peti;
 	}
 }
