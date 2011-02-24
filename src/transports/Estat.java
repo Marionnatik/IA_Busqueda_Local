@@ -55,10 +55,7 @@ public class Estat {
 	{
 		int b = 0 ;
 		
-		for(int i = 0 ; i < Constants.nc ; i++)
-		{
-			b += centres[i].getBenefici();
-		}
+		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getBenefici();
 		
 		return b;
 	}

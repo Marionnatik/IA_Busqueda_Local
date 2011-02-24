@@ -35,7 +35,11 @@ public class Transport {
 		
 		int b = 0 ;
 		Peticio p;
-		if(i!=0){
+		if(i==0){
+			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
+				p = it.next();
+				b -= p.getPre() + (Constants.h_max-p.getH())/5;
+			}
 			
 		}
 		else{

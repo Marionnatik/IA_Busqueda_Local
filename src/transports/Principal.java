@@ -18,9 +18,9 @@ public class Principal {
 		Scanner sc = new Scanner(System.in);
 		
 		int nbPeticions = 0 ;
-		int[] capTransports = new int[3];
-		float[] probaHoras = new float[10];
-		float[] probaPesos = new float[3];
+		int[] capTransports = new int[Constants.n_cap];
+		float[] probaHoras = new float[Constants.ht];
+		float[] probaPesos = new float[Constants.n_cap];
 		
 		nbPeticions = getIntegerInput(sc, "Introduïu el nombre de peticions : ");
 		

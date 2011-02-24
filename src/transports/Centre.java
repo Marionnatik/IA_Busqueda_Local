@@ -16,11 +16,11 @@ public class Centre {
 
 	public int getBenefici()
 	{
-		int b = 0 ;
-		// CASO 0!!!
+		int b;
+		b = hores[0].getBenefici(0);
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
-			b += hores[i].getBenefici(i+7);
+			b += hores[i].getBenefici(i+Constants.h_min-1);
 		}
 		
 		return b ;
@@ -47,14 +47,4 @@ public class Centre {
 //		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
 		return be;
 	}
-
-
-
-	
-	
-	
-	
-	
-	
-	
 }
