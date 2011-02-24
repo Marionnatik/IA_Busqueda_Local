@@ -123,8 +123,10 @@ public class Principal {
 			i = sc.nextInt();
 		} catch (InputMismatchException e)
 		{
+			sc.close();
 			System.out.println("S'ha d'introduir un nombre enter.");
-			i = getIntegerInput(sc, s);
+			Scanner scan = new Scanner(System.in);
+			i = getIntegerInput(scan, s);
 		}
 		return i;
 	}
@@ -138,7 +140,7 @@ public class Principal {
 			f = sc.nextFloat();
 		} catch (InputMismatchException e)
 		{
-			System.out.println("S'ha d'introduir un nombre enter.");
+			System.out.println("S'ha d'introduir un nombre float.");
 			f = getFloatInput(sc, s);
 		}
 		return f;
