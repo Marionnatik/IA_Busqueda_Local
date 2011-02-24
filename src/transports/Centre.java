@@ -1,5 +1,7 @@
 package transports;
 
+import java.util.Iterator;
+
 public class Centre {
 	
 	private Transport[] hores = new Transport[Constants.ht+1];
@@ -35,7 +37,29 @@ public class Centre {
 	}
 
 	public void greedy() {
-		
+		Peticio p;
+		Transport h;
+		int i, ini;
+		boolean ep;
+		ini = 1;
+		for(Iterator<Peticio> it = hores[0].get_peticiones().iterator(); it.hasNext();){
+			p = it.next();
+			ep = false;
+			for(i=ini; i<hores.length && ep == false; i++){
+				/*if(p.getCan() < hores[i].getCapR()){
+					hores[0].remove_peticio(p);
+					hores[i].add_peticio(p);
+					ep = true;
+				}*/
+				//Si non funciona, utiliza lo de alto
+				if(hores[i].add_peticio(p)){
+				 hores[0].remove_peticio(p);
+				 ep = true;
+				 if(i==ini && hores[i].getCapR()==0)ini++;
+				}
+			}
+
+		}
 		
 	}
 	

@@ -7,5 +7,5 @@ public class Constants {
 	public static int h_max = 17;
 	public static int nc = 6;
 	public static int ht = 1 + h_max - h_min;
-	
+	public static int cantidad_min = 100;
 }
