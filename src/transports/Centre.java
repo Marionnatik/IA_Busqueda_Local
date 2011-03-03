@@ -72,7 +72,7 @@ public class Centre {
 	
 	public int[] h_step(Peticio p, int[] cl, int h){
 		//Esperant el aviò estic surtint bastant boig per escriure aquest metod...
-		int i, hc, j;
+		int i, j;
 		boolean r, r2;
 		if(hores[h].getCap()==0){
 			r = true;
@@ -122,13 +122,34 @@ public class Centre {
 		return be;
 	}
 
-	public void ff() {
+	public void ff_2r() {
 		// TODO Auto-generated method stub
 		Peticio p;
+		boolean f;
+		int i;
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-			if(Tp.getH()
+			if(hores[p.getH()].add_peticio(p)){
+				noass.remove(p);
+				hores[0].remove_peticio(p);
+			}
+		}
+		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
+			p = it.next();
+			f = true;
+			for(i = p.getH()-1; i>0 && f; i--){
+				if(hores[i].add_peticio(p)){
+					hores[0].remove_peticio(p);
+					f = false;
+				}
+			}
+			for(i = p.getH()+1; i<Constants.ht && f; i++){
+				if(hores[i].add_peticio(p)){
+					hores[0].remove_peticio(p);
+					f = false;
+				}
+			}
 		}
 	}
 }

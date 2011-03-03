@@ -54,10 +54,9 @@ public class Estat {
 	private void first_fit() {
 		// TODO Auto-generated method stub
 		int i;
-		Transport nassign;
 		camions_greedy();
 		for(i = 0 ; i < Constants.nc ; i++){
-			centres[i].ff();
+			centres[i].ff_2r();
 		}
 	}
 
@@ -91,8 +90,28 @@ public class Estat {
 
 	private void random() {
 		// TODO Auto-generated method stub
-		
+		int i;
+		camions_random();
+		for(i=0; i<Constants.nc;i++){
+			centres[i].ff_2r();
+		}
 	}
+
+	private void camions_random() {
+		// TODO Auto-generated method stub
+		int i, r, j;
+		int[] cd;
+		cd = distriCap.clone();
+		for(i=0; i<Constants.nc;i++){
+			for(j=0;j<Constants.ht;j++){
+					r = (int) (Constants.n_cap*Math.random());
+					if(cd[r]==0)do r = r++ % Constants.n_cap; while(cd[r]>0);
+					centres[i].set_camion(j, Constants.cap[r]);
+					cd[r]--;
+			}
+		}
+	}
+
 
 	private void buit() {
 		// TODO Auto-generated method stub
