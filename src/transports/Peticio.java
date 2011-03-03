@@ -33,9 +33,25 @@ public class Peticio implements Comparable<Peticio>{
 	@Override
 	public int compareTo(Peticio o) {
 		// TODO Auto-generated method stub
-		if(hora!=o.getH())return hora - o.getH();
-		else if(precio!=o.getPre()) return o.getPre() - precio;
-		else if(id!=o.getID()) return id - o.getID();
+		switch(Estat.tipord){
+			case 'a':
+				if(hora!=o.getH())return hora - o.getH();
+				else if(precio!=o.getPre()) return o.getPre() - precio;
+			break;
+			case 'b':
+				if(precio!=o.getPre()) return o.getPre() - precio;
+				else if(hora!=o.getH())return hora - o.getH();
+			break;
+			case 'c':
+				if(hora!=o.getH())return hora - o.getH();
+				else if(precio!=o.getPre()) return precio - o.getPre();
+			break;
+			case 'd':
+				if(precio!=o.getPre()) return precio - o.getPre();
+				else if(hora!=o.getH())return hora - o.getH();
+			break;
+		}
+		if(id!=o.getID()) return id - o.getID();
 		else return 0;
 	}
 		

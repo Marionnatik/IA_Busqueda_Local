@@ -1,5 +1,7 @@
 package transports;
 
+import java.util.Iterator;
+
 public class Estat {
 	
 	// distribucion de capacidades de los transportes
@@ -7,7 +9,7 @@ public class Estat {
 	// distriCap[1] = numero de transportes de 1000kgs
 	// distriCap[2] = numero de transportes de 2000kgs
 	public int[] distriCap = new int[Constants.cap.length];
-	
+	public static char tipord;
 	private Centre[] centres = new Centre[Constants.nc];
 	
 	public Estat(int[] capacitats)
@@ -22,13 +24,82 @@ public class Estat {
 		// Hi han diferentes tipologies
 		switch(t) {
 			case 'a': 
+				  tipord = 'a';
 				  this.mes_aviat_posible();
 			break;
-		} 
+			case 'b': 
+			  	tipord = 'b';
+			  	this.perhora();
+			break;
+			case 'f':
+				this.first_fit();
+			break;
+			case 'm':
+				tipord = 'c';
+				this.mes_aviat_posible();
+			break;
+			case 'r': 
+				this.random();
+			break;
+			case 'v': 
+				this.buit();
+			break;
+			case 'w':
+				tipord = 'd';
+				this.perhora();
+			break;
+		}
 	}
 		  
-	private void mes_aviat_posible() {
+	private void first_fit() {
 		// TODO Auto-generated method stub
+		int i;
+		Transport nassign;
+		camions_greedy();
+		for(i = 0 ; i < Constants.nc ; i++){
+			centres[i].ff();
+		}
+	}
+
+	private void perhora() {
+		// TODO Auto-generated method stub
+		int i;
+		boolean c, r[];
+		Peticio p;
+		Iterator<Peticio>[] it = new Iterator[Constants.nc];
+		r = new boolean[Constants.nc];
+		int[] cl = distriCap.clone();
+		for(i = 0 ; i < Constants.nc ; i++){
+			centres[i].ordena_noassign();
+			it[i] = centres[i].h_setup();
+			r[i] = true;
+		}
+		c = true;
+		while(c){
+			c = false;
+			for(i = 0 ; i < Constants.nc ; i++){
+				if(r[i]){
+					p = it[i].next();
+					cl = centres[i].h_step(p, cl, p.getH());
+					if(it[i].hasNext())r[i] = false;
+				}
+				c = c || r[i];
+			}
+		}
+	}
+
+
+	private void random() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void buit() {
+		// TODO Auto-generated method stub
+		this.camions_greedy();
+	}
+
+    private void camions_greedy(){
 		int i, j, k, cont;
 		cont = distriCap[0];
 		  k = 0;
@@ -45,6 +116,11 @@ public class Estat {
 				cont--;
 			 }
 		  }
+    }
+	private void mes_aviat_posible() {
+		// TODO Auto-generated method stub
+		  int i;
+		  this.camions_greedy();
 		  for(i = 0 ; i < Constants.nc ; i++){
 			  centres[i].ordena_noassign();
 			  centres[i].greedy();
