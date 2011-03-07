@@ -15,8 +15,13 @@ public class Estat {
 	public Estat(int[] capacitats)
 	{
 		distriCap = capacitats ;
-		for(int i = 0 ; i < Constants.nc ; i++)centres[i] = new Centre() ;
+		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre() ;
 
+	}
+	
+	public void initPeticio(int numCentre, Peticio p)
+	{
+		centres[numCentre].initPeticio(p);
 	}
 	
 

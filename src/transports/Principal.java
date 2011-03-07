@@ -1,149 +1,127 @@
 package transports;
 
-import java.util.InputMismatchException;
+import java.io.*;
 import java.util.Scanner;
 
-public class Principal {	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+public class Principal {
+
+	static int nbPeticions ;
+	static int[] capTransports = new int[Constants.cap.length];
+	static float[] probaPesos = new float[Constants.cant.length];
+	static float[] probaHoras = new float[Constants.ht];
+	static char estrategiaInicial;
+
+	static Estat e ;
+
+
+	public static void main(String[] args)
+	{
+		// Generando las constantes
 		new Constants();
-		Estat inicial = generadorProblema();
-		//inicial.estat_inicial("t");
+
+		// Fichero de valores (test1.txt por defecto)
+		String file = "tests/test1.txt";
+		if(args.length != 0) file = args[0];
+
+		// Recupera los valores del fichero
+		try{
+			readFile(file);
+		} catch(FileNotFoundException e) {
+			System.out.println("Error : Fichero de test " + file + " no encontrado.");
+			System.exit(1);
+		}
+
+		// Generando el problema
+		e = generadorProblema();
+
+		// Generando el estado inicial
+		e.estat_inicial(estrategiaInicial);
 	}
-	
+
+	private static void readFile(String file) throws FileNotFoundException
+	{
+		Scanner sc = new Scanner(new FileReader(file));
+
+		// Lee el numero de peticiones
+		nbPeticions = sc.nextInt() ;
+
+		// Lee y comprueba el numero de transportes para cada capacidad
+		for(int i = 0 ; i < Constants.cap.length ; i++) capTransports[i] = sc.nextInt();
+		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
+		{
+			System.out.println("Error : La suma de los transportes no es igual a 60.");
+			System.exit(1);
+		}
+
+		// Lee y comprueba la distribucio de probabilidad de los pesos de las entregas
+		for(int i = 0 ; i < Constants.cant.length ; i++) probaPesos[i] = sc.nextFloat();
+		if(probaPesos[0] + probaPesos[1] + probaPesos[2] + probaPesos[3] + probaPesos[4] != 1.0)
+		{
+			System.out.println("Error : La suma de las probabilidades de pesos es igual a " + 
+					(probaPesos[0] + probaPesos[1] + probaPesos[2] + probaPesos[3] + probaPesos[4]) +
+			".");
+			System.exit(1);
+		}
+
+		// Lee y comprueba la distribucio de probabilidad de las horas de entrega
+		for(int i = 0 ; i < Constants.ht ; i++) probaHoras[i] = sc.nextFloat();
+		if(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
+				probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9] != 1)
+		{
+			System.out.println("Error : La suma de las probabilidades de horas es igual a " + 
+					(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
+							probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9]) +
+			".");
+			// System.exit(1);
+			// WTF ?!?!?!?! 0,1 + 0,1 + ... + 0,1 = 1,0000001 !!!!!!!!
+		}
+
+		System.out.println(nbPeticions + ", " +
+				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
+				probaHoras[0] + ", " + probaHoras[1] + ", " + probaHoras[2] + ", " + probaHoras[3] + ", " +	probaHoras[4] + ", " +
+				probaHoras[5] + ", " + probaHoras[6] + ", " + probaHoras[7] + ", " + probaHoras[8] + ", " + probaHoras[9] + ", " +
+				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ".");
+	}
+
+
 	private static Estat generadorProblema()
 	{
-		Scanner sc = new Scanner(System.in);
-		
-		int nbPeticions = 0 ;
-		int[] capTransports = new int[Constants.n_cap];
-		float[] probaHoras = new float[Constants.ht];
-		float[] probaPesos = new float[Constants.n_cap];
-		
-		nbPeticions = getIntegerInput(sc, "Introduïu el nombre de peticions : ");
-		
-		int i = chooseOption(sc, 2,
-				"Tria la repartició de les capacitats de transport que desitgi :\n  1-Equiprobale\n  2-Manual");
-		switch(i)
+		Estat inicial =  new Estat(capTransports);
+
+		int numCentre = 0 ;
+
+		for(int i = 0 ; i < nbPeticions ; i++)
 		{
-		case 1 :
-			capTransports[0] = 20 ;
-			capTransports[1] = 20 ;
-			capTransports[2] = 20 ;
-			break;
-		case 2 :
-			System.out.println("Introduïu successivament el nombre de transports que desitja per las capacitats 500, 1000 i 2000kgs.");
-			intRepartition(sc, capTransports, 60);
-			break;			
-		default :
-			System.out.println("Error : Wrong option number.");
-			System.exit(1);	
-		}
-		
-		i = chooseOption(sc, 2,
-				"Tria la repartició de les peticions entre las hores que desitgi :\n  1-Equiprobale\n  2-Manual");
-		switch(i)
-		{
-		case 1 :
-			for(int j = 0 ; j < probaHoras.length ; j++)
+			// Generando una hora de entrega conforme a la distribucion de probabilidad
+			float probaH = (float) Math.random();			
+			int horaEntrega = 0;
+			float totalProbaH = probaHoras[horaEntrega];
+			while(probaH > totalProbaH)
 			{
-				probaHoras[j] = 1/probaHoras.length ;
+				horaEntrega++;
+				totalProbaH += probaHoras[horaEntrega];
 			}
-			break;
-		case 2 :
-			System.out.println("Introduïu successivament la probabilitat de repartició de las peticions que desitja per cada hora.");
-			floatRepartition(sc, probaHoras, 1);
-			break;			
-		default :
-			System.out.println("Error : Wrong option number.");
-			System.exit(1);			
-		}
-		
-		return new Estat(capTransports);
-	}
-	
-	private static int chooseOption(Scanner sc, int numOp, String s)
-	{
-		int i = getIntegerInput(sc, s);
-		
-		if(i < 0 || i > numOp)
-		{
-			System.out.println("Entreu el nombre de la opció desitjada (entre 1 i " + numOp + ").");
-			i = chooseOption(sc, numOp, s);
-		}		
-		return i;
-	}
-	
-	private static void intRepartition(Scanner sc, int[] rep, int limit)
-	{
-		int total = 0 ;
-		
-		System.out.println("Recordeu que el total ha de ser exactament " + limit + ".");
-		
-		for(int i = 0 ; i < rep.length ; i++)
-		{
-			rep[i] = getIntegerInput(sc, i + " : ");
-			total += rep[i];
-		}
-		
-		if(total != limit)
-		{
-			System.out.println("El total no es igual a " + limit + ". Si us plau, recomenceu.");
-			intRepartition(sc, rep, limit);
-		}		
-	}
-	
-	private static void floatRepartition(Scanner sc, float[] rep, float limit)
-	{
-		float total = 0 ;
-		
-		System.out.println("Recordeu que el total ha de ser exactament " + limit + ".");
-		
-		for(int i = 0 ; i < rep.length ; i++)
-		{
-			rep[i] = getFloatInput(sc, i + " : ");
-			total += rep[i];
-		}
-		
-		if(total != limit)
-		{
-			System.out.println("El total no es igual a " + limit + ". Si us plau, recomenceu.");
-			floatRepartition(sc, rep, limit);
-		}		
-	}
 
-	private static int getIntegerInput(Scanner sc, String s)
-	{
-		int i ;
-		try
-		{
-			System.out.print(s);
-			i = sc.nextInt();
-		} catch (InputMismatchException e)
-		{
-			sc.close();
-			System.out.println("S'ha d'introduir un nombre enter.");
-			Scanner scan = new Scanner(System.in);
-			i = getIntegerInput(scan, s);
-		}
-		return i;
-	}
+			// Generando el peso de la entrega conforme a la distribucion de probabilidad
+			float probaP = (float) Math.random();			
+			int peso = 0;
+			float totalProbaP = probaPesos[peso];
+			while(probaP > totalProbaP)
+			{
+				peso++;
+				totalProbaP += probaPesos[peso];
+			}
 
-	private static float getFloatInput(Scanner sc, String s)
-	{
-		float f ;
-		try
-		{
-			System.out.print(s);
-			f = sc.nextFloat();
-		} catch (InputMismatchException e)
-		{
-			System.out.println("S'ha d'introduir un nombre float.");
-			f = getFloatInput(sc, s);
+			// Si un centro esta "lleno", pasamos al siguiente
+			if( i > Math.ceil((float)(numCentre+1)*(float)nbPeticions/(float)Constants.nc)) numCentre++;
+
+			// Creacion de la peticion
+			Peticio p = new Peticio(i, Constants.cant[peso], horaEntrega + Constants.h_min);
+
+			// Asignacion de la peticion al centro, como "no entregada"
+			inicial.initPeticio(numCentre, p);
 		}
-		return f;
+		
+		return inicial ;
 	}
-	
 }

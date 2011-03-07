@@ -20,6 +20,7 @@ public class Centre {
 	public Transport[] get_transports(){
 		return hores;
 	}
+	
 	public int getBenefici()
 	{
 		int b;
@@ -30,6 +31,11 @@ public class Centre {
 		}
 		
 		return b ;
+	}
+	
+	public void initPeticio(Peticio p)
+	{
+		hores[0].add_peticio(p);
 	}
 	
 	public boolean set_camion(int h, int c){
@@ -128,7 +134,7 @@ public class Centre {
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-			if(Tp.getH()
+			//if(Tp.getH()
 		}
 	}
 }
