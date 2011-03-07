@@ -33,9 +33,11 @@ public class Principal {
 
 		// Generando el problema
 		e = generadorProblema();
+		
+		System.out.println(e);
 
 		// Generando el estado inicial
-		e.estat_inicial(estrategiaInicial);
+		//e.estat_inicial(estrategiaInicial);
 	}
 
 	private static void readFile(String file) throws FileNotFoundException
@@ -75,12 +77,18 @@ public class Principal {
 			// System.exit(1);
 			// WTF ?!?!?!?! 0,1 + 0,1 + ... + 0,1 = 1,0000001 !!!!!!!!
 		}
+		
+		// Lee la estrategia de generacion del estado inicial
+		String eI = sc.next();
+		estrategiaInicial = eI.charAt(0);
 
+		// TODO : Comment that
 		System.out.println(nbPeticions + ", " +
 				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
 				probaHoras[0] + ", " + probaHoras[1] + ", " + probaHoras[2] + ", " + probaHoras[3] + ", " +	probaHoras[4] + ", " +
 				probaHoras[5] + ", " + probaHoras[6] + ", " + probaHoras[7] + ", " + probaHoras[8] + ", " + probaHoras[9] + ", " +
-				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ".");
+				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ", " +
+				estrategiaInicial + ".");
 	}
 
 

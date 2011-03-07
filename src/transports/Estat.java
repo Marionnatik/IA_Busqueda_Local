@@ -177,4 +177,19 @@ public class Estat {
 	}
 	
 	
+	@Override
+	public String toString()
+	{
+		String s = "Estat :\n";
+		
+		for(int i = 0 ; i < Constants.nc ; i++)
+		{
+			s.concat("  Centre no." + (i+1) + " :\n");
+			System.out.println(s);
+			s.concat(centres[i].toString());
+		}
+		
+		return s;
+	}
+	
 }
