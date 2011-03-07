@@ -12,7 +12,7 @@ public class Centre {
 	{
 		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
-			hores[i] = new Transport() ;
+			hores[i] = new Transport(i) ;
 		}
 		hores[0].setCap(Integer.MAX_VALUE);
 	}
@@ -23,10 +23,10 @@ public class Centre {
 	public int getBenefici()
 	{
 		int b;
-		b = hores[0].getBenefici(0);
+		b = hores[0].getBenefici();
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
-			b += hores[i].getBenefici(i+Constants.h_min-1);
+			b += hores[i].getBenefici();
 		}
 		
 		return b ;
@@ -105,8 +105,8 @@ public class Centre {
 				}
 			}
 			else{
-				if(h == 1)this.h_step(p, cl, p.getH()+1);
-				else if(h <= p.getH())this.h_step(p, cl, h-1);
+				if(h == 1)this.h_step(p, cl, p.getH()-Constants.h_min+1+1);
+				else if(h <= p.getH()-Constants.h_min+1)this.h_step(p, cl, h-1);
 				else if(h != Constants.ht)this.h_step(p, cl, h+1);
 			}
 		}
@@ -130,7 +130,7 @@ public class Centre {
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-			if(hores[p.getH()].add_peticio(p)){
+			if(hores[p.getH()-Constants.h_min+1].add_peticio(p)){
 				noass.remove(p);
 				hores[0].remove_peticio(p);
 			}
@@ -138,18 +138,27 @@ public class Centre {
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
 			f = true;
-			for(i = p.getH()-1; i>0 && f; i--){
+			for(i = p.getH()-Constants.h_min; i>0 && f; i--){
 				if(hores[i].add_peticio(p)){
 					hores[0].remove_peticio(p);
 					f = false;
 				}
 			}
-			for(i = p.getH()+1; i<Constants.ht && f; i++){
+			for(i = p.getH()+Constants.h_min+1+1; i<Constants.ht && f; i++){
 				if(hores[i].add_peticio(p)){
 					hores[0].remove_peticio(p);
 					f = false;
 				}
 			}
 		}
+	}
+
+	public int getRetard() {
+		int r = 0;
+		for(int i = 1 ; i < Constants.ht+1 ; i++)
+		{
+			r += hores[i].getRetards();
+		}
+		return r;
 	}
 }

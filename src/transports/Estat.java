@@ -79,7 +79,7 @@ public class Estat {
 			for(i = 0 ; i < Constants.nc ; i++){
 				if(r[i]){
 					p = it[i].next();
-					cl = centres[i].h_step(p, cl, p.getH());
+					cl = centres[i].h_step(p, cl, p.getH()+1-Constants.h_min);
 					if(it[i].hasNext())r[i] = false;
 				}
 				c = c || r[i];
@@ -153,6 +153,16 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getBenefici();
 		
 		return b;
+	}
+
+
+	public double getRetards() {
+		// TODO Auto-generated method stub
+		int b = 0 ;
+		double r;
+		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getRetard();
+		r = (double)b;
+		return r;	
 	}
 	
 	
