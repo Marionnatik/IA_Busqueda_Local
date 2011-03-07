@@ -16,4 +16,12 @@ La suma de los 10 debe ser igual a 1.
 Linia 5 : Estrategia para generar el estado inicial
 (Char)
 
-IMPORTANTE : La separacion entre la parte entera y decimal debe ser una coma (,) y no un punto (.) !!
+Linia 6 : Tipo de algoritmo
+(String)
+Puede ser "hc" o "sa".
+
+Linia 7 : Tipo de heuristica
+(String)
+Puede ser "gan" o "ret"
+
+IMPORTANTE : La separacion entre la parte entera y decimal puede ser una coma (,) o un punto (.), si sale un error "formato no valido", intentar cambia eso.

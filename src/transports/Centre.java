@@ -4,25 +4,25 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Centre {
-	
+
 	private Transport[] hores = new Transport[Constants.ht+1];
 
-	
 	public Centre()
 	{
 		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);
-		
+
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport(i+Constants.h_min-1) ;
 		}
 	}
 
-	public Transport[] get_transports(){
-		return hores;
+	public Transport[] get_transports()
+	{
+		return hores; 
 	}
-	
+
 	public int getBenefici()
 	{
 		int b;
@@ -31,19 +31,19 @@ public class Centre {
 		{
 			b += hores[i].getBenefici();
 		}
-		
+
 		return b ;
 	}
-	
+
 	public void initPeticio(Peticio p)
 	{
 		hores[0].add_peticio(p);
 	}
-	
+
 	public boolean set_camion(int h, int c){
 		return hores[h].setCap(c);
 	}
-	
+
 	public void ordena_noassign(){
 		hores[0].ordenar();
 	}
@@ -64,20 +64,20 @@ public class Centre {
 				}*/
 				//Si no funciona, utiliza lo de alto
 				if(hores[i].add_peticio(p)){
-				 hores[0].remove_peticio(p);
-				 ep = true;
-				 if(i==ini && hores[i].getCapR()==0)ini++;
+					hores[0].remove_peticio(p);
+					ep = true;
+					if(i==ini && hores[i].getCapR()==0)ini++;
 				}
 			}
 
 		}
-		
+
 	}
 
 	public Iterator<Peticio> h_setup(){
 		return hores[0].get_peticiones().iterator();
 	}
-	
+
 	public int[] h_step(Peticio p, int[] cl, int h){
 		//Esperant el aviò estic surtint bastant boig per escriure aquest metod...
 		int i, j;
@@ -120,13 +120,13 @@ public class Centre {
 		}
 		return cl;
 	}
-	
+
 	public boolean desplazar_peticio(int c, Peticio p, int h1, int h2){
-//		int ba = hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2);
+		//		int ba = hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2);
 		boolean be;
 		be = hores[h2].add_peticio(p);
 		if(be)hores[h1].remove_peticio(p);
-//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
+		//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
 		return be;
 	}
 
@@ -138,7 +138,7 @@ public class Centre {
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-			
+
 			if(hores[p.getH()-Constants.h_min+1].add_peticio(p)){
 				noass.remove(p);
 				hores[0].remove_peticio(p);
@@ -175,12 +175,12 @@ public class Centre {
 	public String toString()
 	{
 		String s = "";
-		
+
 		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
 			s = s.concat(hores[i].toString());
 		}
-		
+
 		return s;
 	}
 }

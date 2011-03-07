@@ -3,51 +3,51 @@ package transports;
 public class Peticio implements Comparable<Peticio>{
 	
 	private int id;
-	private int cantidad;
-	private int precio;
+	private int cantitat;
+	private int preu;
 	private int hora;
 
 	public Peticio(int i, int c, int h)
 	{
 		id = i;
-		cantidad = c;
+		cantitat = c;
 		hora = h;
 		
 		if(c <= 200)
 		{
-			precio = c;
+			preu = c;
 		} else if (c < 500) {
-			precio = c*3/2;
+			preu = c*3/2;
 		} else {
-			precio = c*2;
+			preu = c*2;
 		}
 	}
 	
 	public int getID() { return id ; }
-	public int getCan() { return cantidad ; }
-	public int getPre() { return precio ; }
+	public int getCan() { return cantitat ; }
+	public int getPre() { return preu ; }
 	public int getH() { return hora ; }
 
 
 
 	@Override
-	public int compareTo(Peticio o) {
-		// TODO Auto-generated method stub
+	public int compareTo(Peticio o)
+	{
 		switch(Estat.tipord){
 			case 'a':
 				if(hora!=o.getH())return hora - o.getH();
-				else if(precio!=o.getPre()) return o.getPre() - precio;
+				else if(preu!=o.getPre()) return o.getPre() - preu;
 			break;
 			case 'b':
-				if(precio!=o.getPre()) return o.getPre() - precio;
+				if(preu!=o.getPre()) return o.getPre() - preu;
 				else if(hora!=o.getH())return hora - o.getH();
 			break;
 			case 'c':
 				if(hora!=o.getH())return hora - o.getH();
-				else if(precio!=o.getPre()) return precio - o.getPre();
+				else if(preu!=o.getPre()) return preu - o.getPre();
 			break;
 			case 'd':
-				if(precio!=o.getPre()) return precio - o.getPre();
+				if(preu!=o.getPre()) return preu - o.getPre();
 				else if(hora!=o.getH())return hora - o.getH();
 			break;
 		}
@@ -58,7 +58,7 @@ public class Peticio implements Comparable<Peticio>{
 	@Override
 	public String toString()
 	{
-		return "Peticio no." + id + " : Entrega a " + hora + "h, cantidad = " + cantidad + ", precio = " + precio + ".";
+		return "Peticio no." + id + " : Entrega a " + hora + "h, cantitat = " + cantitat + ", preu = " + preu + ".";
 	}
 		
 }
