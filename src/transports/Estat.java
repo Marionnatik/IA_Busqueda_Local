@@ -1,6 +1,7 @@
 package transports;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Estat {
 	
@@ -59,10 +60,9 @@ public class Estat {
 	private void first_fit() {
 		// TODO Auto-generated method stub
 		int i;
-		Transport nassign;
 		camions_greedy();
 		for(i = 0 ; i < Constants.nc ; i++){
-			centres[i].ff();
+			centres[i].ff_2r();
 		}
 	}
 
@@ -85,7 +85,7 @@ public class Estat {
 			for(i = 0 ; i < Constants.nc ; i++){
 				if(r[i]){
 					p = it[i].next();
-					cl = centres[i].h_step(p, cl, p.getH());
+					cl = centres[i].h_step(p, cl, p.getH()+1-Constants.h_min);
 					if(it[i].hasNext())r[i] = false;
 				}
 				c = c || r[i];
@@ -96,8 +96,28 @@ public class Estat {
 
 	private void random() {
 		// TODO Auto-generated method stub
-		
+		int i;
+		camions_random();
+		for(i=0; i<Constants.nc;i++){
+			centres[i].ff_2r();
+		}
 	}
+
+	private void camions_random() {
+		// TODO Auto-generated method stub
+		int i, r, j;
+		int[] cd;
+		cd = distriCap.clone();
+		for(i=0; i<Constants.nc;i++){
+			for(j=0;j<Constants.ht;j++){
+					r = (int) (Constants.cap.length*Math.random());
+					if(cd[r]==0)do r = r++ % Constants.cap.length; while(cd[r]>0);
+					centres[i].set_camion(j, Constants.cap[r]);
+					cd[r]--;
+			}
+		}
+	}
+
 
 	private void buit() {
 		// TODO Auto-generated method stub
@@ -139,6 +159,21 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getBenefici();
 		
 		return b;
+	}
+
+
+	public double getRetards() {
+		// TODO Auto-generated method stub
+		int b = 0 ;
+		double r;
+		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getRetard();
+		r = (double)b;
+		return r;	
+	}
+
+
+	public LinkedList<Peticio> getPeticions(int i, int j) {
+		return centres[i].get_transports()[j].get_peticiones();
 	}
 	
 	

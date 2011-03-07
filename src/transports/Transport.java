@@ -10,13 +10,15 @@ public class Transport {
 	private LinkedList<Peticio> peti ;
 	private int capacidad_ocupada;
 	private int capacidad_residual;
+	private int hora;
 	
-	public Transport()
+	public Transport(int h)
 	{
-		capacidad = 0 ;
+		capacidad = 0;
 		peti = new LinkedList<Peticio>() ;
 		capacidad_residual = 0;
 		capacidad_ocupada = 0;
+		hora = h;
 	}
 	
 	public int getCap(){
@@ -40,11 +42,11 @@ public class Transport {
 		else return false;
 	}
 
-	public int getBenefici(int i) {
+	public int getBenefici() {
 		
 		int b = 0 ;
 		Peticio p;
-		if(i==0){
+		if(hora==0){
 			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
 				p = it.next();
 				b -= p.getPre() + (Constants.h_max-p.getH())/5;
@@ -54,8 +56,8 @@ public class Transport {
 		else{
 			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
 				p = it.next();
-				if(p.getH()>=i)b += p.getPre();
-				else b += p.getPre() * (i-p.getH())/5;
+				if(p.getH()>=hora)b += p.getPre();
+				else b += p.getPre() * (hora-p.getH())/5;
 			}
 		}
 		return b ;
@@ -88,5 +90,23 @@ public class Transport {
 */	
 	public LinkedList<Peticio> get_peticiones(){
 		return peti;
+	}
+
+	public int getRetards() {
+		int r = 0;
+		Peticio p;
+		if(hora!=0){
+			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
+				p = it.next();
+				if(p.getH()<hora)r += hora - p.getH(); 
+			}
+		}
+		else{
+			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
+				p = it.next();
+				r += 24 - p.getH() + Constants.h_min; 
+			}
+		}
+		return r;
 	}
 }
