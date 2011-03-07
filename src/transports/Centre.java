@@ -10,11 +10,13 @@ public class Centre {
 	
 	public Centre()
 	{
-		for(int i = 0 ; i < Constants.ht+1 ; i++)
-		{
-			hores[i] = new Transport(i) ;
-		}
+		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);
+		
+		for(int i = 1 ; i < Constants.ht+1 ; i++)
+		{
+			hores[i] = new Transport(i+Constants.h_min-1) ;
+		}
 	}
 
 	public Transport[] get_transports(){
@@ -167,5 +169,18 @@ public class Centre {
 			r += hores[i].getRetards();
 		}
 		return r;
+	}
+
+	@Override
+	public String toString()
+	{
+		String s = "";
+		
+		for(int i = 0 ; i < Constants.ht+1 ; i++)
+		{
+			s = s.concat(hores[i].toString());
+		}
+		
+		return s;
 	}
 }

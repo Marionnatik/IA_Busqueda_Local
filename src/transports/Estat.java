@@ -180,13 +180,12 @@ public class Estat {
 	@Override
 	public String toString()
 	{
-		String s = "Estat :\n";
+		String s = "";
 		
 		for(int i = 0 ; i < Constants.nc ; i++)
 		{
-			s.concat("  Centre no." + (i+1) + " :\n");
-			System.out.println(s);
-			s.concat(centres[i].toString());
+			s = s.concat("Centre no." + (i+1) + " :\n");
+			s = s.concat(centres[i].toString() + "\n");
 		}
 		
 		return s;
