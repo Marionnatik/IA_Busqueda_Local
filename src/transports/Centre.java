@@ -119,7 +119,7 @@ public class Centre {
 		return cl;
 	}
 	
-	public boolean desplazar_peticio(int c, Peticio p, int h1, int h2){
+	public boolean desplazar_peticio(Peticio p, int h1, int h2){
 //		int ba = hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2);
 		boolean be;
 		be = hores[h2].add_peticio(p);

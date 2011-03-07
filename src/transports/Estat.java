@@ -191,5 +191,37 @@ public class Estat {
 		
 		return s;
 	}
-	
+
+	public boolean desplazar(Peticio p, int i, int j, int j2) {
+		// TODO Auto-generated method stub
+		return centres[i].desplazar_peticio(p, j, j2);
+	}
+
+	public int getCap(int i, int h) {
+		return centres[i].get_transports()[h].getCap();
+	}
+
+	public int getCapO(int i, int h) {
+		// TODO Auto-generated method stub
+		return centres[i].get_transports()[h].getCapO();
+	}
+
+	public void canvi_camion(int i, int h1, int c1, int i2, int h2, int c2) {
+		centres[i].set_camion(h1, c1);
+		centres[i2].set_camion(h2, c2);
+		
+	}
+
+	public boolean canvi_peticiones(int i, int h1, int h2, Peticio p, Peticio p2){
+		centres[i].get_transports()[h1].remove_peticio(p);
+		centres[i].get_transports()[h2].remove_peticio(p2);
+		if(centres[i].get_transports()[h1].add_peticio(p2)){
+		  if(centres[i].get_transports()[h2].add_peticio(p))return true;
+		  else{
+			  centres[i].get_transports()[h1].remove_peticio(p2);
+			  return false;
+		  }
+		}
+		return false;
+	}
 }
