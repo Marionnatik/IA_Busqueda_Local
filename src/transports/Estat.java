@@ -1,6 +1,7 @@
 package transports;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Estat {
 	
@@ -163,6 +164,11 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getRetard();
 		r = (double)b;
 		return r;	
+	}
+
+
+	public LinkedList<Peticio> getPeticions(int i, int j) {
+		return centres[i].get_transports()[j].get_peticiones();
 	}
 	
 	
