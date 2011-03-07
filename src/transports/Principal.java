@@ -48,7 +48,7 @@ public class Principal {
 		nbPeticions = sc.nextInt() ;
 
 		// Lee y comprueba el numero de transportes para cada capacidad
-		for(int i = 0 ; i < Constants.cap.length ; i++) capTransports[i] = sc.nextInt();
+		for(int i = 0 ; i < capTransports.length ; i++) capTransports[i] = sc.nextInt();
 		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
 		{
 			System.out.println("Error : La suma de los transportes no es igual a 60.");
@@ -56,7 +56,7 @@ public class Principal {
 		}
 
 		// Lee y comprueba la distribucio de probabilidad de los pesos de las entregas
-		for(int i = 0 ; i < Constants.cant.length ; i++) probaPesos[i] = sc.nextFloat();
+		for(int i = 0 ; i < probaPesos.length ; i++) probaPesos[i] = sc.nextFloat();
 		if(probaPesos[0] + probaPesos[1] + probaPesos[2] + probaPesos[3] + probaPesos[4] != 1.0)
 		{
 			System.out.println("Error : La suma de las probabilidades de pesos es igual a " + 
@@ -66,7 +66,7 @@ public class Principal {
 		}
 
 		// Lee y comprueba la distribucio de probabilidad de las horas de entrega
-		for(int i = 0 ; i < Constants.ht ; i++) probaHoras[i] = sc.nextFloat();
+		for(int i = 0 ; i < probaHoras.length ; i++) probaHoras[i] = sc.nextFloat();
 		if(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
 				probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9] != 1)
 		{

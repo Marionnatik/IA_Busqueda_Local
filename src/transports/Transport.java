@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Transport {
-	
-	private int capacidad ;	
+
 	private LinkedList<Peticio> peti ;
+	private int capacidad ;
 	private int capacidad_ocupada;
 	private int capacidad_residual;
 	private int hora;
-	
+
 	public Transport(int h)
 	{
 		capacidad = 0;
@@ -20,30 +20,25 @@ public class Transport {
 		capacidad_ocupada = 0;
 		hora = h;
 	}
-	
-	public int getCap(){
-		return capacidad; 
-	}
-	
-	public int getCapO(){
-		return capacidad_ocupada; 
-	}
-	
-	public int getCapR(){
-		return capacidad_residual; 
-	}
+
+	public int getCap(){ return capacidad; }	
+	public int getCapO(){ return capacidad_ocupada; }	
+	public int getCapR(){ return capacidad_residual; }	
+	public int getHora(){ return hora; }
+
+	public void setHora(int h){ hora = h; }
 
 	public boolean setCap(int c){
 		if(capacidad_ocupada <= c){
-		  capacidad = c;
-		  capacidad_residual = c - capacidad_ocupada;
-		  return true;
+			capacidad = c;
+			capacidad_residual = c - capacidad_ocupada;
+			return true;
 		}
 		else return false;
 	}
 
 	public int getBenefici() {
-		
+
 		int b = 0 ;
 		Peticio p;
 		if(hora==0){
@@ -51,7 +46,7 @@ public class Transport {
 				p = it.next();
 				b -= p.getPre() + (Constants.h_max-p.getH())/5;
 			}
-			
+
 		}
 		else{
 			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
@@ -79,15 +74,15 @@ public class Transport {
 		int cnp;
 		cnp = p.getCan();
 		if(peti.remove(p)){
-		  capacidad_ocupada -= cnp;
-		  capacidad_residual += cnp;
+			capacidad_ocupada -= cnp;
+			capacidad_residual += cnp;
 		}	
 	}
-/*	
+	/*	
 	public Peticio get_peticio(int i){
 		return peti.get(i);
     }
-*/	
+	 */	
 	public LinkedList<Peticio> get_peticiones(){
 		return peti;
 	}
@@ -108,5 +103,25 @@ public class Transport {
 			}
 		}
 		return r;
+	}
+
+	@Override
+	public String toString()
+	{
+		String s = "";
+		if(hora == 0)
+		{
+			s = s.concat("  No entregadas : Capacitat ocupada= " + capacidad_ocupada + ".\n");
+		} else {
+			s = s.concat("  " + hora + "h : " +
+					"Capacidad = " + capacidad +
+					", capacidad ocupada = " + capacidad_ocupada +
+					", capacidad residual="	+ capacidad_residual + "\n");			
+		}
+		for(int i = 0 ; i < peti.size() ; i++)
+		{
+			s = s.concat("    " + peti.get(i).toString() + "\n");
+		}
+		return s;
 	}
 }

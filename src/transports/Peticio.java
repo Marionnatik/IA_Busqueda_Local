@@ -54,5 +54,11 @@ public class Peticio implements Comparable<Peticio>{
 		if(id!=o.getID()) return id - o.getID();
 		else return 0;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Peticio no." + id + " : Entrega a " + hora + "h, cantidad = " + cantidad + ", precio = " + precio + ".";
+	}
 		
 }
