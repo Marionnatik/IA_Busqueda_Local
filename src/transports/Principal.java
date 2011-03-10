@@ -22,7 +22,7 @@ public class Principal {
 		new Constants();
 
 		// Llegeix el fitxer de valors (test1 per defecte)
-		String file = "tests/test1.txt";
+		String file = "tests/test2.txt";
 		if(args.length != 0) file = args[0];
 		try{
 			readFile(file);
@@ -32,6 +32,9 @@ public class Principal {
 		} catch(InputMismatchException im) {
 			System.out.println("Error en l'arxiu de prova " + file + " : Format no vàlid.");
 			System.exit(1);			
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("Error : Encoding no valid.");
+			System.exit(1);
 		}
 
 		// Genera el estat inicial amb l'estratègia desitjada
@@ -108,9 +111,9 @@ public class Principal {
 		System.out.println(e);
 	}
 
-	private static void readFile(String file) throws FileNotFoundException, InputMismatchException
+	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
 	{
-		Scanner sc = new Scanner(new FileReader(file));
+		Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
