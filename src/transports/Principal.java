@@ -34,10 +34,11 @@ public class Principal {
 		// Generando el problema
 		e = generadorProblema();
 		
-		System.out.println(e);
 
 		// Generando el estado inicial
-		//e.estat_inicial(estrategiaInicial);
+		e.estat_inicial(estrategiaInicial);
+		System.out.println(e);
+
 	}
 
 	private static void readFile(String file) throws FileNotFoundException
@@ -98,6 +99,7 @@ public class Principal {
 
 		int numCentre = 0 ;
 
+
 		for(int i = 0 ; i < nbPeticions ; i++)
 		{
 			// Generando una hora de entrega conforme a la distribucion de probabilidad
@@ -129,7 +131,7 @@ public class Principal {
 			// Asignacion de la peticion al centro, como "no entregada"
 			inicial.initPeticio(numCentre, p);
 		}
-		
+
 		return inicial ;
 	}
 }

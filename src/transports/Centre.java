@@ -52,8 +52,11 @@ public class Centre {
 		Peticio p;
 		int i, ini;
 		boolean ep;
+		LinkedList<Peticio> petis;
+		petis = hores[0].get_peticiones();
+		System.out.println(petis.size());
 		ini = 1;
-		for(Iterator<Peticio> it = hores[0].get_peticiones().iterator(); it.hasNext();){
+		for(Iterator<Peticio> it = petis.iterator(); it.hasNext();){
 			p = it.next();
 			ep = false;
 			for(i=ini; i<hores.length && ep == false; i++){

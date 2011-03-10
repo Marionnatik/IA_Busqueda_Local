@@ -32,34 +32,34 @@ public class Estat {
 			case 'a': 
 				  tipord = 'a';
 				  this.mes_aviat_posible();
-				  this.toString();
+//				  this.toString();
 			break;
 			case 'b': 
 			  	tipord = 'b';
 			  	this.perhora();
-			  	this.toString();
+//			  	this.toString();
 			break;
 			case 'f':
 				this.first_fit();
-				this.toString();
+//				this.toString();
 			break;
 			case 'm':
 				tipord = 'c';
-				this.mes_aviat_posible();
+//				this.mes_aviat_posible();
 				this.toString();
 			break;
 			case 'r': 
 				this.random();
-				this.toString();
+//				this.toString();
 			break;
 			case 'v': 
 				this.buit();
-				this.toString();
+//				this.toString();
 			break;
 			case 'w':
 				tipord = 'd';
 				this.perhora();
-				this.toString();
+//				this.toString();
 			break;
 		}
 	}
@@ -142,7 +142,7 @@ public class Estat {
 				  do{
 					k++;
 				    cont = distriCap[k];
-				  }while(cont!=0);
+				  }while(cont==0);
 				}
 				centres[i].set_camion(j, Constants.cap[k]);
 				cont--;
