@@ -32,27 +32,34 @@ public class Estat {
 			case 'a': 
 				  tipord = 'a';
 				  this.mes_aviat_posible();
+				  this.toString();
 			break;
 			case 'b': 
 			  	tipord = 'b';
 			  	this.perhora();
+			  	this.toString();
 			break;
 			case 'f':
 				this.first_fit();
+				this.toString();
 			break;
 			case 'm':
 				tipord = 'c';
 				this.mes_aviat_posible();
+				this.toString();
 			break;
 			case 'r': 
 				this.random();
+				this.toString();
 			break;
 			case 'v': 
 				this.buit();
+				this.toString();
 			break;
 			case 'w':
 				tipord = 'd';
 				this.perhora();
+				this.toString();
 			break;
 		}
 	}
