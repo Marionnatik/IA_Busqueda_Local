@@ -6,6 +6,7 @@ import java.util.*;
 import aima.search.framework.*;
 import aima.search.informed.*;
 
+
 public class Principal {
 
 	static int nbPeticions ;
@@ -40,9 +41,8 @@ public class Principal {
 		// Genera el estat inicial amb l'estratègia desitjada
 		Estat e = generadorProblema();
 		e.estat_inicial(estrategiaInicial);
-
 		// Resolució del problema
-		try {
+/*		try {
 			Problem problem = null;
 
 			if(algorisme.equals("hc"))
@@ -94,7 +94,7 @@ public class Principal {
 					System.exit(1);				
 				}
 				SimulatedAnnealingSearch search = new SimulatedAnnealingSearch();
-				SearchAgent agent = new SearchAgent(problem, search);
+			ù	SearchAgent agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				System.out.println("Search Outcome=" + search.getOutcome());
 				System.out.println("Final State=\n" + search.getLastSearchState());
@@ -109,6 +109,7 @@ public class Principal {
 		}
 
 		System.out.println(e);
+*/
 	}
 
 	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
@@ -171,6 +172,7 @@ public class Principal {
 		Estat inicial =  new Estat(capTransports);
 
 		int numCentre = 0 ;
+
 
 		for(int i = 0 ; i < nbPeticions ; i++)
 		{

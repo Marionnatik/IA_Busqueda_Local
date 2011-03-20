@@ -16,7 +16,7 @@ public class Estat {
 	public Estat(int[] capacitats)
 	{
 		distriCap = capacitats ;
-		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre() ;
+		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
 
 	}
 	
@@ -32,34 +32,35 @@ public class Estat {
 			case 'a': 
 				  tipord = 'a';
 				  this.mes_aviat_posible();
-				  this.toString();
+				  System.out.println(this.toString());
+				  
 			break;
 			case 'b': 
 			  	tipord = 'b';
 			  	this.perhora();
-			  	this.toString();
+			  	System.out.println(this.toString());
 			break;
 			case 'f':
 				this.first_fit();
-				this.toString();
+			  	System.out.println(this.toString());
 			break;
 			case 'm':
 				tipord = 'c';
 				this.mes_aviat_posible();
-				this.toString();
+			  	System.out.println(this.toString());
 			break;
 			case 'r': 
 				this.random();
-				this.toString();
+			  	System.out.println(this.toString());
 			break;
 			case 'v': 
 				this.buit();
-				this.toString();
+			  	System.out.println(this.toString());
 			break;
 			case 'w':
 				tipord = 'd';
 				this.perhora();
-				this.toString();
+			  	System.out.println(this.toString());
 			break;
 		}
 	}
@@ -75,16 +76,17 @@ public class Estat {
 
 	private void perhora() {
 		// TODO Auto-generated method stub
-		int i;
-		boolean c, r[];
+		int i, i2, j, a, k;
+		boolean c, r[], tr;
 		Peticio p;
+		Transport ts[];
 		Iterator<Peticio>[] it = new Iterator[Constants.nc];
 		r = new boolean[Constants.nc];
 		int[] cl = distriCap.clone();
 		for(i = 0 ; i < Constants.nc ; i++){
 			centres[i].ordena_noassign();
-			it[i] = centres[i].h_setup();
 			r[i] = true;
+			it[i] = centres[i].h_setup();
 		}
 		c = true;
 		while(c){
@@ -92,10 +94,28 @@ public class Estat {
 			for(i = 0 ; i < Constants.nc ; i++){
 				if(r[i]){
 					p = it[i].next();
+					if(!it[i].hasNext())r[i] = false;
 					cl = centres[i].h_step(p, cl, p.getH()+1-Constants.h_min);
-					if(it[i].hasNext())r[i] = false;
 				}
 				c = c || r[i];
+			}
+		}
+		for(i = 0 ; i < Constants.nc ; i++)centres[i].neteja();
+		a = Constants.cap.length;
+		// comprovo que hi hagi un camion cada hora
+		for(i = 0; i<Constants.nc; i++){
+			ts = centres[i].get_transports();
+			for(j = 0; j< Constants.ht+1; j++){
+				tr = true;
+				if(ts[j].getCap()==0){
+					for(k = a-1; tr; k--){
+						if(cl[k]>0){
+							centres[i].set_camion(j, Constants.cap[k]);
+							tr = false;
+						}
+					}
+				}
+				
 			}
 		}
 	}
@@ -142,7 +162,7 @@ public class Estat {
 				  do{
 					k++;
 				    cont = distriCap[k];
-				  }while(cont!=0);
+				  }while(cont==0);
 				}
 				centres[i].set_camion(j, Constants.cap[k]);
 				cont--;
