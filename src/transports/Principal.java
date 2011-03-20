@@ -22,16 +22,20 @@ public class Principal {
 		// Genera las constantes
 		new Constants();
 
-		// Llegeix el fitxer de valors (test1 per defecte)
-		String file = "tests/test1.txt";
-		if(args.length != 0) file = args[0];
+		// Prepara els fitxers d'input (test1 per defecte) i output
+		String file_in = "tests/test1.txt";
+		if(args.length != 0) file_in = args[0];
+		String file_out1 = file_in.replace(".txt", "_output1.txt");
+		String file_out2 = file_in.replace(".txt", "_output2.txt");
+
+		// Llegeix el fitxer de valors
 		try{
-			readFile(file);
+			readFile(file_in);
 		} catch(FileNotFoundException fnf) {
-			System.out.println("Error en l'arxiu de prova " + file + " : Arxiu no trobat.");
+			System.out.println("Error en l'arxiu de prova " + file_in + " : Arxiu no trobat.");
 			System.exit(1);
 		} catch(InputMismatchException im) {
-			System.out.println("Error en l'arxiu de prova " + file + " : Format no vàlid.");
+			System.out.println("Error en l'arxiu de prova " + file_in + " : Format no vàlid.");
 			System.exit(1);			
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("Error : Encoding no valid.");
@@ -41,8 +45,12 @@ public class Principal {
 		// Genera el estat inicial amb l'estratègia desitjada
 		Estat e = generadorProblema();
 		e.estat_inicial(estrategiaInicial);
+		
+		String s1 = "Benefici : " + e.getBenefici();
+		e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
+
 		// Resolució del problema
-/*		try {
+		try {
 			Problem problem = null;
 
 			if(algorisme.equals("hc"))
@@ -62,54 +70,53 @@ public class Principal {
 							new Goal_Test(),
 							new Heuristica_Retard());
 				} else {
-					System.out.println("Error en l'arxiu de prova " + file + " : Nom d'heurística incorrecta.");
+					System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'heurística incorrecta.");
 					System.exit(1);				
 				}
-				
 				HillClimbingSearch search = new HillClimbingSearch();
 				SearchAgent agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				System.out.println("Search Outcome=" + search.getOutcome());
 				System.out.println("Final State=\n" + search.getLastSearchState());
 				printInstrumentation(agent.getInstrumentation());
-				
+
 			} else if (algorisme.equals("sa"))
 			{
 				// Algorisme Simulated Annealing
 				if (heuristic.equals("gan"))
 				{
 					// Heuristic 1
-					//problem = new Problem(e,
-					//		new Successor_SA(),
-					//		new Goal_Test(),
-					//		new Heuristica_Ganancia());
+					problem = new Problem(e,
+							new Successor_SA(),
+							new Goal_Test(),
+							new Heuristica_Ganancia());
 				} else if (heuristic.equals("ret")) {
 					// Heuristic 2
-					//problem = new Problem(e,
-					//		new Successor_SA(),
-					//		new Goal_Test(),
-					//		new Heuristica_Retard());
+					problem = new Problem(e,
+							new Successor_SA(),
+							new Goal_Test(),
+							new Heuristica_Retard());
 				} else {
-					System.out.println("Error en l'arxiu de prova " + file + " : Nom d'heurística incorrecta.");
+					System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'heurística incorrecta.");
 					System.exit(1);				
-				}
+				}				
 				SimulatedAnnealingSearch search = new SimulatedAnnealingSearch();
-			ù	SearchAgent agent = new SearchAgent(problem, search);
+				SearchAgent agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				System.out.println("Search Outcome=" + search.getOutcome());
 				System.out.println("Final State=\n" + search.getLastSearchState());
 				printInstrumentation(agent.getInstrumentation());
 			} else {
-				System.out.println("Error en l'arxiu de prova " + file + " : Nom d'algorisme incorrecta.");
+				System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'algorisme incorrecta.");
 				System.exit(1);				
 			}
-			
+
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-
-		System.out.println(e);
-*/
+		
+		String s2 = "Benefici : " + e.getBenefici();
+		e.writeFile(file_out2, "ESTAT FINAL\n===================\n", s2);
 	}
 
 	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
@@ -120,7 +127,7 @@ public class Principal {
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
 
-		// Llegeix y comproba el nombre de transports per cada ciutat
+		// Llegeix y comproba el nombre de transports per cada capacitat
 		for(int i = 0 ; i < capTransports.length ; i++) capTransports[i] = sc.nextInt();
 		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
 		{
@@ -208,7 +215,7 @@ public class Principal {
 
 		return inicial ;
 	}
-	
+
 	private static void printInstrumentation(Properties properties) {
 		Iterator<?> keys = properties.keySet().iterator();
 		while (keys.hasNext()) {

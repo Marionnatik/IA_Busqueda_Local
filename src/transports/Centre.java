@@ -154,11 +154,9 @@ public class Centre {
 	}
 	
 	public boolean desplazar_peticio(Peticio p, int h1, int h2){
-//		int ba = hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2);
 		boolean be;
 		be = hores[h2].add_peticio(p);
-		if(be)hores[h1].remove_peticio(p);
-		//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
+		if(be) hores[h1].remove_peticio(p);
 		return be;
 	}
 

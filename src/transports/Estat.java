@@ -1,10 +1,13 @@
 package transports;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Estat {
-	
+
 	// distribucion de capacidades de los transportes
 	// distriCap[0] = numero de transportes de 500kgs
 	// distriCap[1] = numero de transportes de 1000kgs
@@ -12,59 +15,51 @@ public class Estat {
 	public int[] distriCap = new int[Constants.cap.length];
 	public static char tipord;
 	private Centre[] centres = new Centre[Constants.nc];
-	
+
 	public Estat(int[] capacitats)
 	{
 		distriCap = capacitats ;
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
 
 	}
-	
+
 	public void initPeticio(int numCentre, Peticio p)
 	{
 		centres[numCentre].initPeticio(p);
 	}
-	
+
 
 	public void estat_inicial(char t){
 		// Hi han diferentes tipologies
 		switch(t) {
-			case 'a': 
-				  tipord = 'a';
-				  this.mes_aviat_posible();
-				  System.out.println(this.toString());
-				  
+		case 'a': 
+			tipord = 'a';
+			this.mes_aviat_possible();
 			break;
-			case 'b': 
-			  	tipord = 'b';
-			  	this.perhora();
-			  	System.out.println(this.toString());
+		case 'b': 
+			tipord = 'b';
+			this.per_hora();
 			break;
-			case 'f':
-				this.first_fit();
-			  	System.out.println(this.toString());
+		case 'f':
+			this.first_fit();
 			break;
-			case 'm':
-				tipord = 'c';
-				this.mes_aviat_posible();
-			  	System.out.println(this.toString());
+		case 'm':
+			tipord = 'c';
+			this.mes_aviat_possible();
 			break;
-			case 'r': 
-				this.random();
-			  	System.out.println(this.toString());
+		case 'r': 
+			this.random();
 			break;
-			case 'v': 
-				this.buit();
-			  	System.out.println(this.toString());
+		case 'v': 
+			this.buit();
 			break;
-			case 'w':
-				tipord = 'd';
-				this.perhora();
-			  	System.out.println(this.toString());
+		case 'w':
+			tipord = 'd';
+			this.per_hora();
 			break;
 		}
 	}
-		  
+
 	private void first_fit() {
 		// TODO Auto-generated method stub
 		int i;
@@ -74,7 +69,7 @@ public class Estat {
 		}
 	}
 
-	private void perhora() {
+	private void per_hora() {
 		// TODO Auto-generated method stub
 		int i, i2, j, a, k;
 		boolean c, r[], tr;
@@ -115,7 +110,7 @@ public class Estat {
 						}
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -137,10 +132,10 @@ public class Estat {
 		cd = distriCap.clone();
 		for(i=0; i<Constants.nc;i++){
 			for(j=0;j<Constants.ht;j++){
-					r = (int) (Constants.cap.length*Math.random());
-					if(cd[r]==0)do r = r++ % Constants.cap.length; while(cd[r]>0);
-					centres[i].set_camion(j, Constants.cap[r]);
-					cd[r]--;
+				r = (int) (Constants.cap.length*Math.random());
+				if(cd[r]==0)do r = r++ % Constants.cap.length; while(cd[r]>0);
+				centres[i].set_camion(j, Constants.cap[r]);
+				cd[r]--;
 			}
 		}
 	}
@@ -151,40 +146,40 @@ public class Estat {
 		this.camions_greedy();
 	}
 
-    private void camions_greedy(){
+	private void camions_greedy(){
 		int i, j, k, cont;
 		cont = distriCap[0];
-		  k = 0;
-		  //Més aviat pondrem els camions amb més capacitat
-		  for(j = 1 ; j< Constants.ht+1; j++){
-			 for(i = 0 ; i < Constants.nc ; i++){
+		k = 0;
+		//Més aviat pondrem els camions amb més capacitat
+		for(j = 1 ; j< Constants.ht+1; j++){
+			for(i = 0 ; i < Constants.nc ; i++){
 				if(cont==0){
-				  do{
-					k++;
-				    cont = distriCap[k];
-				  }while(cont==0);
+					do{
+						k++;
+						cont = distriCap[k];
+					}while(cont==0);
 				}
 				centres[i].set_camion(j, Constants.cap[k]);
 				cont--;
-			 }
-		  }
-    }
-	private void mes_aviat_posible() {
+			}
+		}
+	}
+	private void mes_aviat_possible() {
 		// TODO Auto-generated method stub
-		  int i;
-		  this.camions_greedy();
-		  for(i = 0 ; i < Constants.nc ; i++){
-			  centres[i].ordena_noassign();
-			  centres[i].greedy();
-		  }
+		int i;
+		this.camions_greedy();
+		for(i = 0 ; i < Constants.nc ; i++){
+			centres[i].ordena_noassign();
+			centres[i].greedy();
+		}
 	}
 
 	public int getBenefici()
 	{
 		int b = 0 ;
-		
+
 		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getBenefici();
-		
+
 		return b;
 	}
 
@@ -202,51 +197,69 @@ public class Estat {
 	public LinkedList<Peticio> getPeticions(int i, int j) {
 		return centres[i].get_transports()[j].get_peticiones();
 	}
-	
-	
+
+
 	@Override
 	public String toString()
 	{
 		String s = "";
-		
+
 		for(int i = 0 ; i < Constants.nc ; i++)
 		{
 			s = s.concat("Centre no." + (i+1) + " :\n");
 			s = s.concat(centres[i].toString() + "\n");
 		}
-		
+
 		return s;
 	}
 
-	public boolean desplazar(Peticio p, int i, int j, int j2) {
-		// TODO Auto-generated method stub
-		return centres[i].desplazar_peticio(p, j, j2);
+	
+	public void writeFile(String file, String s1, String s2)
+	{
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(new FileWriter(file));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		out.println(s1);
+		out.println(this);
+		out.println(s2);
+		out.close();
+		System.out.println("Estat " + s1 + " escribit en " + file);
+	}
+	
+	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
+		return centres[c].get_transports()[h_dest].getCapR() >= p.getCan();
 	}
 
-	public int getCap(int i, int h) {
-		return centres[i].get_transports()[h].getCap();
+	public boolean desplazar(Peticio p, int c, int h_ori, int h_dest) {
+		return centres[c].desplazar_peticio(p, h_ori, h_dest);
 	}
 
-	public int getCapO(int i, int h) {
-		// TODO Auto-generated method stub
-		return centres[i].get_transports()[h].getCapO();
+	public int getCap(int c, int h) {
+		return centres[c].get_transports()[h].getCap();
+	}
+
+	public int getCapO(int c, int h) {
+		return centres[c].get_transports()[h].getCapO();
 	}
 
 	public void canvi_camion(int i, int h1, int c1, int i2, int h2, int c2) {
 		centres[i].set_camion(h1, c1);
 		centres[i2].set_camion(h2, c2);
-		
+
 	}
 
 	public boolean canvi_peticiones(int i, int h1, int h2, Peticio p, Peticio p2){
 		centres[i].get_transports()[h1].remove_peticio(p);
 		centres[i].get_transports()[h2].remove_peticio(p2);
 		if(centres[i].get_transports()[h1].add_peticio(p2)){
-		  if(centres[i].get_transports()[h2].add_peticio(p))return true;
-		  else{
-			  centres[i].get_transports()[h1].remove_peticio(p2);
-			  return false;
-		  }
+			if(centres[i].get_transports()[h2].add_peticio(p))return true;
+			else{
+				centres[i].get_transports()[h1].remove_peticio(p2);
+				return false;
+			}
 		}
 		return false;
 	}

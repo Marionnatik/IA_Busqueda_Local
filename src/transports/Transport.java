@@ -61,6 +61,7 @@ public class Transport {
 	public void ordenar(){
 		Collections.sort(peti);
 	}
+	
 	public boolean add_peticio(Peticio p){
 		int cnp;
 		cnp = p.getCan();
@@ -70,6 +71,7 @@ public class Transport {
 		capacidad_residual -= cnp;
 		return true;
 	}
+	
 	public void remove_peticio(Peticio p){
 		int cnp;
 		cnp = p.getCan();
