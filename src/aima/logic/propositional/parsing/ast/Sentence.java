@@ -1,5 +1,4 @@
-/*
- * Created on Sep 15, 2003 by Ravi Mohan
+/* * Created on Sep 15, 2003 by Ravi Mohan
  *  
  */
 package aima.logic.propositional.parsing.ast;

@@ -1,28 +1,26 @@
 package transports;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Centre {
-	
-	private Transport[] hores = new Transport[Constants.ht+1];
 
-	
-	public Centre()
+	private Transport[] hores = new Transport[Constants.ht+1];
+	private ArrayList<Peticio> entregades = new ArrayList<Peticio>();
+	private int n;
+
+	public Centre(int num)
 	{
 		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);
-		
+		n = num;
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport(i+Constants.h_min-1) ;
 		}
 	}
 
-	public Transport[] get_transports(){
-		return hores;
-	}
-	
 	public int getBenefici()
 	{
 		int b;
@@ -31,19 +29,24 @@ public class Centre {
 		{
 			b += hores[i].getBenefici();
 		}
-		
+
 		return b ;
 	}
-	
+
+	public Transport[] get_transports()
+	{
+		return hores; 
+	}
+
 	public void initPeticio(Peticio p)
 	{
 		hores[0].add_peticio(p);
 	}
-	
+
 	public boolean set_camion(int h, int c){
 		return hores[h].setCap(c);
 	}
-	
+
 	public void ordena_noassign(){
 		hores[0].ordenar();
 	}
@@ -53,10 +56,13 @@ public class Centre {
 		int i, ini;
 		boolean ep;
 		LinkedList<Peticio> petis;
+		LinkedList<Peticio> puestas;
+		Iterator<Peticio> it;
 		petis = hores[0].get_peticiones();
 		System.out.println(petis.size());
 		ini = 1;
-		for(Iterator<Peticio> it = petis.iterator(); it.hasNext();){
+		puestas = new LinkedList<Peticio>();
+		for(it = petis.iterator(); it.hasNext();){
 			p = it.next();
 			ep = false;
 			for(i=ini; i<hores.length && ep == false; i++){
@@ -67,37 +73,44 @@ public class Centre {
 				}*/
 				//Si no funciona, utiliza lo de alto
 				if(hores[i].add_peticio(p)){
-				 hores[0].remove_peticio(p);
-				 ep = true;
-				 if(i==ini && hores[i].getCapR()==0)ini++;
+					puestas.add(p);
+					ep = true;
+					if(i==ini && hores[i].getCapR()==0)ini++;
 				}
 			}
 
 		}
-		
+		for(it = puestas.iterator(); it.hasNext();){
+			p = it.next();
+			hores[0].remove_peticio(p);
+		}
 	}
 
 	public Iterator<Peticio> h_setup(){
 		return hores[0].get_peticiones().iterator();
 	}
-	
+
 	public int[] h_step(Peticio p, int[] cl, int h){
 		//Esperant el aviò estic surtint bastant boig per escriure aquest metod...
-		int i, j;
-		boolean r, r2;
+		int i, j, num;
+		boolean r, r2, b;
 		if(hores[h].getCap()==0){
 			r = true;
-			for(i = 0;r;i++){
-				if(Constants.cap[i]>p.getCan() && cl[i]>0){
+			for(i = 0;i<Constants.cap.length && r;i++){
+				if(Constants.cap[i]>=p.getCan() && cl[i]>0){
 					r = false;
 					cl[i]--;
 					hores[h].setCap(Constants.cap[i]);
 					if(!hores[h].add_peticio(p))System.out.println("Ostres! Tenim un problema!");
+					else entregades.add(p); 
 				}
 			}
 		}
 		else if(!hores[h].add_peticio(p)){
-			if(hores[h].getCap()!=Constants.cap[cl.length-1]){
+			num = hores[h].getCap();
+			b = false;
+			for(i = cl.length-1; i>0; i--)if(num<Constants.cap[i] && cl[i]>0)b = true;	                                     
+			if(b){
 				r = true;
 				r2 = true;
 				for(i = 1;r && i < cl.length;i++){	
@@ -112,15 +125,31 @@ public class Centre {
 						}	
 						hores[h].setCap(Constants.cap[i]);
 						if(!hores[h].add_peticio(p))System.out.println("Ostres! Tenim un problema!");
+						else entregades.add(p);
 					}
 				}
 			}
 			else{
-				if(h == 1)this.h_step(p, cl, p.getH()-Constants.h_min+1+1);
-				else if(h <= p.getH()-Constants.h_min+1)this.h_step(p, cl, h-1);
-				else if(h != Constants.ht)this.h_step(p, cl, h+1);
+				
+//				System.out.println("Sono qui, centre n° " + n + " - " + p.toString());
+				if(h == 1){
+					if(p.getH()!=17){
+//						System.out.println(h + " = " + 1 + " ");
+						this.h_step(p, cl, p.getH()-Constants.h_min+1+1);
+					}
+				}
+				else if(h <= p.getH()-Constants.h_min+1){
+					num = p.getH()-Constants.h_min+1;
+//					System.out.println(h + " <= " + num + " ");
+					this.h_step(p, cl, h-1);
+				}
+				else if(h != Constants.ht){
+//					System.out.println(h + "!=" + Constants.ht + " ");
+					this.h_step(p, cl, h+1);
+				}
 			}
 		}
+		else entregades.add(p);
 		return cl;
 	}
 	
@@ -129,7 +158,7 @@ public class Centre {
 		boolean be;
 		be = hores[h2].add_peticio(p);
 		if(be)hores[h1].remove_peticio(p);
-//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
+		//		return hores[h1].getBenefici(h1) + hores[h2].getBenefici(h2) - ba;
 		return be;
 	}
 
@@ -141,7 +170,7 @@ public class Centre {
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-			
+
 			if(hores[p.getH()-Constants.h_min+1].add_peticio(p)){
 				noass.remove(p);
 				hores[0].remove_peticio(p);
@@ -178,12 +207,20 @@ public class Centre {
 	public String toString()
 	{
 		String s = "";
-		
+
 		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
 			s = s.concat(hores[i].toString());
 		}
-		
+
 		return s;
+	}
+
+	public void neteja() {
+		Peticio p;
+		for(Iterator<Peticio> it = entregades.iterator(); it.hasNext();){
+			p = it.next();
+			hores[0].remove_peticio(p);		
+		}
 	}
 }

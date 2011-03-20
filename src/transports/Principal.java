@@ -1,95 +1,168 @@
 package transports;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
+
+import aima.search.framework.*;
+import aima.search.informed.*;
+
 
 public class Principal {
 
 	static int nbPeticions ;
 	static int[] capTransports = new int[Constants.cap.length];
 	static float[] probaPesos = new float[Constants.cant.length];
-	static float[] probaHoras = new float[Constants.ht];
+	static float[] probaHores = new float[Constants.ht];
 	static char estrategiaInicial;
-
-	static Estat e ;
-
+	static String algorisme;
+	static String heuristic;
 
 	public static void main(String[] args)
 	{
-		// Generando las constantes
+		// Genera las constantes
 		new Constants();
 
-		// Fichero de valores (test1.txt por defecto)
+		// Llegeix el fitxer de valors (test1 per defecte)
 		String file = "tests/test1.txt";
 		if(args.length != 0) file = args[0];
-
-		// Recupera los valores del fichero
 		try{
 			readFile(file);
-		} catch(FileNotFoundException e) {
-			System.out.println("Error : Fichero de test " + file + " no encontrado.");
+		} catch(FileNotFoundException fnf) {
+			System.out.println("Error en l'arxiu de prova " + file + " : Arxiu no trobat.");
+			System.exit(1);
+		} catch(InputMismatchException im) {
+			System.out.println("Error en l'arxiu de prova " + file + " : Format no vàlid.");
+			System.exit(1);			
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("Error : Encoding no valid.");
 			System.exit(1);
 		}
 
-		// Generando el problema
-		e = generadorProblema();
-		
-
-		// Generando el estado inicial
+		// Genera el estat inicial amb l'estratègia desitjada
+		Estat e = generadorProblema();
 		e.estat_inicial(estrategiaInicial);
-		System.out.println(e);
+		// Resolució del problema
+/*		try {
+			Problem problem = null;
 
+			if(algorisme.equals("hc"))
+			{
+				// Algorisme Hill Climbing
+				if (heuristic.equals("gan"))
+				{
+					// Heuristic 1
+					problem = new Problem(e,
+							new Successor_HC(),
+							new Goal_Test(),
+							new Heuristica_Ganancia());
+				} else if (heuristic.equals("ret")) {
+					// Heuristic 2
+					problem = new Problem(e,
+							new Successor_HC(),
+							new Goal_Test(),
+							new Heuristica_Retard());
+				} else {
+					System.out.println("Error en l'arxiu de prova " + file + " : Nom d'heurística incorrecta.");
+					System.exit(1);				
+				}
+				
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(problem, search);
+				printActions(agent.getActions());
+				System.out.println("Search Outcome=" + search.getOutcome());
+				System.out.println("Final State=\n" + search.getLastSearchState());
+				printInstrumentation(agent.getInstrumentation());
+				
+			} else if (algorisme.equals("sa"))
+			{
+				// Algorisme Simulated Annealing
+				if (heuristic.equals("gan"))
+				{
+					// Heuristic 1
+					//problem = new Problem(e,
+					//		new Successor_SA(),
+					//		new Goal_Test(),
+					//		new Heuristica_Ganancia());
+				} else if (heuristic.equals("ret")) {
+					// Heuristic 2
+					//problem = new Problem(e,
+					//		new Successor_SA(),
+					//		new Goal_Test(),
+					//		new Heuristica_Retard());
+				} else {
+					System.out.println("Error en l'arxiu de prova " + file + " : Nom d'heurística incorrecta.");
+					System.exit(1);				
+				}
+				SimulatedAnnealingSearch search = new SimulatedAnnealingSearch();
+			ù	SearchAgent agent = new SearchAgent(problem, search);
+				printActions(agent.getActions());
+				System.out.println("Search Outcome=" + search.getOutcome());
+				System.out.println("Final State=\n" + search.getLastSearchState());
+				printInstrumentation(agent.getInstrumentation());
+			} else {
+				System.out.println("Error en l'arxiu de prova " + file + " : Nom d'algorisme incorrecta.");
+				System.exit(1);				
+			}
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+		System.out.println(e);
+*/
 	}
 
-	private static void readFile(String file) throws FileNotFoundException
+	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
 	{
-		Scanner sc = new Scanner(new FileReader(file));
+		Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
-		// Lee el numero de peticiones
+		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
 
-		// Lee y comprueba el numero de transportes para cada capacidad
+		// Llegeix y comproba el nombre de transports per cada ciutat
 		for(int i = 0 ; i < capTransports.length ; i++) capTransports[i] = sc.nextInt();
 		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
 		{
-			System.out.println("Error : La suma de los transportes no es igual a 60.");
+			System.out.println("Error en l'arxiu de prova " + file + " : La suma dels transports no és igual a 60.");
 			System.exit(1);
 		}
 
-		// Lee y comprueba la distribucio de probabilidad de los pesos de las entregas
+		// Llegeix y comproba la distribució de probabilitat dels pesos de las entregas
 		for(int i = 0 ; i < probaPesos.length ; i++) probaPesos[i] = sc.nextFloat();
 		if(probaPesos[0] + probaPesos[1] + probaPesos[2] + probaPesos[3] + probaPesos[4] != 1.0)
 		{
-			System.out.println("Error : La suma de las probabilidades de pesos es igual a " + 
+			System.out.println("Error en l'arxiu de prova " + file + " : La suma de las probabilitats de pesos és igual a " + 
 					(probaPesos[0] + probaPesos[1] + probaPesos[2] + probaPesos[3] + probaPesos[4]) +
 			".");
 			System.exit(1);
 		}
 
-		// Lee y comprueba la distribucio de probabilidad de las horas de entrega
-		for(int i = 0 ; i < probaHoras.length ; i++) probaHoras[i] = sc.nextFloat();
-		if(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
-				probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9] != 1)
+		// Llegeix y comproba la distribució de probabilitat de las hores d'entrega
+		for(int i = 0 ; i < probaHores.length ; i++) probaHores[i] = sc.nextFloat();
+		if(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
+				probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9] != 1)
 		{
-			System.out.println("Error : La suma de las probabilidades de horas es igual a " + 
-					(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
-							probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9]) +
+			System.out.println("Error en l'arxiu de prova " + file + " : La suma de las probabilitats de las hores és igual a " + 
+					(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
+							probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9]) +
 			".");
 			// System.exit(1);
 			// WTF ?!?!?!?! 0,1 + 0,1 + ... + 0,1 = 1,0000001 !!!!!!!!
 		}
-		
-		// Lee la estrategia de generacion del estado inicial
-		String eI = sc.next();
-		estrategiaInicial = eI.charAt(0);
 
-		// TODO : Comment that
+		// Llegeix l'estratègia de generació del estat inicial, l'algorisme i l'heuristic desitjats
+		String eI = sc.next();
+		estrategiaInicial = eI.charAt(0);		
+		algorisme = sc.next();
+		heuristic = sc.next();
+
+		// TODO : Commentar
 		System.out.println(nbPeticions + ", " +
 				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
-				probaHoras[0] + ", " + probaHoras[1] + ", " + probaHoras[2] + ", " + probaHoras[3] + ", " +	probaHoras[4] + ", " +
-				probaHoras[5] + ", " + probaHoras[6] + ", " + probaHoras[7] + ", " + probaHoras[8] + ", " + probaHoras[9] + ", " +
+				probaHores[0] + ", " + probaHores[1] + ", " + probaHores[2] + ", " + probaHores[3] + ", " +	probaHores[4] + ", " +
+				probaHores[5] + ", " + probaHores[6] + ", " + probaHores[7] + ", " + probaHores[8] + ", " + probaHores[9] + ", " +
 				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ", " +
-				estrategiaInicial + ".");
+				estrategiaInicial + ", " + algorisme + ", " + heuristic + ".");
 	}
 
 
@@ -102,17 +175,17 @@ public class Principal {
 
 		for(int i = 0 ; i < nbPeticions ; i++)
 		{
-			// Generando una hora de entrega conforme a la distribucion de probabilidad
+			// Genera una hora d'entrega en conformitat amb la distribució de probabilitat
 			float probaH = (float) Math.random();			
 			int horaEntrega = 0;
-			float totalProbaH = probaHoras[horaEntrega];
+			float totalProbaH = probaHores[horaEntrega];
 			while(probaH > totalProbaH)
 			{
 				horaEntrega++;
-				totalProbaH += probaHoras[horaEntrega];
+				totalProbaH += probaHores[horaEntrega];
 			}
 
-			// Generando el peso de la entrega conforme a la distribucion de probabilidad
+			// Genera el pes de l'entrega en conformitat amb la distribució de probabilitat
 			float probaP = (float) Math.random();			
 			int peso = 0;
 			float totalProbaP = probaPesos[peso];
@@ -122,16 +195,33 @@ public class Principal {
 				totalProbaP += probaPesos[peso];
 			}
 
-			// Si un centro esta "lleno", pasamos al siguiente
+			// Si un centre està ple, es passa al següent
 			if( i > Math.ceil((float)(numCentre+1)*(float)nbPeticions/(float)Constants.nc)) numCentre++;
 
-			// Creacion de la peticion
+			// Creació de la petició
 			Peticio p = new Peticio(i, Constants.cant[peso], horaEntrega + Constants.h_min);
 
-			// Asignacion de la peticion al centro, como "no entregada"
+			// Asignació de la petició al centre, com "no entregada"
 			inicial.initPeticio(numCentre, p);
 		}
 
 		return inicial ;
+	}
+	
+	private static void printInstrumentation(Properties properties) {
+		Iterator<?> keys = properties.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			String property = properties.getProperty(key);
+			System.out.println(key + " : " + property);
+		}
+
+	}
+
+	private static void printActions(List<?> actions) {
+		for (int i = 0; i < actions.size(); i++) {
+			String action = (String) actions.get(i);
+			System.out.println(action);
+		}
 	}
 }
