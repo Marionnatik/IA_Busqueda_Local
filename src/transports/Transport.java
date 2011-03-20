@@ -19,6 +19,10 @@ public class Transport {
 		capacidad_residual = 0;
 		capacidad_ocupada = 0;
 		hora = h;
+		if(h==0){
+			capacidad = Integer.MAX_VALUE;
+			capacidad_residual = Integer.MAX_VALUE;
+		}
 	}
 
 	public int getCap(){ return capacidad; }	
@@ -123,5 +127,17 @@ public class Transport {
 			s = s.concat("    " + peti.get(i).toString() + "\n");
 		}
 		return s;
+	}
+
+	public void capfix() {
+		Iterator<Peticio> it;
+		Peticio p;
+		int c = 0;
+		for(it = peti.iterator(); it.hasNext();){
+			p = it.next();
+			c += p.getCan();
+		}
+		capacidad_ocupada = c;
+		capacidad_residual = capacidad - c;
 	}
 }

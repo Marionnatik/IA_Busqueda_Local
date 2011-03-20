@@ -33,7 +33,6 @@ public class Estat {
 				  tipord = 'a';
 				  this.mes_aviat_posible();
 				  System.out.println(this.toString());
-				  
 			break;
 			case 'b': 
 			  	tipord = 'b';
@@ -136,7 +135,7 @@ public class Estat {
 		int[] cd;
 		cd = distriCap.clone();
 		for(i=0; i<Constants.nc;i++){
-			for(j=0;j<Constants.ht;j++){
+			for(j=0;j<Constants.ht+1;j++){
 					r = (int) (Constants.cap.length*Math.random());
 					if(cd[r]==0)do r = r++ % Constants.cap.length; while(cd[r]>0);
 					centres[i].set_camion(j, Constants.cap[r]);
@@ -153,14 +152,14 @@ public class Estat {
 
     private void camions_greedy(){
 		int i, j, k, cont;
-		cont = distriCap[0];
-		  k = 0;
+		k = Constants.cap.length-1;
+		cont = distriCap[k];
 		  //Més aviat pondrem els camions amb més capacitat
 		  for(j = 1 ; j< Constants.ht+1; j++){
 			 for(i = 0 ; i < Constants.nc ; i++){
 				if(cont==0){
 				  do{
-					k++;
+					k--;
 				    cont = distriCap[k];
 				  }while(cont==0);
 				}

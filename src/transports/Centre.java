@@ -170,28 +170,31 @@ public class Centre {
 		LinkedList<Peticio> noass = hores[0].get_peticiones();
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
-
 			if(hores[p.getH()-Constants.h_min+1].add_peticio(p)){
-				noass.remove(p);
-				hores[0].remove_peticio(p);
+				entregades.add(p);
 			}
+		}
+		for(Iterator <Peticio>it2 = entregades.iterator(); it2.hasNext();){
+			p = it2.next();
+			noass.remove(p);
 		}
 		for(Iterator<Peticio> it = noass.iterator(); it.hasNext();){
 			p = it.next();
 			f = true;
 			for(i = p.getH()-Constants.h_min; i>0 && f; i--){
 				if(hores[i].add_peticio(p)){
-					hores[0].remove_peticio(p);
+					entregades.add(p);
 					f = false;
 				}
 			}
 			for(i = p.getH()+Constants.h_min+1+1; i<Constants.ht && f; i++){
 				if(hores[i].add_peticio(p)){
-					hores[0].remove_peticio(p);
+					entregades.add(p);
 					f = false;
 				}
 			}
 		}
+		neteja();
 	}
 
 	public int getRetard() {
@@ -222,5 +225,7 @@ public class Centre {
 			p = it.next();
 			hores[0].remove_peticio(p);		
 		}
+		hores[0].capfix();
+		entregades.clear();
 	}
 }
