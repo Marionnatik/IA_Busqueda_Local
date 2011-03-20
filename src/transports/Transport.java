@@ -126,4 +126,16 @@ public class Transport {
 		}
 		return s;
 	}
+
+	public void capfix() {
+		Iterator<Peticio> it;
+		Peticio p;
+		int c = 0;
+		for(it = peti.iterator(); it.hasNext();){
+			p = it.next();
+			c += p.getCan();
+		}
+		capacidad_ocupada = c;
+		capacidad_residual = capacidad - c;
+	}
 }

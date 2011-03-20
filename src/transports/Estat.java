@@ -44,6 +44,7 @@ public class Estat {
 			this.first_fit();
 			break;
 		case 'm':
+			//no té gaire sentit
 			tipord = 'c';
 			this.mes_aviat_possible();
 			break;
@@ -54,6 +55,7 @@ public class Estat {
 			this.buit();
 			break;
 		case 'w':
+			//no tiene mucho sentido
 			tipord = 'd';
 			this.per_hora();
 			break;
@@ -148,16 +150,16 @@ public class Estat {
 
 	private void camions_greedy(){
 		int i, j, k, cont;
-		cont = distriCap[0];
-		k = 0;
-		//Més aviat pondrem els camions amb més capacitat
-		for(j = 1 ; j< Constants.ht+1; j++){
-			for(i = 0 ; i < Constants.nc ; i++){
+		k = Constants.cap.length-1;
+		cont = distriCap[k];
+		  //Més aviat pondrem els camions amb més capacitat
+		  for(j = 1 ; j< Constants.ht+1; j++){
+			 for(i = 0 ; i < Constants.nc ; i++){
 				if(cont==0){
-					do{
-						k++;
-						cont = distriCap[k];
-					}while(cont==0);
+				  do{
+					k--;
+				    cont = distriCap[k];
+				  }while(cont==0);
 				}
 				centres[i].set_camion(j, Constants.cap[k]);
 				cont--;
@@ -203,7 +205,7 @@ public class Estat {
 	public String toString()
 	{
 		String s = "";
-
+		s = s.concat("Retard: " + this.getRetards() + ", benefici: " + this.getBenefici() +"\n");
 		for(int i = 0 ; i < Constants.nc ; i++)
 		{
 			s = s.concat("Centre no." + (i+1) + " :\n");
