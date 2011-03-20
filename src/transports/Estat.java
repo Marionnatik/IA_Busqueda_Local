@@ -44,6 +44,7 @@ public class Estat {
 			  	System.out.println(this.toString());
 			break;
 			case 'm':
+				//no té gaire sentit
 				tipord = 'c';
 				this.mes_aviat_posible();
 			  	System.out.println(this.toString());
@@ -57,6 +58,7 @@ public class Estat {
 			  	System.out.println(this.toString());
 			break;
 			case 'w':
+				//no tiene mucho sentido
 				tipord = 'd';
 				this.perhora();
 			  	System.out.println(this.toString());
@@ -207,7 +209,7 @@ public class Estat {
 	public String toString()
 	{
 		String s = "";
-		
+		s = s.concat("Retard: " + this.getRetards() + ", benefici: " + this.getBenefici() +"\n");
 		for(int i = 0 ; i < Constants.nc ; i++)
 		{
 			s = s.concat("Centre no." + (i+1) + " :\n");

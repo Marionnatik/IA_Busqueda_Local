@@ -19,10 +19,6 @@ public class Transport {
 		capacidad_residual = 0;
 		capacidad_ocupada = 0;
 		hora = h;
-		if(h==0){
-			capacidad = Integer.MAX_VALUE;
-			capacidad_residual = Integer.MAX_VALUE;
-		}
 	}
 
 	public int getCap(){ return capacidad; }	
