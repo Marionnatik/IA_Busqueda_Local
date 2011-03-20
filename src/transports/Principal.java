@@ -22,7 +22,7 @@ public class Principal {
 		new Constants();
 
 		// Llegeix el fitxer de valors (test1 per defecte)
-		String file = "tests/test2.txt";
+		String file = "tests/test1.txt";
 		if(args.length != 0) file = args[0];
 		try{
 			readFile(file);
@@ -114,6 +114,7 @@ public class Principal {
 	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
 	{
 		Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		sc.useLocale(Locale.US);
 
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
