@@ -22,6 +22,12 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
 
 	}
+	
+	public Estat(Estat e)
+	{
+		distriCap = e.distriCap ;
+		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(e.centres[i]);
+	}
 
 	public void initPeticio(int numCentre, Peticio p)
 	{
@@ -228,7 +234,7 @@ public class Estat {
 		out.println(this);
 		out.println(s2);
 		out.close();
-		System.out.println("Estat " + s1 + " escribit en " + file);
+		System.out.println(s1 + " escribit en " + file);
 	}
 	
 	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
