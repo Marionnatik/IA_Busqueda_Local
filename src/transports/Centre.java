@@ -196,7 +196,7 @@ public class Centre {
 
 	public int getRetard() {
 		int r = 0;
-		for(int i = 1 ; i < Constants.ht+1 ; i++)
+		for(int i = 0 ; i < Constants.ht+1 ; i++)
 		{
 			r += hores[i].getRetards();
 		}
