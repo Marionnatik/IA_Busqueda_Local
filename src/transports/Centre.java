@@ -225,4 +225,8 @@ public class Centre {
 		hores[0].capfix();
 		entregades.clear();
 	}
+
+	public int getCapNa() {
+		return hores[0].getCapO();
+	}
 }

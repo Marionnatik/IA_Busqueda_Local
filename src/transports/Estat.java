@@ -149,9 +149,16 @@ public class Estat {
 	}
 
 	private void camions_greedy(){
-		int i, j, k, cont;
+		int i, j, k, cont, v, tot[], cam[];
+		tot = new int[Constants.nc];
+		cam = new int[Constants.nc];
 		k = Constants.cap.length-1;
 		cont = distriCap[k];
+		v = Constants.ht * Constants.cap[0];
+		for(i = 0 ; i < Constants.nc ; i++){
+			tot[i] = centres[i].getCapNa();
+			cam[i] = v;
+		}
 		  //Més aviat pondrem els camions amb més capacitat
 		  for(j = 1 ; j< Constants.ht+1; j++){
 			 for(i = 0 ; i < Constants.nc ; i++){
@@ -161,8 +168,27 @@ public class Estat {
 				    cont = distriCap[k];
 				  }while(cont==0);
 				}
-				centres[i].set_camion(j, Constants.cap[k]);
-				cont--;
+				if(cam[i]<tot[i]){
+					centres[i].set_camion(j, Constants.cap[k]);
+					cont--;
+					cam[i] += Constants.cap[k]-Constants.cap[0];
+				}
+				else{
+					if(k > 0 && distriCap[0]>0){
+						centres[i].set_camion(j, Constants.cap[0]);
+						distriCap[0]--;
+					}
+					else if(k>1 && distriCap[1]>0){
+						centres[i].set_camion(j, Constants.cap[1]);
+						distriCap[1]--;
+						cam[i] += Constants.cap[1]-Constants.cap[0];
+					}
+						else{
+							centres[i].set_camion(j, Constants.cap[k]);
+							cont--;
+							cam[i] += Constants.cap[k]-Constants.cap[0];
+						}
+				}
 			}
 		}
 	}
