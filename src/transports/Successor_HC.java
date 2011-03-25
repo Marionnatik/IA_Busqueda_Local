@@ -63,7 +63,7 @@ public class Successor_HC implements SuccessorFunction {
 								capinsuf = estat.getCap(centre, hora2);								
 								if(capinsuf < Constants.cap[Constants.cap.length-1])
 								{
-									if(estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
+									if(hora1 != 0 && estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
 									{
 										// Se pueden intercambiar las capacidades del estado de origen y de destinacion
 										a = false;
