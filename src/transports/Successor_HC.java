@@ -20,7 +20,6 @@ public class Successor_HC implements SuccessorFunction {
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		String s;
 		Estat estat = (Estat) state ;
-		System.out.println("Benefici del estat : " + estat.getBenefici());
 		
 		ArrayList<Peticio> _p = new ArrayList<Peticio>();
 		ArrayList<Integer> _c = new ArrayList<Integer>();
@@ -161,6 +160,7 @@ public class Successor_HC implements SuccessorFunction {
 			}
 			retVal.add(new Successor(s, successor));
 		}
+		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
 }
