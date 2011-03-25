@@ -16,9 +16,9 @@ public class Successor_HC implements SuccessorFunction {
 		int i2, j3, capinsuf ;
 		boolean a ;
 		Iterator<Peticio> it ;
-
+		Peticio peti;
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
-
+		String s;
 		Estat estat = (Estat) state ;
 		System.out.println("Benefici del estat : " + estat.getBenefici());
 		
@@ -144,23 +144,22 @@ public class Successor_HC implements SuccessorFunction {
 				}
 			}
 		}
-		for(int i = 0 ; i < _p.size()/10 ; i++)
+		for(int i = 0 ; i < _p.size(); i++)
 		{
 			Estat successor = new Estat(estat) ;
-			
-			successor.desplazar(_p.get(i), _c.get(i), _hOri.get(i), _hDest.get(i));
-			String S = new String("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
-			
-			if(_xcap.get(i))
+			if(!_xcap.get(i))
 			{
+				successor.desplazar(_p.get(i), _c.get(i), _hOri.get(i), _hDest.get(i));
+				s = new String("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
+			}
+			else{
+				peti = successor.removePeticio(_p.get(i), _c.get(i), _hOri.get(i));
 				successor.canvi_camion(_c.get(i), _hDest.get(i), estat.getCap(_xcen.get(i), _xhor.get(i)), _xcen.get(i), _xhor.get(i), estat.getCap(_c.get(i), _hDest.get(i)));				
-				S = S.concat("\nCapacitats intercanviades entre l'hora " + _hDest.get(i) + " del centre " + _c.get(i) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + _xhor.get(i) + " del centre " + _xcen.get(i) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
+				s = new String("\nCapacitats intercanviades entre l'hora " + _hDest.get(i) + " del centre " + _c.get(i) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + _xhor.get(i) + " del centre " + _xcen.get(i) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
+				a = successor.addPeticio(peti, _c.get(i), _hDest.get(i));
+				s = s.concat("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
 			}
-			retVal.add(new Successor(S, successor));
-			if(_c.get(i) == 3)
-			{
-				
-			}
+			retVal.add(new Successor(s, successor));
 		}
 		return retVal;
 	}

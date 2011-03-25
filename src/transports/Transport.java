@@ -82,13 +82,14 @@ public class Transport {
 		return true;
 	}
 	
-	public void remove_peticio(Peticio p){
+	public Peticio remove_peticio(Peticio p){
 		int cnp;
 		cnp = p.getCan();
 		if(peti.remove(p)){
 			capacidad_ocupada -= cnp;
 			capacidad_residual += cnp;
 		}	
+		return p;
 	}
 	/*	
 	public Peticio get_peticio(int i){

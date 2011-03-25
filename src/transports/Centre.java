@@ -235,4 +235,13 @@ public class Centre {
 	public int getCapNa() {
 		return hores[0].getCapO();
 	}
+
+	public Peticio removePeticio(Peticio peticio, Integer h) {
+		return hores[h].remove_peticio(peticio);
+	}
+
+	public boolean addPeticio(Peticio peti, Integer h) {
+		// TODO Auto-generated method stub
+		return hores[h].add_peticio(peti);
+	}
 }
