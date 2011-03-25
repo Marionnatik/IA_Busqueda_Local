@@ -297,4 +297,14 @@ public class Estat {
 		}
 		return false;
 	}
+
+	public Peticio removePeticio(Peticio peticio, Integer c,
+			Integer h) {
+		return centres[c.intValue()].removePeticio(peticio, h);
+	}
+
+	public boolean addPeticio(Peticio peti, Integer c, Integer h) {
+		// TODO Auto-generated method stub
+		return centres[c.intValue()].addPeticio(peti, h);
+	}
 }
