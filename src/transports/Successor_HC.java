@@ -20,7 +20,6 @@ public class Successor_HC implements SuccessorFunction {
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 
 		Estat estat = (Estat) state ;
-		System.out.println("Benefici del estat : " + estat.getBenefici());
 		
 		ArrayList<Peticio> _p = new ArrayList<Peticio>();
 		ArrayList<Integer> _c = new ArrayList<Integer>();
@@ -144,24 +143,22 @@ public class Successor_HC implements SuccessorFunction {
 				}
 			}
 		}
-		for(int i = 0 ; i < _p.size()/10 ; i++)
+		
+		for(int i = 0 ; i < _p.size() ; i++)
 		{
 			Estat successor = new Estat(estat) ;
 			
 			successor.desplazar(_p.get(i), _c.get(i), _hOri.get(i), _hDest.get(i));
-			String S = new String("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
+			String S = new String("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + (_hOri.get(i)+7) + "h a " + (_hDest.get(i)+7) + "h.");
 			
 			if(_xcap.get(i))
 			{
 				successor.canvi_camion(_c.get(i), _hDest.get(i), estat.getCap(_xcen.get(i), _xhor.get(i)), _xcen.get(i), _xhor.get(i), estat.getCap(_c.get(i), _hDest.get(i)));				
-				S = S.concat("\nCapacitats intercanviades entre l'hora " + _hDest.get(i) + " del centre " + _c.get(i) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + _xhor.get(i) + " del centre " + _xcen.get(i) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
+				S = S.concat("\nCapacitats intercanviades entre l'hora " + (_hDest.get(i)+7) + " del centre " + _c.get(i) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + (_xhor.get(i)+7) + " del centre " + _xcen.get(i) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
 			}
 			retVal.add(new Successor(S, successor));
-			if(_c.get(i) == 3)
-			{
-				
-			}
 		}
+		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
 }
