@@ -77,7 +77,7 @@ public class Principal {
 				SearchAgent agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				System.out.println("Search Outcome=" + search.getOutcome());
-				System.out.println("Final State=\n" + search.getLastSearchState());
+				e = (Estat) search.getLastSearchState();			
 				printInstrumentation(agent.getInstrumentation());
 
 			} else if (algorisme.equals("sa"))
@@ -104,7 +104,7 @@ public class Principal {
 				SearchAgent agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				System.out.println("Search Outcome=" + search.getOutcome());
-				System.out.println("Final State=\n" + search.getLastSearchState());
+				e = (Estat) search.getLastSearchState();			
 				printInstrumentation(agent.getInstrumentation());
 			} else {
 				System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'algorisme incorrecta.");
@@ -116,7 +116,7 @@ public class Principal {
 		}
 		
 		String s2 = "Benefici : " + e.getBenefici();
-		e.writeFile(file_out2, "ESTAT FINAL\n===================\n", s2);
+		e.writeFile(file_out2, "ESTAT FINAL", s2);
 	}
 
 	private static void readFile(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
@@ -165,12 +165,12 @@ public class Principal {
 		heuristic = sc.next();
 
 		// TODO : Commentar
-		System.out.println(nbPeticions + ", " +
-				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
-				probaHores[0] + ", " + probaHores[1] + ", " + probaHores[2] + ", " + probaHores[3] + ", " +	probaHores[4] + ", " +
-				probaHores[5] + ", " + probaHores[6] + ", " + probaHores[7] + ", " + probaHores[8] + ", " + probaHores[9] + ", " +
-				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ", " +
-				estrategiaInicial + ", " + algorisme + ", " + heuristic + ".");
+//		System.out.println(nbPeticions + ", " +
+//				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
+//				probaHores[0] + ", " + probaHores[1] + ", " + probaHores[2] + ", " + probaHores[3] + ", " +	probaHores[4] + ", " +
+//				probaHores[5] + ", " + probaHores[6] + ", " + probaHores[7] + ", " + probaHores[8] + ", " + probaHores[9] + ", " +
+//				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ", " +
+//				estrategiaInicial + ", " + algorisme + ", " + heuristic + ".");
 	}
 
 

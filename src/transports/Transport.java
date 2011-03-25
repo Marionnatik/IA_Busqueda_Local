@@ -20,6 +20,16 @@ public class Transport {
 		capacidad_ocupada = 0;
 		hora = h;
 	}
+	
+	public Transport(Transport t)
+	{
+		capacidad = t.capacidad;
+		peti = new LinkedList<Peticio>() ;
+		peti.addAll(t.peti);
+		capacidad_residual = t.capacidad_residual;
+		capacidad_ocupada = t.capacidad_ocupada;
+		hora = t.hora;
+	}
 
 	public int getCap(){ return capacidad; }	
 	public int getCapO(){ return capacidad_ocupada; }	
@@ -51,8 +61,8 @@ public class Transport {
 		else{
 			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
 				p = it.next();
-				if(p.getH()>=hora)b += p.getPre();
-				else b += p.getPre() * (hora-p.getH())/5;
+				if(p.getH()<=hora)b += p.getPre();
+				else b += p.getPre() * (1-(p.getH()-hora)/5);
 			}
 		}
 		return b ;

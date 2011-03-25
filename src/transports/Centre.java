@@ -8,16 +8,22 @@ public class Centre {
 
 	private Transport[] hores = new Transport[Constants.ht+1];
 	private ArrayList<Peticio> entregades = new ArrayList<Peticio>();
-	private int n;
 
 	public Centre(int num)
 	{
 		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);
-		n = num;
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport(i+Constants.h_min-1) ;
+		}
+	}
+	
+	public Centre(Centre c)
+	{
+		for(int i = 0 ; i < Constants.ht+1 ; i++)
+		{
+			hores[i] = new Transport(c.hores[i]) ;
 		}
 	}
 
