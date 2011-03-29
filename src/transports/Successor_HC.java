@@ -149,15 +149,18 @@ public class Successor_HC implements SuccessorFunction {
 			if(!_xcap.get(i))
 			{
 				successor.desplazar(_p.get(i), _c.get(i), _hOri.get(i), _hDest.get(i));
-				s = new String("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
+				s = new String("Peticion " + _p.get(i).getID() + " del centro " + (_c.get(i)+1) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + (_hOri.get(i)+7) + "h a " + (_hDest.get(i)+7) + "h.");
 			}
 			else{
 				peti = successor.removePeticio(_p.get(i), _c.get(i), _hOri.get(i));
 				successor.canvi_camion(_c.get(i), _hDest.get(i), estat.getCap(_xcen.get(i), _xhor.get(i)), _xcen.get(i), _xhor.get(i), estat.getCap(_c.get(i), _hDest.get(i)));				
-				s = new String("\nCapacitats intercanviades entre l'hora " + _hDest.get(i) + " del centre " + _c.get(i) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + _xhor.get(i) + " del centre " + _xcen.get(i) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
+				s = new String("\nCapacitats intercanviades entre l'hora " + (_hDest.get(i)+7) + " del centre " + (_c.get(i)+1) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + (_xhor.get(i)+7) + " del centre " + (_xcen.get(i)+1) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
 				a = successor.addPeticio(peti, _c.get(i), _hDest.get(i));
-				s = s.concat("Peticion " + _p.get(i).getID() + " del centro " + _c.get(i) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + _hOri.get(i) + "h a " + _hDest.get(i) + "h.");
+				s = s.concat("Peticion " + _p.get(i).getID() + " del centro " + (_c.get(i)+1) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + (_hOri.get(i)+7) + "h a " + (_hDest.get(i)+7) + "h.");
 			}
+			int b1 = estat.getBenefici();
+			int b2 = successor.getBenefici();
+			s = s.concat(" El benefici passa de " + b1 + " a " + b2 + ".");
 			retVal.add(new Successor(s, successor));
 		}
 		System.out.println(retVal.size() + " successores generados.");
