@@ -27,34 +27,6 @@ public class Centre {
 		}
 	}
 
-	public int getBenefici()
-	{
-		return benef(false);
-	}
-
-	public int getBeneficiVerbose()
-	{
-		return benef(true);
-	}
-
-	private int benef(boolean verb)
-	{
-		int b;
-
-		if(verb)
-		{
-			b = hores[0].getBeneficiVerbose();
-			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBeneficiVerbose();
-		} else {
-			b = hores[0].getBenefici();
-			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBenefici();
-		}
-
-		if(verb) System.out.println("Benefici del centro : " + b);
-
-		return b ;
-	}
-
 	public Transport[] get_transports()
 	{
 		return hores; 
@@ -216,12 +188,37 @@ public class Centre {
 		neteja();
 	}
 
-	public int getRetard() {
-		int r = 0;
-		for(int i = 0 ; i < Constants.ht+1 ; i++)
+	// HEURISTICAS
+	// Ganancia
+	public int getBenefici(){ return benef(false); }
+	public int getBeneficiVerbose(){ return benef(true); }
+	private int benef(boolean verb)
+	{
+		int b;
+		if(verb)
 		{
-			r += hores[i].getRetards();
+			b = hores[0].getBeneficiVerbose();
+			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBeneficiVerbose();
+			System.out.println("Benefici del centre : " + b);
+		} else {
+			b = hores[0].getBenefici();
+			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBenefici();
 		}
+		return b ;
+	}
+
+	// Retard
+	public int getRetard(){ return retard(false); }	
+	public int getRetardVerbose(){ return retard(true); }	
+	private int retard(boolean verb)
+	{
+		int r = 0;
+		if(verb)
+		{
+			for(int i = 0 ; i < Constants.ht+1 ; i++) r += hores[i].getRetardVerbose();
+			System.out.println("Retard del centre : " + r);
+		}
+		else for(int i = 0 ; i < Constants.ht+1 ; i++) r += hores[i].getRetard();
 		return r;
 	}
 
