@@ -37,7 +37,7 @@ public class Successor_SA implements SuccessorFunction {
 			}while(hora1==hora2);
 			LinkedList<Peticio> pp = estat.getPeticions(centre, hora1);
 			// Per cada peticio
-			for(it = pp.iterator(); it.hasNext();)
+			for(it = pp.iterator(); it.hasNext() && a;)
 			{
 				Peticio p = it.next();
 				// Per cada hora diferent
@@ -70,7 +70,6 @@ public class Successor_SA implements SuccessorFunction {
 							_xhor.add(hora1);
 						}
 						else {
-							a = true;
 							i2 = centre;
 							for(j3 = hora2+1; j3<Constants.ht && a;j3++){
 								if(estat.getCap(centre, j3)>capinsuf && estat.getCapO(centre, j3)<=capinsuf){
@@ -154,6 +153,7 @@ public class Successor_SA implements SuccessorFunction {
 			int b2 = successor.getBenefici();
 			s = s.concat(" El benefici passa de " + b1 + " a " + b2 + ".");
 			retVal.add(new Successor(s, successor));
+			
 		}
 		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
