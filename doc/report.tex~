@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+\setlength{\hoffset}{-12mm}
+\setlength{\voffset}{-10mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{5mm}
+\setlength{\textheight}{256.2mm}
+\setlength{\textwidth}{184.2mm}
+\setlength{\marginparsep}{0mm}
+\setlength{\marginparwidth}{0mm}
+\setlength{\footskip}{5mm}
+\setlength{\marginparpush}{0mm}
+
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\pagestyle{myheadings}
+\markright{IA - Práctica de búsqueda local}
+
+\title{\Huge{Práctica de búsqueda local} \\
+\vspace{15mm}
+   \Large{Laboratorio de Inteligencia Artificial}}
+\author{Marion Not - Michael Boris Mandirola}
+\date{Primavera 2010-2011}
+
+\begin{document}
+\maketitle
+
+\newpage
+\section{First Section Title}
+En un primer momento hemos intentado generar estados diferentes con lógicas muy diferentes co
+n la idea de buscar nuestros estados iniciales entre un grupo más amplio y en particular elegir dos estados que tengan características muy diferentes. Es decir tiempo de generación de el estado inicial, complejidad de el algoritmo, posibilidades de evolución, calidad de la solución buscada.
+Estados iniciales
+A) Este estado divide los camiones de manera ecua entre los centres asignando los camiones con mas capacidad a los transportes mas tempranos. Las entregas están entregadas lo mas pronto posible: se hace una lista de peticiones pertinentes a un centro, se ordenan crecientemente por tiempo de entrega y disminuyendo por precio y se pasa toda la lista poniendo las peticiones en el transporte más pronto que tiene más tiempo libre.
+B) Este estado ordena las peticiones por precio y hora. Por cada petición, intenta entregarla en la hora pertinente con este algoritmo:
+Si no hay camión, se pone el camión disponible más pequeño y la petición, si hay camión y bastante capacidad libre también se pone la petición. Si hay camión de capacidad inferior a la capacidad máxima y hay disponibilidad de camiones más grandes, se asigna un camión mas grande en lugar de lo más pequeño y se pone la petición. Además, si no hay camiones libres más grandes intenta hacer lo mismo en las horas más tempranas hasta las 8. Si no tiene éxito, intenta hacerlo en las horas después hasta las 17.
+Después si hay oras sin camión, se asignan los camiones que se quedan libres.
+F) Los camiones se asignan como en el estado A. Sin ordinación se iteran todas las peticiones intentando ponerlas en su hora de pertinencia. Después, iterativamente por cada petición se intenta poner, las que se quedan no entregadas, en las horas más tempranas de la suya hasta las 8 y si no se tiene éxito, se intenta hacerlo en las horas después hasta las 17.
+R) Los camiones se asignan aleatoriamente, las peticiones como en el estado F.
+V) Los camiones se asignan como en el estado A. Las peticiones se quedan todas no entregadas.
+
+\end{document}
