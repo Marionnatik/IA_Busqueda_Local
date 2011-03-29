@@ -24,4 +24,4 @@ Linia 7 : Tipo de heuristica
 (String)
 Puede ser "gan" o "ret"
 
-IMPORTANTE : La separacion entre la parte entera y decimal puede ser una coma (,) o un punto (.), si sale un error "formato no valido", intentar cambia eso.
+IMPORTANTE : La separacion entre la parte entera y decimal puede ser una coma (,) o un punto (.), si sale un error "formato no valido", intenta cambiar eso.

@@ -12,94 +12,150 @@ public class Successor_SA implements SuccessorFunction {
 
 	@Override
 	public List getSuccessors(Object state) {
-		// TODO Auto-generated method stub
-		int i, i2, j, j2, h1, h2, j3, capinsuf, difcap;
-		boolean a = true, b1;
-		Iterator<Peticio>it, it2;
-		ArrayList retVal = new ArrayList();
-		Estat ne, estat = (Estat) state;
-		LinkedList<Peticio> pp, pp2;
-		Peticio p, p2;
+
+		int centre, hora1, hora2, i2, j3, capinsuf ;
+		boolean a ;
+		Iterator<Peticio> it ;
+		Peticio peti;
+		ArrayList<Successor> retVal = new ArrayList<Successor>();
+		String s;
+		Estat estat = (Estat) state ;
+
+		ArrayList<Peticio> _p = new ArrayList<Peticio>();
+		ArrayList<Integer> _c = new ArrayList<Integer>();
+		ArrayList<Integer> _hOri = new ArrayList<Integer>();
+		ArrayList<Integer> _hDest = new ArrayList<Integer>();
+		ArrayList<Boolean> _xcap = new ArrayList<Boolean>();
+		ArrayList<Integer> _xcen = new ArrayList<Integer>();
+		ArrayList<Integer> _xhor = new ArrayList<Integer>();
 		do{
-			i = (int) (Constants.nc * Math.random());
-			h1 = (int) ((Constants.ht+1)*Math.random());
+			centre = (int) (Constants.nc * Math.random());
+			hora1 = (int) ((Constants.ht+1)*Math.random());
+			a = true;
 			do{
-				h2 = (int)((Constants.ht+1)*Math.random());
-			}while(h1==h2);
-			pp = estat.getPeticions(i, h1);
-			for(it = pp.iterator(); it.hasNext();){
-				p = it.next();
-				ne = estat;       					
-				if(ne.desplazar(p, i, h1, h2)){
-					//puedo desplazar
-					//System.out.println(v);
-					String S = new String("Q:" + p.getCan() + " H:" + p.getH() + " de " + h1 + " fins " + h2 + "en" + i);
-					retVal.add(new Successor(S, ne));
+				hora2 = (int)((Constants.ht+1)*Math.random());
+			}while(hora1==hora2);
+			LinkedList<Peticio> pp = estat.getPeticions(centre, hora1);
+			// Per cada peticio
+			for(it = pp.iterator(); it.hasNext();)
+			{
+				Peticio p = it.next();
+				// Per cada hora diferent
+				if(estat.desplazamientoPosible(p, centre, hora2))
+				{
+					a = false;
+					_p.add(p);
+					_c.add(centre);
+					_hOri.add(hora1);
+					_hDest.add(hora2);
+					_xcap.add(false);
+					_xcen.add(0);
+					_xhor.add(0);
 				}
-				else{
-					//no puedo desplazar
-					capinsuf = ne.getCap(i, h2);
-					if(capinsuf<Constants.cap[Constants.cap.length-1]){
-						if(ne.getCap(i, h1)>capinsuf && ne.getCapO(i, h2)<=capinsuf){
+				else 
+				{
+					capinsuf = estat.getCap(centre, hora2);								
+					if(capinsuf < Constants.cap[Constants.cap.length-1])
+					{
+						if(hora1 != 0 && estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
+						{
+							// Se pueden intercambiar las capacidades del estado de origen y de destinacion
 							a = false;
-							ne.canvi_camion(i, h2, ne.getCap(i, h1), i, h1, capinsuf);
-							ne.desplazar(p, i, h1, h2);
-							i2 = i;
-							j3 = h1;
+							_p.add(p);
+							_c.add(centre);
+							_hOri.add(hora1);
+							_hDest.add(hora2);
+							_xcap.add(true);
+							_xcen.add(centre);
+							_xhor.add(hora1);
 						}
 						else {
 							a = true;
-							i2 = i;
-							for(j3 = h2+1; j3<Constants.ht && a;j3++){
-								if(ne.getCap(i, j3)>capinsuf && ne.getCapO(i, j3)<=capinsuf){
+							i2 = centre;
+							for(j3 = hora2+1; j3<Constants.ht && a;j3++){
+								if(estat.getCap(centre, j3)>capinsuf && estat.getCapO(centre, j3)<=capinsuf){
 									a = false;
-									ne.canvi_camion(i, h2, ne.getCap(i, j3), i, j3, capinsuf);
-									ne.desplazar(p, i, h1, h2);
+									_p.add(p);
+									_c.add(centre);
+									_hOri.add(hora1);
+									_hDest.add(hora2);
+									_xcap.add(true);
+									_xcen.add(centre);
+									_xhor.add(j3);
 								}
 							}
 							if(a){        								
 								for(;i2<Constants.nc && a;i2++){
 									for(j3 = 1; j3<Constants.ht && a;j3++){
-										if(ne.getCap(i2, j3)>capinsuf && ne.getCapO(i2, j3)<=capinsuf){
+										if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
 											a = false;
-											ne.canvi_camion(i, h2, ne.getCap(i2, j3), i2, j3, capinsuf);
-											ne.desplazar(p, i, h1, h2);
+											_p.add(p);
+											_c.add(centre);
+											_hOri.add(hora1);
+											_hDest.add(hora2);
+											_xcap.add(true);
+											_xcen.add(i2);
+											_xhor.add(j3);
 										}
 									}
 								}
 								if(a){
-									for(i2=0;i2<i && a;i2++){
-										for(j3 = 1; h1<Constants.ht && a;){
-											if(ne.getCap(i2, j3)>capinsuf && ne.getCapO(i2, j3)<=capinsuf){
+									for(i2=0;i2<centre && a;i2++){
+										for(j3 = 1; j3<Constants.ht && a; j3++){
+											if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
 												a = false;
-												ne.canvi_camion(i, h2, ne.getCap(i2, j3), i2, j3, capinsuf);
-												ne.desplazar(p, i, h1, h2);
+												_p.add(p);
+												_c.add(centre);
+												_hOri.add(hora1);
+												_hDest.add(hora2);
+												_xcap.add(true);
+												_xcen.add(i2);
+												_xhor.add(j3);
 											}
 										}
 									}
 									if(a){
-										for(j3 = 1; j3<h2 && a;j3++){
-											if(ne.getCap(i2, j3)>capinsuf && ne.getCapO(i2, j3)<=capinsuf){
+										for(j3 = 1; j3<hora2 && a;j3++){
+											if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
 												a = false;
-												ne.canvi_camion(i, h2, ne.getCap(i2, j3), i2, j3, capinsuf);
-												ne.desplazar(p, i, h1, h2);
+												_p.add(p);
+												_c.add(centre);
+												_hOri.add(hora1);
+												_hDest.add(hora2);
+												_xcap.add(true);
+												_xcen.add(i2);
+												_xhor.add(j3);
 											}
 										}
 									}
 								}
-							}
-							if(!a){
-								//System.out.println(v);
-								String S = new String("C:" + i + " Q:" + p.getCan() + " H:" + p.getH() + " de " + h1 + " fins " + h2 + " camion entre" + i + "-" + h2 + " e " + i2 + "-" + j3);
-								retVal.add(new Successor(S, ne));
 							}
 						}
 					}
 				}
 			}
-
 		}while(a);
+		for(int i = 0 ; i < _p.size(); i++)
+		{
+			Estat successor = new Estat(estat) ;
+			if(!_xcap.get(i))
+			{
+				successor.desplazar(_p.get(i), _c.get(i), _hOri.get(i), _hDest.get(i));
+				s = new String("Peticion " + _p.get(i).getID() + " del centro " + (_c.get(i)+1) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + (_hOri.get(i)+7) + "h a " + (_hDest.get(i)+7) + "h.");
+			}
+			else{
+				peti = successor.removePeticio(_p.get(i), _c.get(i), _hOri.get(i));
+				successor.canvi_camion(_c.get(i), _hDest.get(i), estat.getCap(_xcen.get(i), _xhor.get(i)), _xcen.get(i), _xhor.get(i), estat.getCap(_c.get(i), _hDest.get(i)));				
+				s = new String("\nCapacitats intercanviades entre l'hora " + (_hDest.get(i)+7) + " del centre " + (_c.get(i)+1) + " (" + estat.getCap(_c.get(i), _hDest.get(i)) + "kgs) i l'hora " + (_xhor.get(i)+7) + " del centre " + (_xcen.get(i)+1) + " (" + estat.getCap(_xcen.get(i), _xhor.get(i)) + "kgs).");
+				a = successor.addPeticio(peti, _c.get(i), _hDest.get(i));
+				s = s.concat("Peticion " + _p.get(i).getID() + " del centro " + (_c.get(i)+1) + " con hora de entrega : " + _p.get(i).getH() + "h desplazada de " + (_hOri.get(i)+7) + "h a " + (_hDest.get(i)+7) + "h.");
+			}
+			int b1 = estat.getBenefici();
+			int b2 = successor.getBenefici();
+			s = s.concat(" El benefici passa de " + b1 + " a " + b2 + ".");
+			retVal.add(new Successor(s, successor));
+		}
+		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
-
 }

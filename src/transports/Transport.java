@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Transport {
-
+public class Transport
+{
 	private LinkedList<Peticio> peti ;
 	private int capacidad ;
 	private int capacidad_ocupada;
@@ -20,7 +20,7 @@ public class Transport {
 		capacidad_ocupada = 0;
 		hora = h;
 	}
-	
+
 	public Transport(Transport t)
 	{
 		capacidad = t.capacidad;
@@ -37,33 +37,73 @@ public class Transport {
 	public int getHora(){ return hora; }
 
 	public void setHora(int h){ hora = h; }
-
-	public boolean setCap(int c){
-		if(capacidad_ocupada <= c){
-			capacidad = c;
-			capacidad_residual = c - capacidad_ocupada;
-			return true;
+	public boolean setCap(int c)
+	{
+		if( capacidad_ocupada <= c )
+		{
+			capacidad = c ;
+			capacidad_residual = c - capacidad_ocupada ;
+			return true ;
 		}
-		else return false;
+		else return false ;
 	}
 
-	public int getBenefici() {
+	
+	public int getBenefici()
+	{
+		return benef(false);
+	}
 
-		int b = 0 ;
+	public int getBeneficiVerbose()
+	{
+		return benef(true);		
+	}
+	
+	private int benef(boolean verb)
+	{
+		int b = 0;
 		Peticio p;
-		if(hora==0){
-			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
-				p = it.next();
-				b -= p.getPre() + (Constants.h_max-p.getH())/5;
-			}
 
-		}
-		else{
-			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
+		if( hora == 0 )
+		{
+			// No entregadas
+			if(verb) System.out.println("No entregadas : ");
+			
+			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			{
 				p = it.next();
-				if(p.getH()<=hora)b += p.getPre();
-				else b += p.getPre() * (1-(p.getH()-hora)/5);
+				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no fue entregada.");
+				
+				// Se resta el precio de la peticion mas unos 20% para cada hora de "retraso" hasta las 17
+				int sub = (int)(p.getPre() * (1 + 0.2 * (Constants.h_max - p.getH())));
+				if(verb) System.out.println("Precio substraido : " + sub);
+				b -= sub;
 			}
+			if(verb) System.out.println("Coste total no entregadas : " + b);
+		} else {
+			// Entregadas
+			if(verb) System.out.println(hora + "h : ");
+			
+			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			{
+				p = it.next();
+				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y fue entregada a las " + hora + ".");
+				
+				if( p.getH() >= hora )
+				{
+					// Entregada a tiempo : Se anade el precio de la peticion
+					if(verb) System.out.println("Entregada a tiempo, benefici : " + p.getPre());
+					b += p.getPre();
+				}
+				else
+				{
+					// No entregada a tiempo : Se anade el precio menos unos 20% para cada hora de retraso
+					int add = (int)(p.getPre() * (1 - 0.2 * (hora - p.getH())));
+					if(verb) System.out.println("Entregada con " + (hora - p.getH()) + "h de retraso, benefici : " + add);
+					b += add;
+				}
+			}
+			if(verb) System.out.println("Benefici total de la hora : " + b);
 		}
 		return b ;
 	}
@@ -71,7 +111,7 @@ public class Transport {
 	public void ordenar(){
 		Collections.sort(peti);
 	}
-	
+
 	public boolean add_peticio(Peticio p){
 		int cnp;
 		cnp = p.getCan();
@@ -81,7 +121,7 @@ public class Transport {
 		capacidad_residual -= cnp;
 		return true;
 	}
-	
+
 	public Peticio remove_peticio(Peticio p){
 		int cnp;
 		cnp = p.getCan();

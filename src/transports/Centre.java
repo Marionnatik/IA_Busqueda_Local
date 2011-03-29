@@ -18,7 +18,7 @@ public class Centre {
 			hores[i] = new Transport(i+Constants.h_min-1) ;
 		}
 	}
-	
+
 	public Centre(Centre c)
 	{
 		for(int i = 0 ; i < Constants.ht+1 ; i++)
@@ -29,12 +29,28 @@ public class Centre {
 
 	public int getBenefici()
 	{
+		return benef(false);
+	}
+
+	public int getBeneficiVerbose()
+	{
+		return benef(true);
+	}
+
+	private int benef(boolean verb)
+	{
 		int b;
-		b = hores[0].getBenefici();
-		for(int i = 1 ; i < Constants.ht+1 ; i++)
+
+		if(verb)
 		{
-			b += hores[i].getBenefici();
+			b = hores[0].getBeneficiVerbose();
+			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBeneficiVerbose();
+		} else {
+			b = hores[0].getBenefici();
+			for(int i = 1 ; i < Constants.ht+1 ; i++) b += hores[i].getBenefici();
 		}
+
+		if(verb) System.out.println("Benefici del centro : " + b);
 
 		return b ;
 	}
@@ -135,21 +151,21 @@ public class Centre {
 				}
 			}
 			else{
-				
-//				System.out.println("Sono qui, centre n° " + n + " - " + p.toString());
+
+				//				System.out.println("Sono qui, centre n° " + n + " - " + p.toString());
 				if(h == 1){
 					if(p.getH()!=17){
-//						System.out.println(h + " = " + 1 + " ");
+						//						System.out.println(h + " = " + 1 + " ");
 						this.h_step(p, cl, p.getH()-Constants.h_min+1+1);
 					}
 				}
 				else if(h <= p.getH()-Constants.h_min+1){
 					num = p.getH()-Constants.h_min+1;
-//					System.out.println(h + " <= " + num + " ");
+					//					System.out.println(h + " <= " + num + " ");
 					this.h_step(p, cl, h-1);
 				}
 				else if(h != Constants.ht){
-//					System.out.println(h + "!=" + Constants.ht + " ");
+					//					System.out.println(h + "!=" + Constants.ht + " ");
 					this.h_step(p, cl, h+1);
 				}
 			}
@@ -157,7 +173,7 @@ public class Centre {
 		else entregades.add(p);
 		return cl;
 	}
-	
+
 	public boolean desplazar_peticio(Peticio p, int h1, int h2){
 		boolean be;
 		be = hores[h2].add_peticio(p);

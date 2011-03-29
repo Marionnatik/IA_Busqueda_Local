@@ -22,7 +22,7 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
 
 	}
-	
+
 	public Estat(Estat e)
 	{
 		distriCap = e.distriCap ;
@@ -165,14 +165,14 @@ public class Estat {
 			tot[i] = centres[i].getCapNa();
 			cam[i] = v;
 		}
-		  //Més aviat pondrem els camions amb més capacitat
-		  for(j = 1 ; j< Constants.ht+1; j++){
-			 for(i = 0 ; i < Constants.nc ; i++){
+		//Més aviat pondrem els camions amb més capacitat
+		for(j = 1 ; j< Constants.ht+1; j++){
+			for(i = 0 ; i < Constants.nc ; i++){
 				if(cont==0){
-				  do{
-					k--;
-				    cont = distriCap[k];
-				  }while(cont==0);
+					do{
+						k--;
+						cont = distriCap[k];
+					}while(cont==0);
 				}
 				if(cam[i]<tot[i]){
 					centres[i].set_camion(j, Constants.cap[k]);
@@ -189,11 +189,11 @@ public class Estat {
 						distriCap[1]--;
 						cam[i] += Constants.cap[1]-Constants.cap[0];
 					}
-						else{
-							centres[i].set_camion(j, Constants.cap[k]);
-							cont--;
-							cam[i] += Constants.cap[k]-Constants.cap[0];
-						}
+					else{
+						centres[i].set_camion(j, Constants.cap[k]);
+						cont--;
+						cam[i] += Constants.cap[k]-Constants.cap[0];
+					}
 				}
 			}
 		}
@@ -210,9 +210,24 @@ public class Estat {
 
 	public int getBenefici()
 	{
+		return benef(false);
+	}
+
+	public int getBeneficiVerbose()
+	{
+		return benef(true);
+	}
+
+	private int benef(boolean verb)
+	{
 		int b = 0 ;
 
-		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getBenefici();
+		if(verb)
+		{
+			for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBeneficiVerbose();
+			System.out.println("Benefici total del estado : " + b);
+		}
+		else for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBenefici();
 
 		return b;
 	}
@@ -247,7 +262,7 @@ public class Estat {
 		return s;
 	}
 
-	
+
 	public void writeFile(String file, String s1, String s2)
 	{
 		PrintWriter out = null;
@@ -262,7 +277,7 @@ public class Estat {
 		out.close();
 		System.out.println(s1 + " escribit en " + file);
 	}
-	
+
 	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
 		return centres[c].get_transports()[h_dest].getCapR() >= p.getCan();
 	}
