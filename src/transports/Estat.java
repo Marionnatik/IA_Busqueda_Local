@@ -79,7 +79,7 @@ public class Estat {
 
 	private void per_hora() {
 		// TODO Auto-generated method stub
-		int i, i2, j, a, k;
+		int i, j, a, k;
 		boolean c, r[], tr;
 		Peticio p;
 		Transport ts[];
@@ -206,37 +206,34 @@ public class Estat {
 		}
 	}
 
-	public int getBenefici()
-	{
-		return benef(false);
-	}
-
-	public int getBeneficiVerbose()
-	{
-		return benef(true);
-	}
-
+	// HEURISTICAS
+	// Ganancia
+	public int getBenefici(){ return benef(false); }
+	public int getBeneficiVerbose(){ return benef(true); }
 	private int benef(boolean verb)
 	{
 		int b = 0 ;
-
 		if(verb)
 		{
 			for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBeneficiVerbose();
-			System.out.println("Benefici total del estado : " + b);
+			System.out.println("Benefici total del estat : " + b);
 		}
 		else for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBenefici();
-
 		return b;
 	}
 
-
-	public double getRetards() {
-		// TODO Auto-generated method stub
-		int b = 0 ;
-		double r;
-		for(int i = 0 ; i < Constants.nc ; i++)b += centres[i].getRetard();
-		r = (double)b;
+	// Retraso
+	public int getRetard(){ return retard(false); }	
+	public int getRetardVerbose(){ return retard(true); }	
+	private int retard(boolean verb)
+	{
+		int r = 0 ;
+		if(verb)
+		{
+			for(int i = 0 ; i < Constants.nc ; i++) r += centres[i].getRetardVerbose();
+			System.out.println("Retard total del estat : " + r);
+		}
+		else for(int i = 0 ; i < Constants.nc ; i++) r += centres[i].getRetard();
 		return r;	
 	}
 
@@ -250,7 +247,7 @@ public class Estat {
 	public String toString()
 	{
 		String s = "";
-		s = s.concat("Retard: " + this.getRetards() + ", benefici: " + this.getBenefici() +"\n");
+		s = s.concat("Retard: " + this.getRetard() + ", benefici: " + this.getBenefici() +"\n");
 		for(int i = 0 ; i < Constants.nc ; i++)
 		{
 			s = s.concat("Centre no." + (i+1) + " :\n");

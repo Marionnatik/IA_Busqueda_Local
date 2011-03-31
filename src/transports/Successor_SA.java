@@ -11,9 +11,10 @@ import aima.search.framework.SuccessorFunction;
 public class Successor_SA implements SuccessorFunction {
 
 	@Override
-	public List getSuccessors(Object state) {
+	public List<Successor> getSuccessors(Object state) {
 
-		int centre, hora1, hora2, i2, j3, capinsuf ;
+		int centre, hora1, hora2, i2, j3, capinsuf, j, nri;
+		double nr;
 		boolean a ;
 		Iterator<Peticio> it ;
 		Peticio peti;
@@ -37,70 +38,58 @@ public class Successor_SA implements SuccessorFunction {
 			}while(hora1==hora2);
 			LinkedList<Peticio> pp = estat.getPeticions(centre, hora1);
 			// Per cada peticio
-			for(it = pp.iterator(); it.hasNext() && a;)
+			it = pp.iterator();
+			nr = pp.size()*Math.random();
+			nri = (int)nr;
+			for(j = 0; j<nri && a;j++)
 			{
 				Peticio p = it.next();
-				// Per cada hora diferent
-				if(estat.desplazamientoPosible(p, centre, hora2))
-				{
-					a = false;
-					_p.add(p);
-					_c.add(centre);
-					_hOri.add(hora1);
-					_hDest.add(hora2);
-					_xcap.add(false);
-					_xcen.add(0);
-					_xhor.add(0);
-				}
-				else 
-				{
-					capinsuf = estat.getCap(centre, hora2);								
-					if(capinsuf < Constants.cap[Constants.cap.length-1])
+				if(j==nri-1){				// Per cada hora diferent
+					if(estat.desplazamientoPosible(p, centre, hora2))
 					{
-						if(hora1 != 0 && estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
+						a = false;
+						_p.add(p);
+						_c.add(centre);
+						_hOri.add(hora1);
+						_hDest.add(hora2);
+						_xcap.add(false);
+						_xcen.add(0);
+						_xhor.add(0);
+					}
+					else 
+					{
+						capinsuf = estat.getCap(centre, hora2);								
+						if(capinsuf < Constants.cap[Constants.cap.length-1])
 						{
-							// Se pueden intercambiar las capacidades del estado de origen y de destinacion
-							a = false;
-							_p.add(p);
-							_c.add(centre);
-							_hOri.add(hora1);
-							_hDest.add(hora2);
-							_xcap.add(true);
-							_xcen.add(centre);
-							_xhor.add(hora1);
-						}
-						else {
-							i2 = centre;
-							for(j3 = hora2+1; j3<Constants.ht && a;j3++){
-								if(estat.getCap(centre, j3)>capinsuf && estat.getCapO(centre, j3)<=capinsuf){
-									a = false;
-									_p.add(p);
-									_c.add(centre);
-									_hOri.add(hora1);
-									_hDest.add(hora2);
-									_xcap.add(true);
-									_xcen.add(centre);
-									_xhor.add(j3);
-								}
+							if(hora1 != 0 && estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
+							{
+								// Se pueden intercambiar las capacidades del estado de origen y de destinacion
+								a = false;
+								_p.add(p);
+								_c.add(centre);
+								_hOri.add(hora1);
+								_hDest.add(hora2);
+								_xcap.add(true);
+								_xcen.add(centre);
+								_xhor.add(hora1);
 							}
-							if(a){        								
-								for(;i2<Constants.nc && a;i2++){
-									for(j3 = 1; j3<Constants.ht && a;j3++){
-										if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
-											a = false;
-											_p.add(p);
-											_c.add(centre);
-											_hOri.add(hora1);
-											_hDest.add(hora2);
-											_xcap.add(true);
-											_xcen.add(i2);
-											_xhor.add(j3);
-										}
+							else {
+								i2 = centre;
+								for(j3 = hora2+1; j3<Constants.ht && a;j3++){
+									if(estat.getCap(centre, j3)>capinsuf && estat.getCapO(centre, j3)<=capinsuf){
+										a = false;
+										_p.add(p);
+										_c.add(centre);
+										_hOri.add(hora1);
+										_hDest.add(hora2);
+										_xcap.add(true);
+										_xcen.add(centre);
+										_xhor.add(j3);
 									}
 								}
-								if(a){
-									for(i2=0;i2<centre && a;i2++){
-										for(j3 = 1; j3<Constants.ht && a; j3++){
+								if(a){        								
+									for(;i2<Constants.nc && a;i2++){
+										for(j3 = 1; j3<Constants.ht && a;j3++){
 											if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
 												a = false;
 												_p.add(p);
@@ -114,16 +103,32 @@ public class Successor_SA implements SuccessorFunction {
 										}
 									}
 									if(a){
-										for(j3 = 1; j3<hora2 && a;j3++){
-											if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
-												a = false;
-												_p.add(p);
-												_c.add(centre);
-												_hOri.add(hora1);
-												_hDest.add(hora2);
-												_xcap.add(true);
-												_xcen.add(i2);
-												_xhor.add(j3);
+										for(i2=0;i2<centre && a;i2++){
+											for(j3 = 1; j3<Constants.ht && a; j3++){
+												if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
+													a = false;
+													_p.add(p);
+													_c.add(centre);
+													_hOri.add(hora1);
+													_hDest.add(hora2);
+													_xcap.add(true);
+													_xcen.add(i2);
+													_xhor.add(j3);
+												}
+											}
+										}
+										if(a){
+											for(j3 = 1; j3<hora2 && a;j3++){
+												if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
+													a = false;
+													_p.add(p);
+													_c.add(centre);
+													_hOri.add(hora1);
+													_hDest.add(hora2);
+													_xcap.add(true);
+													_xcen.add(i2);
+													_xhor.add(j3);
+												}
 											}
 										}
 									}
@@ -161,7 +166,7 @@ public class Successor_SA implements SuccessorFunction {
 			int b2 = successor.getBenefici();
 			s = s.concat(" El benefici passa de " + b1 + " a " + b2 + ".");
 			retVal.add(new Successor(s, successor));
-			
+
 		}
 		System.out.println(retVal.size() + " successores generados.");
 		return retVal;

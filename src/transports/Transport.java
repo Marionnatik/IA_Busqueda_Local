@@ -48,17 +48,10 @@ public class Transport
 		else return false ;
 	}
 
-	
-	public int getBenefici()
-	{
-		return benef(false);
-	}
-
-	public int getBeneficiVerbose()
-	{
-		return benef(true);		
-	}
-	
+	// HEURISTICAS
+	// Ganancia
+	public int getBenefici(){ return benef(false); }
+	public int getBeneficiVerbose(){ return benef(true); }	
 	private int benef(boolean verb)
 	{
 		int b = 0;
@@ -68,27 +61,29 @@ public class Transport
 		{
 			// No entregadas
 			if(verb) System.out.println("No entregadas : ");
-			
+
 			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no fue entregada.");
-				
+
 				// Se resta el precio de la peticion mas unos 20% para cada hora de "retraso" hasta las 17
 				int sub = (int)(p.getPre() * (1 + 0.2 * (Constants.h_max - p.getH())));
 				if(verb) System.out.println("Precio substraido : " + sub);
 				b -= sub;
 			}
 			if(verb) System.out.println("Coste total no entregadas : " + b);
-		} else {
+		}
+		else
+		{
 			// Entregadas
 			if(verb) System.out.println(hora + "h : ");
-			
+
 			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y fue entregada a las " + hora + ".");
-				
+
 				if( p.getH() >= hora )
 				{
 					// Entregada a tiempo : Se anade el precio de la peticion
@@ -106,6 +101,47 @@ public class Transport
 			if(verb) System.out.println("Benefici total de la hora : " + b);
 		}
 		return b ;
+	}
+
+	// Retard
+	public int getRetard(){ return retard(false); }
+	public int getRetardVerbose(){ return retard(true); }
+	private int retard(boolean verb)
+	{
+		int r = 0;
+		Peticio p;
+
+		if( hora != 0 )
+		{
+			// Entregadas
+			if(verb) System.out.println(hora + "h : ");
+
+			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			{
+				p = it.next();
+				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y fue entregada a las " + hora + ".");
+				int ret = Math.abs(hora - p.getH());
+				if(verb) System.out.println(ret + "h de diferencia.");
+				r += ret;
+			}
+			if(verb) System.out.println("Retard total de la hora : " + r);
+		}
+		else
+		{
+			// No entregadas
+			if(verb) System.out.println("No entregadas : ");
+
+			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			{
+				p = it.next();
+				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no ha sido entregada.");
+				int ret = 24 - p.getH() + Constants.h_min;
+				if(verb) System.out.println("Retraso hasta las 8 : " + ret + "h.");
+				r += ret; 
+			}
+			if(verb) System.out.println("Retard total no entregadas : " + r);
+		}
+		return r;
 	}
 
 	public void ordenar(){
@@ -131,31 +167,9 @@ public class Transport
 		}	
 		return p;
 	}
-	/*	
-	public Peticio get_peticio(int i){
-		return peti.get(i);
-    }
-	 */	
+
 	public LinkedList<Peticio> get_peticiones(){
 		return peti;
-	}
-
-	public int getRetards() {
-		int r = 0;
-		Peticio p;
-		if(hora!=0){
-			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
-				p = it.next();
-				if(p.getH()<hora)r += hora - p.getH(); 
-			}
-		}
-		else{
-			for(Iterator<Peticio> it = peti.iterator(); it.hasNext();){
-				p = it.next();
-				r += 24 - p.getH() + Constants.h_min; 
-			}
-		}
-		return r;
 	}
 
 	@Override

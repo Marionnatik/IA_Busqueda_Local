@@ -7,6 +7,6 @@ public class Heuristica_Retard implements HeuristicFunction {
 	@Override
 	public double getHeuristicValue(Object state) {
 		Estat estado = (Estat) state;
-		return estado.getRetards();
+		return estado.getRetard();
 	}
 }
