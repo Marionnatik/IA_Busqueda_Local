@@ -245,12 +245,55 @@ V) Los camiones se asignan como en el estado A. Las peticiones se quedan todas n
 
 \subsection{Uso del AIMA}
 
-\subsection{Ejecucción de tests}
-%input y script
+\subsection{Ejecución de pruebas}
+El programa efectúa las pruebas sacando los parametros necesarios de ficheros de texto. Los ficheros estan organizados en la siguiente manera:
+\begin{itemize}
+\item Linia 1 : Numero de pruebas con estos parametros - 1 Integer
+\item Linia 2 : Numero de peticiones - 1 Integer
+\item Linia 3 : Distribucion de capacidad de los camiones - 3 Integers para 500, 1000 y 2000kg - La suma de los 3 debe ser igual a 60.
+\item Linia 4 : Distribucion de pesos de las peticiones - 5 Floats para 100 hasta 500kg - La suma de los 5 debe ser igual a 1.
+\item Linia 5 : Distribucion de las horas de entrega - 10 Floats para 8h hasta 17h - La suma de los 10 debe ser igual a 1.
+\item Linia 6 : Estrategia para generar el estado inicial - 1 Char
+\item Linia 7 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
+\item Linia 8 : Tipo de heuristica - String - Puede ser "gan" o "ret".
+La separacion entre la parte entera y decimal puede ser una coma (,) o un punto (.), si sale un error "formato no valido", intenta cambiar eso.
+\end{itemize}
+Cada experimento, pero, necesita una batería de pruebas con diferentes parametros. Así tenemos una carpeta para cada experimento con diferentes ficheros para generar pruebas. Un {\it bash script} recibe en input el numero de el experimento y resuelbe el problema con los ficheros de prueba pertinentes.
 
 \subsection{Recuperación de resultados}
 %output
-
+Por cada problema son generados dos ficheros de salida, uno con el estado inicial y el otro con el estado final. En estos ficheros tenemos:
+\begin{itemize}
+\item El beneficio
+\item El retraso
+\item Los centros y por cada centro
+	\begin{itemize}
+		\item Cantidad de peticiones no entregadas
+		\item Las horas y por cada hora de entrega
+		\begin{itemize}		
+			\item La capacidad total
+			\item La capacidad ocupada
+			\item La capacidad libre
+			\item Las peticiones no entregadas y por cada petición		
+			\begin{itemize}
+			\item El identificador
+			\item La hora de entrega supuesta
+			\item La cantidad
+			\item El precio
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+También hay un fichero de estadísticas por cada experimento a que vamos anadiendo datos sobre las pruebas. Este fichero está organizado como un CSV y por cada prueba tenemos registrados:
+\begin{itemize}
+\item El numero de nodos desarrollados. 
+\item El beneficio.
+\item El percentaje de mejoría de el beneficio.
+\item El retraso
+\item El percentaje de mejoría de el retraso.
+\item El tiempo de ejecución de la búsqueda.
+\end{itemize}
+Una linea vacía y una linea con el título del fichero de input dividen los diferentes grupos de pruebas (resultado de diferentes ejecuciones de el programa).
 
 \section{Resultados}
 % explicaciones y analisis detallada
