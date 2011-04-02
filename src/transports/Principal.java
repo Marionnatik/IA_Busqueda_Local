@@ -56,9 +56,12 @@ public class Principal {
 				nt = Integer.toString(i+1);
 				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
-				long start = System.nanoTime();
+				long start = System.nanoTime();				
 				Estat e = generadorProblema();
 				e.estadoInicial(estrategiaInicial);
+//t				elapsedTimeInmSec = (System.nanoTime() - initemp) * 1.0e-6;
+//t				out.write(elapsedTimeInmSec + ";");
+//t				long start = System.nanoTime();				
 				bi = e.getBenefici();
 				ri = e.getRetard();
 				String s1 = "Benefici : " + bi;
@@ -244,7 +247,7 @@ public class Principal {
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			System.out.println(key + " : " + property);
+//c			System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
@@ -253,7 +256,7 @@ public class Principal {
 	private static void printActions(List<?> actions) {
 		for (int i = 0; i < actions.size(); i++) {
 			String action = (String) actions.get(i);
-			System.out.println(action);
+//c			System.out.println(action);
 		}
 	}
 }

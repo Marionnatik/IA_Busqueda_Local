@@ -177,7 +177,7 @@ public class Successor_HC implements SuccessorFunction
 		
 
 		// OPERADOR : INTERCAMBIO DE PETICIONES
-
+/*
 		ArrayList<Integer> op3_c = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h1 = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h2 = new ArrayList<Integer>();
@@ -231,11 +231,10 @@ public class Successor_HC implements SuccessorFunction
 			s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
 
 
-			if(estado.getBenefici() < successor.getBenefici()) successor.getBeneficiVerbose();
 			retVal.add(new Successor(s, successor));
 		}
-
-		System.out.println(retVal.size() + " successores generados.");
+*/
+//		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
 }
