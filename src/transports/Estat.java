@@ -79,7 +79,7 @@ public class Estat {
 
 	private void per_hora() {
 		// TODO Auto-generated method stub
-		int i, i2, j, a, k;
+		int i, j, a, k;
 		boolean c, r[], tr;
 		Peticio p;
 		Transport ts[];
@@ -155,11 +155,12 @@ public class Estat {
 	}
 
 	private void camions_greedy(){
-		int i, j, k, cont, v, tot[], cam[];
+		int i, j, k, cont[], v, tot[], cam[];
 		tot = new int[Constants.nc];
 		cam = new int[Constants.nc];
+		cont = new int[Constants.cap.length];
 		k = Constants.cap.length-1;
-		cont = distriCap[k];
+		for(i = 0; i<=k; i++)cont[k] = distriCap[k];
 		v = Constants.ht * Constants.cap[0];
 		for(i = 0 ; i < Constants.nc ; i++){
 			tot[i] = centres[i].getCapNa();
@@ -168,30 +169,27 @@ public class Estat {
 		//Més aviat pondrem els camions amb més capacitat
 		for(j = 1 ; j< Constants.ht+1; j++){
 			for(i = 0 ; i < Constants.nc ; i++){
-				if(cont==0){
-					do{
-						k--;
-						cont = distriCap[k];
-					}while(cont==0);
+				if(cont[k]==0){
+					/*do*/	k--; /*while(cont[k]==0);*/
 				}
 				if(cam[i]<tot[i]){
 					centres[i].set_camion(j, Constants.cap[k]);
-					cont--;
+					cont[k]--;
 					cam[i] += Constants.cap[k]-Constants.cap[0];
 				}
 				else{
-					if(k > 0 && distriCap[0]>0){
+					if(k > 0 && cont[0]>0){
 						centres[i].set_camion(j, Constants.cap[0]);
-						distriCap[0]--;
+						cont[0]--;
 					}
-					else if(k>1 && distriCap[1]>0){
+					else if(k>1 && cont[1]>0){
 						centres[i].set_camion(j, Constants.cap[1]);
-						distriCap[1]--;
+						cont[1]--;
 						cam[i] += Constants.cap[1]-Constants.cap[0];
 					}
 					else{
 						centres[i].set_camion(j, Constants.cap[k]);
-						cont--;
+						cont[k]--;
 						cam[i] += Constants.cap[k]-Constants.cap[0];
 					}
 				}
@@ -274,7 +272,7 @@ public class Estat {
 		out.close();
 		System.out.println(s1 + " escribit en " + file);
 	}
-
+	
 	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
 		return centres[c].get_transports()[h_dest].getCapR() >= p.getCan();
 	}
