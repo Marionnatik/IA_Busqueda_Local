@@ -1,0 +1,332 @@
+ESTAT FINAL
+Retard: 813, benefici: 96830
+Centre no.1 :
+  No entregadas : Capacitat ocupada= 1200.
+    Peticio no.32 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.22 : Entrega a 10h, cantitat = 200, preu = 200.
+    Peticio no.18 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.24 : Entrega a 12h, cantitat = 200, preu = 200.
+    Peticio no.34 : Entrega a 14h, cantitat = 200, preu = 200.
+    Peticio no.7 : Entrega a 16h, cantitat = 200, preu = 200.
+  8h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.1 : Entrega a 8h, cantitat = 500, preu = 1000.
+  9h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.2 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.11 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.37 : Entrega a 8h, cantitat = 100, preu = 100.
+  10h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.29 : Entrega a 10h, cantitat = 500, preu = 1000.
+    Peticio no.15 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.28 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.23 : Entrega a 11h, cantitat = 400, preu = 600.
+    Peticio no.26 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.4 : Entrega a 12h, cantitat = 100, preu = 100.
+  11h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.6 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.33 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.42 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.19 : Entrega a 11h, cantitat = 400, preu = 600.
+    Peticio no.36 : Entrega a 11h, cantitat = 100, preu = 100.
+  12h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.20 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.30 : Entrega a 12h, cantitat = 300, preu = 450.
+    Peticio no.10 : Entrega a 14h, cantitat = 300, preu = 450.
+  13h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.39 : Entrega a 13h, cantitat = 500, preu = 1000.
+    Peticio no.5 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.16 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.38 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.31 : Entrega a 13h, cantitat = 300, preu = 450.
+  14h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.41 : Entrega a 14h, cantitat = 400, preu = 600.
+    Peticio no.21 : Entrega a 12h, cantitat = 100, preu = 100.
+  15h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.13 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.40 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.17 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.35 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.8 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.9 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.12 : Entrega a 16h, cantitat = 100, preu = 100.
+  16h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.3 : Entrega a 16h, cantitat = 400, preu = 600.
+    Peticio no.0 : Entrega a 16h, cantitat = 100, preu = 100.
+  17h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.14 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.27 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.25 : Entrega a 16h, cantitat = 100, preu = 100.
+
+Centre no.2 :
+  No entregadas : Capacitat ocupada= 200.
+    Peticio no.81 : Entrega a 16h, cantitat = 100, preu = 100.
+    Peticio no.76 : Entrega a 17h, cantitat = 100, preu = 100.
+  8h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.84 : Entrega a 8h, cantitat = 300, preu = 450.
+    Peticio no.67 : Entrega a 17h, cantitat = 200, preu = 200.
+  9h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.47 : Entrega a 9h, cantitat = 500, preu = 1000.
+    Peticio no.49 : Entrega a 9h, cantitat = 500, preu = 1000.
+    Peticio no.82 : Entrega a 9h, cantitat = 400, preu = 600.
+    Peticio no.83 : Entrega a 9h, cantitat = 400, preu = 600.
+    Peticio no.51 : Entrega a 16h, cantitat = 200, preu = 200.
+  10h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.43 : Entrega a 14h, cantitat = 200, preu = 200.
+    Peticio no.73 : Entrega a 15h, cantitat = 200, preu = 200.
+    Peticio no.62 : Entrega a 14h, cantitat = 100, preu = 100.
+  11h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.56 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.66 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.64 : Entrega a 11h, cantitat = 300, preu = 450.
+    Peticio no.57 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.63 : Entrega a 12h, cantitat = 200, preu = 200.
+    Peticio no.71 : Entrega a 12h, cantitat = 200, preu = 200.
+    Peticio no.70 : Entrega a 13h, cantitat = 100, preu = 100.
+  12h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.80 : Entrega a 13h, cantitat = 300, preu = 450.
+    Peticio no.53 : Entrega a 12h, cantitat = 200, preu = 200.
+  13h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.55 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.58 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.74 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.79 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.50 : Entrega a 13h, cantitat = 300, preu = 450.
+    Peticio no.44 : Entrega a 13h, cantitat = 100, preu = 100.
+  14h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.54 : Entrega a 14h, cantitat = 500, preu = 1000.
+  15h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.78 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.45 : Entrega a 15h, cantitat = 400, preu = 600.
+    Peticio no.77 : Entrega a 15h, cantitat = 400, preu = 600.
+    Peticio no.52 : Entrega a 15h, cantitat = 300, preu = 450.
+    Peticio no.75 : Entrega a 15h, cantitat = 300, preu = 450.
+    Peticio no.69 : Entrega a 15h, cantitat = 100, preu = 100.
+  16h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.46 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.59 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.48 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.61 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.68 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.65 : Entrega a 16h, cantitat = 100, preu = 100.
+  17h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.72 : Entrega a 17h, cantitat = 300, preu = 450.
+    Peticio no.60 : Entrega a 17h, cantitat = 200, preu = 200.
+
+Centre no.3 :
+  No entregadas : Capacitat ocupada= 900.
+    Peticio no.101 : Entrega a 17h, cantitat = 300, preu = 450.
+    Peticio no.116 : Entrega a 17h, cantitat = 300, preu = 450.
+    Peticio no.100 : Entrega a 15h, cantitat = 100, preu = 100.
+    Peticio no.113 : Entrega a 15h, cantitat = 100, preu = 100.
+    Peticio no.119 : Entrega a 16h, cantitat = 100, preu = 100.
+  8h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.92 : Entrega a 8h, cantitat = 400, preu = 600.
+    Peticio no.85 : Entrega a 15h, cantitat = 100, preu = 100.
+  9h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.115 : Entrega a 9h, cantitat = 400, preu = 600.
+    Peticio no.121 : Entrega a 9h, cantitat = 400, preu = 600.
+    Peticio no.102 : Entrega a 8h, cantitat = 200, preu = 200.
+  10h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.90 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.96 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.108 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.109 : Entrega a 9h, cantitat = 300, preu = 450.
+    Peticio no.93 : Entrega a 10h, cantitat = 300, preu = 450.
+    Peticio no.124 : Entrega a 11h, cantitat = 200, preu = 200.
+  11h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.88 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.91 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.105 : Entrega a 11h, cantitat = 500, preu = 1000.
+    Peticio no.120 : Entrega a 12h, cantitat = 300, preu = 450.
+    Peticio no.98 : Entrega a 11h, cantitat = 200, preu = 200.
+  12h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.104 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.112 : Entrega a 13h, cantitat = 100, preu = 100.
+  13h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.125 : Entrega a 13h, cantitat = 500, preu = 1000.
+    Peticio no.99 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.103 : Entrega a 13h, cantitat = 100, preu = 100.
+  14h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.94 : Entrega a 14h, cantitat = 500, preu = 1000.
+    Peticio no.118 : Entrega a 14h, cantitat = 500, preu = 1000.
+    Peticio no.106 : Entrega a 15h, cantitat = 400, preu = 600.
+    Peticio no.87 : Entrega a 13h, cantitat = 300, preu = 450.
+    Peticio no.122 : Entrega a 13h, cantitat = 300, preu = 450.
+  15h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.86 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.114 : Entrega a 15h, cantitat = 500, preu = 1000.
+  16h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.111 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.123 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.107 : Entrega a 16h, cantitat = 400, preu = 600.
+    Peticio no.110 : Entrega a 16h, cantitat = 400, preu = 600.
+    Peticio no.95 : Entrega a 12h, cantitat = 200, preu = 200.
+  17h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.117 : Entrega a 17h, cantitat = 500, preu = 1000.
+    Peticio no.97 : Entrega a 14h, cantitat = 300, preu = 450.
+    Peticio no.89 : Entrega a 15h, cantitat = 200, preu = 200.
+
+Centre no.4 :
+  No entregadas : Capacitat ocupada= 1500.
+    Peticio no.164 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.135 : Entrega a 10h, cantitat = 200, preu = 200.
+    Peticio no.138 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.136 : Entrega a 12h, cantitat = 200, preu = 200.
+    Peticio no.127 : Entrega a 15h, cantitat = 200, preu = 200.
+    Peticio no.132 : Entrega a 16h, cantitat = 200, preu = 200.
+    Peticio no.141 : Entrega a 16h, cantitat = 200, preu = 200.
+  8h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.155 : Entrega a 8h, cantitat = 500, preu = 1000.
+    Peticio no.157 : Entrega a 8h, cantitat = 400, preu = 600.
+    Peticio no.165 : Entrega a 8h, cantitat = 400, preu = 600.
+    Peticio no.167 : Entrega a 15h, cantitat = 300, preu = 450.
+    Peticio no.149 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.159 : Entrega a 8h, cantitat = 100, preu = 100.
+  9h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.160 : Entrega a 14h, cantitat = 300, preu = 450.
+    Peticio no.130 : Entrega a 9h, cantitat = 200, preu = 200.
+  10h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.139 : Entrega a 10h, cantitat = 500, preu = 1000.
+    Peticio no.161 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.166 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.151 : Entrega a 17h, cantitat = 400, preu = 600.
+    Peticio no.142 : Entrega a 10h, cantitat = 300, preu = 450.
+  11h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.134 : Entrega a 17h, cantitat = 400, preu = 600.
+    Peticio no.143 : Entrega a 10h, cantitat = 100, preu = 100.
+  12h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.129 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.144 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.140 : Entrega a 9h, cantitat = 200, preu = 200.
+  13h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.163 : Entrega a 13h, cantitat = 500, preu = 1000.
+    Peticio no.128 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.147 : Entrega a 10h, cantitat = 100, preu = 100.
+  14h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.126 : Entrega a 14h, cantitat = 500, preu = 1000.
+    Peticio no.148 : Entrega a 14h, cantitat = 500, preu = 1000.
+    Peticio no.153 : Entrega a 14h, cantitat = 500, preu = 1000.
+    Peticio no.145 : Entrega a 16h, cantitat = 400, preu = 600.
+    Peticio no.158 : Entrega a 13h, cantitat = 100, preu = 100.
+  15h : Capacidad = 1000, capacidad ocupada = 900, capacidad residual=100
+    Peticio no.162 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.146 : Entrega a 15h, cantitat = 400, preu = 600.
+  16h : Capacidad = 2000, capacidad ocupada = 1900, capacidad residual=100
+    Peticio no.152 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.154 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.156 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.133 : Entrega a 16h, cantitat = 400, preu = 600.
+  17h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.137 : Entrega a 17h, cantitat = 500, preu = 1000.
+    Peticio no.131 : Entrega a 17h, cantitat = 400, preu = 600.
+    Peticio no.150 : Entrega a 17h, cantitat = 100, preu = 100.
+
+Centre no.5 :
+  No entregadas : Capacitat ocupada= 2000.
+    Peticio no.191 : Entrega a 12h, cantitat = 200, preu = 200.
+    Peticio no.168 : Entrega a 14h, cantitat = 200, preu = 200.
+    Peticio no.175 : Entrega a 15h, cantitat = 200, preu = 200.
+    Peticio no.182 : Entrega a 16h, cantitat = 200, preu = 200.
+    Peticio no.185 : Entrega a 16h, cantitat = 200, preu = 200.
+    Peticio no.177 : Entrega a 17h, cantitat = 200, preu = 200.
+    Peticio no.195 : Entrega a 17h, cantitat = 200, preu = 200.
+    Peticio no.188 : Entrega a 13h, cantitat = 100, preu = 100.
+    Peticio no.184 : Entrega a 14h, cantitat = 100, preu = 100.
+    Peticio no.197 : Entrega a 14h, cantitat = 100, preu = 100.
+    Peticio no.209 : Entrega a 15h, cantitat = 100, preu = 100.
+    Peticio no.174 : Entrega a 17h, cantitat = 100, preu = 100.
+    Peticio no.178 : Entrega a 17h, cantitat = 100, preu = 100.
+  8h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.196 : Entrega a 8h, cantitat = 400, preu = 600.
+    Peticio no.206 : Entrega a 8h, cantitat = 300, preu = 450.
+    Peticio no.192 : Entrega a 16h, cantitat = 300, preu = 450.
+  9h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.183 : Entrega a 9h, cantitat = 500, preu = 1000.
+    Peticio no.173 : Entrega a 9h, cantitat = 300, preu = 450.
+    Peticio no.172 : Entrega a 8h, cantitat = 200, preu = 200.
+  10h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.208 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.202 : Entrega a 10h, cantitat = 300, preu = 450.
+    Peticio no.198 : Entrega a 14h, cantitat = 300, preu = 450.
+  11h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.205 : Entrega a 11h, cantitat = 400, preu = 600.
+    Peticio no.203 : Entrega a 12h, cantitat = 300, preu = 450.
+    Peticio no.194 : Entrega a 14h, cantitat = 300, preu = 450.
+  12h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.186 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.200 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.176 : Entrega a 8h, cantitat = 200, preu = 200.
+  13h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.180 : Entrega a 13h, cantitat = 500, preu = 1000.
+    Peticio no.187 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.171 : Entrega a 10h, cantitat = 100, preu = 100.
+  14h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.190 : Entrega a 14h, cantitat = 300, preu = 450.
+    Peticio no.189 : Entrega a 8h, cantitat = 200, preu = 200.
+  15h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.199 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.201 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.204 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.170 : Entrega a 15h, cantitat = 400, preu = 600.
+    Peticio no.169 : Entrega a 13h, cantitat = 100, preu = 100.
+  16h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.193 : Entrega a 16h, cantitat = 500, preu = 1000.
+  17h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.207 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.179 : Entrega a 9h, cantitat = 200, preu = 200.
+    Peticio no.181 : Entrega a 13h, cantitat = 100, preu = 100.
+
+Centre no.6 :
+  No entregadas : Capacitat ocupada= 0.
+  8h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.240 : Entrega a 8h, cantitat = 400, preu = 600.
+    Peticio no.230 : Entrega a 8h, cantitat = 100, preu = 100.
+  9h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.211 : Entrega a 9h, cantitat = 400, preu = 600.
+    Peticio no.213 : Entrega a 9h, cantitat = 300, preu = 450.
+    Peticio no.229 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.212 : Entrega a 9h, cantitat = 100, preu = 100.
+  10h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.210 : Entrega a 10h, cantitat = 400, preu = 600.
+    Peticio no.239 : Entrega a 8h, cantitat = 200, preu = 200.
+    Peticio no.217 : Entrega a 10h, cantitat = 200, preu = 200.
+    Peticio no.220 : Entrega a 10h, cantitat = 200, preu = 200.
+  11h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.237 : Entrega a 11h, cantitat = 400, preu = 600.
+    Peticio no.215 : Entrega a 11h, cantitat = 300, preu = 450.
+    Peticio no.247 : Entrega a 11h, cantitat = 300, preu = 450.
+  12h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.233 : Entrega a 12h, cantitat = 500, preu = 1000.
+    Peticio no.218 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.232 : Entrega a 12h, cantitat = 400, preu = 600.
+    Peticio no.238 : Entrega a 10h, cantitat = 200, preu = 200.
+    Peticio no.223 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.226 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.224 : Entrega a 9h, cantitat = 100, preu = 100.
+  13h : Capacidad = 2000, capacidad ocupada = 2000, capacidad residual=0
+    Peticio no.222 : Entrega a 13h, cantitat = 500, preu = 1000.
+    Peticio no.234 : Entrega a 13h, cantitat = 400, preu = 600.
+    Peticio no.228 : Entrega a 13h, cantitat = 300, preu = 450.
+    Peticio no.235 : Entrega a 13h, cantitat = 300, preu = 450.
+    Peticio no.243 : Entrega a 11h, cantitat = 200, preu = 200.
+    Peticio no.225 : Entrega a 9h, cantitat = 100, preu = 100.
+    Peticio no.244 : Entrega a 9h, cantitat = 100, preu = 100.
+    Peticio no.227 : Entrega a 13h, cantitat = 100, preu = 100.
+  14h : Capacidad = 500, capacidad ocupada = 500, capacidad residual=0
+    Peticio no.242 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.231 : Entrega a 13h, cantitat = 100, preu = 100.
+    Peticio no.236 : Entrega a 13h, cantitat = 100, preu = 100.
+  15h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.246 : Entrega a 15h, cantitat = 500, preu = 1000.
+    Peticio no.221 : Entrega a 15h, cantitat = 300, preu = 450.
+    Peticio no.249 : Entrega a 15h, cantitat = 200, preu = 200.
+  16h : Capacidad = 1000, capacidad ocupada = 1000, capacidad residual=0
+    Peticio no.245 : Entrega a 16h, cantitat = 500, preu = 1000.
+    Peticio no.214 : Entrega a 16h, cantitat = 300, preu = 450.
+    Peticio no.241 : Entrega a 14h, cantitat = 100, preu = 100.
+    Peticio no.248 : Entrega a 14h, cantitat = 100, preu = 100.
+  17h : Capacidad = 500, capacidad ocupada = 300, capacidad residual=200
+    Peticio no.216 : Entrega a 17h, cantitat = 200, preu = 200.
+    Peticio no.219 : Entrega a 16h, cantitat = 100, preu = 100.
+
+
+Benefici : 96830
