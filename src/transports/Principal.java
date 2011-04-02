@@ -58,7 +58,7 @@ public class Principal {
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
 				long start = System.nanoTime();
 				Estat e = generadorProblema();
-				e.estat_inicial(estrategiaInicial);
+				e.estadoInicial(estrategiaInicial);
 				bi = e.getBenefici();
 				ri = e.getRetard();
 				String s1 = "Benefici : " + bi;
@@ -92,7 +92,7 @@ public class Principal {
 						e = (Estat) search.getLastSearchState();			
 						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 						printActions(agent.getActions());
-//c						System.out.println("Search Outcome=" + search.getOutcome());
+						//c						System.out.println("Search Outcome=" + search.getOutcome());
 						printInstrumentation(agent.getInstrumentation(), out);
 
 					} else if (algorisme.equals("sa"))
@@ -120,9 +120,9 @@ public class Principal {
 						e = (Estat) search.getLastSearchState();			
 						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 						printActions(agent.getActions());
-//c						System.out.println("Search Outcome=" + search.getOutcome());
+						//c						System.out.println("Search Outcome=" + search.getOutcome());
 						printInstrumentation(agent.getInstrumentation(), out);
-						
+
 					} else {
 						System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'algorisme incorrecta.");
 						System.exit(1);				
@@ -140,8 +140,8 @@ public class Principal {
 				out.write(bo + ";" + mb + ";" + ro + ";" + mr + ";" + elapsedTimeInmSec);
 				out.newLine();
 			}
-		out.newLine();
-		out.close();
+			out.newLine();
+			out.close();
 		} 
 		catch (IOException e) {
 			System.out.println("Error : escritura fichero estadisticas");
@@ -233,7 +233,7 @@ public class Principal {
 			Peticio p = new Peticio(i, Constants.cant[peso], horaEntrega + Constants.h_min);
 
 			// Asignació de la petició al centre, com "no entregada"
-			inicial.initPeticio(numCentre, p);
+			inicial.addPeticio(p, numCentre, 0);
 		}
 
 		return inicial ;
@@ -244,7 +244,7 @@ public class Principal {
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-//c			System.out.println(key + " : " + property);
+			System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
@@ -253,7 +253,7 @@ public class Principal {
 	private static void printActions(List<?> actions) {
 		for (int i = 0; i < actions.size(); i++) {
 			String action = (String) actions.get(i);
-//c			System.out.println(action);
+			System.out.println(action);
 		}
 	}
 }

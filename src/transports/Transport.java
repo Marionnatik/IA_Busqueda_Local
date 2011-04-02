@@ -68,7 +68,7 @@ public class Transport
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no fue entregada.");
 
 				// Se resta el precio de la peticion mas unos 20% para cada hora de "retraso" hasta las 17
-				int sub = (int)(p.getPre() * (1 + 0.2 * (Constants.h_max - p.getH())));
+				int sub = (int) Math.round(p.getPre() * (1 + 0.2 * (Constants.h_max - p.getH())));
 				if(verb) System.out.println("Precio substraido : " + sub);
 				b -= sub;
 			}
@@ -93,7 +93,7 @@ public class Transport
 				else
 				{
 					// No entregada a tiempo : Se anade el precio menos unos 20% para cada hora de retraso
-					int add = (int)(p.getPre() * (1 - 0.2 * (hora - p.getH())));
+					int add = (int) Math.round(p.getPre() * (1 - 0.2 * (hora - p.getH())));
 					if(verb) System.out.println("Entregada con " + (hora - p.getH()) + "h de retraso, benefici : " + add);
 					b += add;
 				}

@@ -6,12 +6,8 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Estat {
-
-	// distribucion de capacidades de los transportes
-	// distriCap[0] = numero de transportes de 500kgs
-	// distriCap[1] = numero de transportes de 1000kgs
-	// distriCap[2] = numero de transportes de 2000kgs
+public class Estat 
+{
 	public int[] distriCap = new int[Constants.cap.length];
 	public static char tipord;
 	private Centre[] centres = new Centre[Constants.nc];
@@ -20,7 +16,6 @@ public class Estat {
 	{
 		distriCap = capacitats ;
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
-
 	}
 
 	public Estat(Estat e)
@@ -29,15 +24,9 @@ public class Estat {
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(e.centres[i]);
 	}
 
-	public void initPeticio(int numCentre, Peticio p)
-	{
-		centres[numCentre].initPeticio(p);
-	}
-
-
-	public void estat_inicial(char t){
+	public void estadoInicial(char tipo){
 		// Hi han diferentes tipologies
-		switch(t) {
+		switch(tipo) {
 		case 'a': 
 			tipord = 'a';
 			this.mes_aviat_possible();
@@ -49,27 +38,16 @@ public class Estat {
 		case 'f':
 			this.first_fit();
 			break;
-		case 'm':
-			//no té gaire sentit
-			tipord = 'c';
-			this.mes_aviat_possible();
-			break;
 		case 'r': 
 			this.random();
 			break;
 		case 'v': 
 			this.buit();
 			break;
-		case 'w':
-			//no tiene mucho sentido
-			tipord = 'd';
-			this.per_hora();
-			break;
 		}
 	}
 
 	private void first_fit() {
-		// TODO Auto-generated method stub
 		int i;
 		camions_greedy();
 		for(i = 0 ; i < Constants.nc ; i++){
@@ -78,7 +56,6 @@ public class Estat {
 	}
 
 	private void per_hora() {
-		// TODO Auto-generated method stub
 		int i, j, a, k;
 		boolean c, r[], tr;
 		Peticio p;
@@ -270,9 +247,9 @@ public class Estat {
 		out.println(this);
 		out.println(s2);
 		out.close();
-//c		System.out.println(s1 + " escribit en " + file);
+		//c		System.out.println(s1 + " escribit en " + file);
 	}
-	
+
 	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
 		return centres[c].get_transports()[h_dest].getCapR() >= p.getCan();
 	}
@@ -289,32 +266,38 @@ public class Estat {
 		return centres[c].get_transports()[h].getCapO();
 	}
 
-	public void canvi_camion(int i, int h1, int c1, int i2, int h2, int c2) {
-		centres[i].set_camion(h1, c1);
-		centres[i2].set_camion(h2, c2);
+	// OPERADOR : INTERCAMBIO DE CAMIONES
+	public void intercambioCamiones(int centre1, int hora1, int capacitat1, int centre2, int hora2, int capacitat2)
+	{
+		centres[centre1].set_camion(hora1, capacitat1);
+		centres[centre2].set_camion(hora2, capacitat2);
 
 	}
 
-	public boolean canvi_peticiones(int i, int h1, int h2, Peticio p, Peticio p2){
-		centres[i].get_transports()[h1].remove_peticio(p);
-		centres[i].get_transports()[h2].remove_peticio(p2);
-		if(centres[i].get_transports()[h1].add_peticio(p2)){
-			if(centres[i].get_transports()[h2].add_peticio(p))return true;
-			else{
-				centres[i].get_transports()[h1].remove_peticio(p2);
-				return false;
-			}
-		}
-		return false;
+	public Peticio removePeticio(Peticio peticio, int centre, int hora)
+	{
+		return centres[centre].removePeticio(peticio, hora);
 	}
 
-	public Peticio removePeticio(Peticio peticio, Integer c,
-			Integer h) {
-		return centres[c.intValue()].removePeticio(peticio, h);
-	}
-
-	public boolean addPeticio(Peticio peti, Integer c, Integer h) {
-		// TODO Auto-generated method stub
+	public boolean addPeticio(Peticio peti, Integer c, Integer h)
+	{
 		return centres[c.intValue()].addPeticio(peti, h);
+	}
+
+	// OPERADOR : INTERCAMBIO DE PETICIONES
+	public boolean intercambioPosible(int c, int h1, int h2, Peticio p1, Peticio p2)
+	{
+		return (centres[c].get_transports()[h1].getCapR()+p1.getCan() >= p2.getCan()
+				&&
+				centres[c].get_transports()[h2].getCapR()+p2.getCan() >= p1.getCan());
+	}
+
+	public boolean intercambioPeticiones(int c, int h1, int h2, Peticio p1, Peticio p2)
+	{
+		centres[c].get_transports()[h1].remove_peticio(p1);
+		centres[c].get_transports()[h2].remove_peticio(p2);
+		return (centres[c].get_transports()[h2].add_peticio(p1)
+				&&
+				centres[c].get_transports()[h1].add_peticio(p2));
 	}
 }
