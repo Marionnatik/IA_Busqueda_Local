@@ -60,11 +60,22 @@ public class Principal
 				nt = Integer.toString(i+1);
 				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
+<<<<<<< HEAD
 				long start = System.nanoTime();
 				Estado e = generadorProblema();
 				e.estadoInicial(estrategiaInicial);
 				bi = e.getBeneficio();
 				ri = e.getRetraso();
+=======
+				long start = System.nanoTime();				
+				Estat e = generadorProblema();
+				e.estadoInicial(estrategiaInicial);
+//t				elapsedTimeInmSec = (System.nanoTime() - initemp) * 1.0e-6;
+//t				out.write(elapsedTimeInmSec + ";");
+//t				long start = System.nanoTime();				
+				bi = e.getBenefici();
+				ri = e.getRetard();
+>>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
 				String s1 = "Benefici : " + bi;
 				e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
 				// Resolució del problema
@@ -246,7 +257,11 @@ public class Principal
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
+<<<<<<< HEAD
 			//System.out.println(key + " : " + property);
+=======
+//c			System.out.println(key + " : " + property);
+>>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
 			out.write(property + ";");
 		}
 
@@ -255,7 +270,7 @@ public class Principal
 	private static void printActions(List<?> actions) {
 		for (int i = 0; i < actions.size(); i++) {
 			String action = (String) actions.get(i);
-			System.out.println(action);
+//c			System.out.println(action);
 		}
 	}
 }

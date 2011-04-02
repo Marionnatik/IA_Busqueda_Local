@@ -27,19 +27,19 @@ public class Successor_SA implements SuccessorFunction
 		int op2_xcen = 0;
 		int op2_xhor = 0;
 		int op2_xhord = 0;
-
+/*
 		int op3_c = 0;
 		int op3_h1 = 0;
 		int op3_h2 = 0;
 		Peticio op3_p1 = null;
 		Peticio op3_p2 = null;
-
+*/
 
 		do{
 			double operador = Math.random();
 
 			// OPERADOR : DESPLAZAMIENTO DE PETICIONES
-			if(operador < (double)1/3)
+			if(operador < (double)1/2)
 			{
 				int centre = (int) (Constants.nc * Math.random());
 				int hora1 = (int) ((Constants.ht+1)*Math.random());
@@ -63,7 +63,7 @@ public class Successor_SA implements SuccessorFunction
 			}
 
 			// OPERADOR : INTERCAMBIO DE CAPACIDADES DE CAMIONES
-			if(operador >= (double)1/3 && operador < (double)2/3)
+			if(operador >= (double)1/2/* && operador < (double)2/3*/)
 			{
 				boolean a;
 				int j=0, ci, hi;
@@ -134,7 +134,7 @@ public class Successor_SA implements SuccessorFunction
 			}
 
 			// OPERADOR : INTERCAMBIO DE PETICIONES
-			if(operador >= (double)2/3)
+/*			if(operador >= (double)2/3)
 			{
 				int centre = (int) (Constants.nc * Math.random());
 				int hora1 = (int) ((Constants.ht+1)*Math.random());
@@ -160,8 +160,8 @@ public class Successor_SA implements SuccessorFunction
 					op3_p2 = p2;
 				}
 			}
-
-		} while(op1_p == null && op2_p == null && op3_p1 == null);
+*/
+		} while(op1_p == null && op2_p == null/* && op3_p1 == null*/);
 
 		
 		// Construccion del successor
@@ -184,15 +184,21 @@ public class Successor_SA implements SuccessorFunction
 			successor.addPeticion(peti, op2_xcen, op2_xhord);
 			s = s.concat("Peticion " + op2_p.getID() + " del centro " + (op2_xcen+1) + " con hora de entrega : " + op2_p.getH() + "h desplazada de " + (op2_xhor+7) + "h a " + (op2_xhord+7) + "h.");			
 		}
-		else if (op3_p1 != null)
+/*		else if (op3_p1 != null)
 		{
 			successor.intercambioPeticiones(op3_c, op3_h1, op3_h2, op3_p1, op3_p2);
 			s = new String("Se han intercambiado las peticiones " + op3_p1.getID() + 
 					" (" + (op3_h1+7) + "h) y " + op3_p2.getID() + " (" + (op3_h2+7) + ") del centro " +
 					(op3_c+1));
+<<<<<<< HEAD
 		}			
 		s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
 		s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
+=======
+		}*/			
+		s = s.concat(" El benefici passa de " + estado.getBenefici() + "€ a " + successor.getBenefici() + "€.");
+		s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
+>>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
 
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		retVal.add(new Successor(s, successor));
