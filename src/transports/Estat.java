@@ -160,7 +160,7 @@ public class Estat {
 		cam = new int[Constants.nc];
 		cont = new int[Constants.cap.length];
 		k = Constants.cap.length-1;
-		for(i = 0; i<=k; i++)cont[k] = distriCap[k];
+		for(i = 0; i<=k; i++)cont[i] = distriCap[k];
 		v = Constants.ht * Constants.cap[0];
 		for(i = 0 ; i < Constants.nc ; i++){
 			tot[i] = centres[i].getCapNa();
@@ -270,7 +270,7 @@ public class Estat {
 		out.println(this);
 		out.println(s2);
 		out.close();
-		System.out.println(s1 + " escribit en " + file);
+//c		System.out.println(s1 + " escribit en " + file);
 	}
 	
 	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {

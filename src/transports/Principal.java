@@ -19,13 +19,15 @@ public class Principal {
 
 	public static void main(String[] args)
 	{
-		int i;
+		int i, bi, bo, ri, ro;
+		float mb, mr;
+		double elapsedTimeInmSec = -1;
 		String intest;
 		// Genera las constantes
 		new Constants();
 
 		// Prepara els fitxers d'input (test1 per defecte) i output
-		String file_in = "tests/test2/test2a.txt";
+		String file_in = "tests/test1/test1.txt";
 		if(args.length != 0) file_in = args[0];
 
 		// Llegeix el fitxer de valors
@@ -44,21 +46,23 @@ public class Principal {
 
 		intest = file_in.substring(12, file_in.length()-4);
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter("", true));
+			String nt;
+			String file_outs = file_in.substring(0, 17) + "_estadisticas.csv";
+			BufferedWriter out = new BufferedWriter(new FileWriter(file_outs, true));
 			out.write(intest);
 			out.newLine();
 			// Genera el estat inicial amb l'estratègia desitjada
 			for(i=0;i<n;i++){
-				String nt;
 				nt = Integer.toString(i+1);
 				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
+				long start = System.nanoTime();
 				Estat e = generadorProblema();
 				e.estat_inicial(estrategiaInicial);
-
-				String s1 = "Benefici : " + e.getBenefici();
+				bi = e.getBenefici();
+				ri = e.getRetard();
+				String s1 = "Benefici : " + bi;
 				e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
-
 				// Resolució del problema
 				try {
 					Problem problem = null;
@@ -85,10 +89,11 @@ public class Principal {
 						}
 						HillClimbingSearch search = new HillClimbingSearch();
 						SearchAgent agent = new SearchAgent(problem, search);
-						printActions(agent.getActions());
-						System.out.println("Search Outcome=" + search.getOutcome());
 						e = (Estat) search.getLastSearchState();			
-						printInstrumentation(agent.getInstrumentation());
+						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
+						printActions(agent.getActions());
+//c						System.out.println("Search Outcome=" + search.getOutcome());
+						printInstrumentation(agent.getInstrumentation(), out);
 
 					} else if (algorisme.equals("sa"))
 					{
@@ -112,10 +117,12 @@ public class Principal {
 						}				
 						SimulatedAnnealingSearch search = new SimulatedAnnealingSearch();
 						SearchAgent agent = new SearchAgent(problem, search);
-						printActions(agent.getActions());
-						System.out.println("Search Outcome=" + search.getOutcome());
 						e = (Estat) search.getLastSearchState();			
-						printInstrumentation(agent.getInstrumentation());
+						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
+						printActions(agent.getActions());
+//c						System.out.println("Search Outcome=" + search.getOutcome());
+						printInstrumentation(agent.getInstrumentation(), out);
+						
 					} else {
 						System.out.println("Error en l'arxiu de prova " + file_in + " : Nom d'algorisme incorrecta.");
 						System.exit(1);				
@@ -124,14 +131,20 @@ public class Principal {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-
-				String s2 = "Benefici : " + e.getBenefici();
+				bo = e.getBenefici();
+				ro = e.getRetard();
+				mb = (float)100*(bo-bi)/Math.abs(bi);
+				String s2 = "Benefici : " + bo;
 				e.writeFile(file_out2, "ESTAT FINAL", s2);
+				mr = (float)100*(ri-ro)/ri;
+				out.write(bo + ";" + mb + ";" + ro + ";" + mr + ";" + elapsedTimeInmSec);
+				out.newLine();
 			}
-			out.close();
+		out.newLine();
+		out.close();
 		} 
 		catch (IOException e) {
-			System.out.println("Error : l'escritura ha fracassat!");
+			System.out.println("Error : escritura fichero estadisticas");
 			System.exit(1);
 		} 
 
@@ -234,12 +247,13 @@ public class Principal {
 		return inicial ;
 	}
 
-	private static void printInstrumentation(Properties properties) {
+	private static void printInstrumentation(Properties properties, BufferedWriter out) throws IOException {
 		Iterator<?> keys = properties.keySet().iterator();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			System.out.println(key + " : " + property);
+//c			System.out.println(key + " : " + property);
+			out.write(property + ";");
 		}
 
 	}
@@ -247,7 +261,7 @@ public class Principal {
 	private static void printActions(List<?> actions) {
 		for (int i = 0; i < actions.size(); i++) {
 			String action = (String) actions.get(i);
-			System.out.println(action);
+//c			System.out.println(action);
 		}
 	}
 }

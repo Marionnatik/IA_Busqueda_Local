@@ -13,132 +13,117 @@ public class Successor_SA implements SuccessorFunction {
 	@Override
 	public List<Successor> getSuccessors(Object state) {
 
-		int centre, hora1, hora2, i2, j3, capinsuf, j, nri;
-		double nr;
-		boolean a ;
+		int centre, centre2, hora1, hora2, i2, j3, capinsuf, j=0, nri, ci, hi;
+		double nr, tip;
+		boolean a;
 		Iterator<Peticio> it ;
-		Peticio peti;
+		Peticio peti, pe = null;
+		LinkedList<Peticio> petinoe = new LinkedList<Peticio>();
+
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		String s, saux1, saux2;
 		Estat estat = (Estat) state ;
 
 		ArrayList<Peticio> _p = new ArrayList<Peticio>();
 		ArrayList<Integer> _c = new ArrayList<Integer>();
+		ArrayList<Integer> _c2 = new ArrayList<Integer>();
 		ArrayList<Integer> _hOri = new ArrayList<Integer>();
 		ArrayList<Integer> _hDest = new ArrayList<Integer>();
 		ArrayList<Boolean> _xcap = new ArrayList<Boolean>();
 		ArrayList<Integer> _xcen = new ArrayList<Integer>();
 		ArrayList<Integer> _xhor = new ArrayList<Integer>();
+		ArrayList<Integer> _xhord = new ArrayList<Integer>();
+
 		do{
-			centre = (int) (Constants.nc * Math.random());
-			hora1 = (int) ((Constants.ht+1)*Math.random());
+			tip = Math.random();
 			a = true;
-			do{
-				hora2 = (int)((Constants.ht+1)*Math.random());
-			}while(hora1==hora2);
-			LinkedList<Peticio> pp = estat.getPeticions(centre, hora1);
-			// Per cada peticio
-			it = pp.iterator();
-			nr = pp.size()*Math.random();
-			nri = (int)nr;
-			for(j = 0; j<nri && a;j++)
-			{
-				Peticio p = it.next();
-				if(j==nri-1){				// Per cada hora diferent
-					if(estat.desplazamientoPosible(p, centre, hora2))
-					{
-						a = false;
-						_p.add(p);
-						_c.add(centre);
-						_hOri.add(hora1);
-						_hDest.add(hora2);
-						_xcap.add(false);
-						_xcen.add(0);
-						_xhor.add(0);
-					}
-					else 
-					{
-						capinsuf = estat.getCap(centre, hora2);								
-						if(capinsuf < Constants.cap[Constants.cap.length-1])
+			if(tip<0.5){
+				centre = (int) (Constants.nc * Math.random());
+				hora1 = (int) ((Constants.ht+1)*Math.random());
+				do{
+					hora2 = (int)((Constants.ht+1)*Math.random());
+				}while(hora1==hora2);
+				LinkedList<Peticio> pp = estat.getPeticions(centre, hora1);
+				// Per cada peticio
+				it = pp.iterator();
+				nr = pp.size()*Math.random();
+				nri = (int)nr;
+				for(j = 0; j<nri && a;j++)
+				{
+					Peticio p = it.next();
+					if(j==nri-1){
+						//Generar estado
+						if(estat.desplazamientoPosible(p, centre, hora2))
 						{
-							if(hora1 != 0 && estat.getCap(centre, hora1) > capinsuf && estat.getCapO(centre, hora1)-p.getCan() <= capinsuf)
-							{
-								// Se pueden intercambiar las capacidades del estado de origen y de destinacion
-								a = false;
-								_p.add(p);
-								_c.add(centre);
-								_hOri.add(hora1);
-								_hDest.add(hora2);
-								_xcap.add(true);
-								_xcen.add(centre);
-								_xhor.add(hora1);
-							}
-							else {
-								i2 = centre;
-								for(j3 = hora2+1; j3<Constants.ht && a;j3++){
-									if(estat.getCap(centre, j3)>capinsuf && estat.getCapO(centre, j3)<=capinsuf){
-										a = false;
-										_p.add(p);
-										_c.add(centre);
-										_hOri.add(hora1);
-										_hDest.add(hora2);
-										_xcap.add(true);
-										_xcen.add(centre);
-										_xhor.add(j3);
-									}
+							_p.add(p);
+							_c.add(centre);
+							_c2.add(-1);
+							_hOri.add(hora1);
+							_hDest.add(hora2);
+							_xcap.add(false);
+							_xcen.add(-1);
+							_xhor.add(-1);
+							_xhord.add(-1);
+						}
+						//Acaba generar estado
+					}
+				}
+			}
+			else{
+				centre = (int) (Constants.nc * Math.random());
+				hora1 = (int) ((Constants.ht+1)*Math.random());
+				do{
+					centre2 = (int) (Constants.nc * Math.random());
+					hora2 = (int)((Constants.ht+1)*Math.random());
+				}while(estat.getCap(centre, hora1)==estat.getCap(centre2, hora2));
+				//Generacion estado
+				if(estat.getCapO(centre, hora1)<=estat.getCap(centre2, hora2) && estat.getCapO(centre2, hora2)<=estat.getCap(centre, hora1)){
+					a = true;
+					if(estat.getCap(centre, hora1)>estat.getCap(centre2, hora2)){
+						ci = centre2;
+						hi = hora2;
+					}
+					else{
+						ci = centre;
+						hi = hora1;
+					}
+					petinoe = estat.getPeticions(ci, 0);
+					if(petinoe.size()>=1){
+						j = -1;
+						pe = petinoe.getFirst();
+						a = false;
+					}
+					else{
+						while(a){
+							for(j = Constants.ht; a && j>=1; j--){
+								if(j!=hi){
+								petinoe = estat.getPeticions(ci, j);
+								if(petinoe.size()>=1){
+									pe = petinoe.getFirst();
+									a = false;
 								}
-								if(a){        								
-									for(;i2<Constants.nc && a;i2++){
-										for(j3 = 1; j3<Constants.ht && a;j3++){
-											if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
-												a = false;
-												_p.add(p);
-												_c.add(centre);
-												_hOri.add(hora1);
-												_hDest.add(hora2);
-												_xcap.add(true);
-												_xcen.add(i2);
-												_xhor.add(j3);
-											}
-										}
-									}
-									if(a){
-										for(i2=0;i2<centre && a;i2++){
-											for(j3 = 1; j3<Constants.ht && a; j3++){
-												if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
-													a = false;
-													_p.add(p);
-													_c.add(centre);
-													_hOri.add(hora1);
-													_hDest.add(hora2);
-													_xcap.add(true);
-													_xcen.add(i2);
-													_xhor.add(j3);
-												}
-											}
-										}
-										if(a){
-											for(j3 = 1; j3<hora2 && a;j3++){
-												if(estat.getCap(i2, j3)>capinsuf && estat.getCapO(i2, j3)<=capinsuf){
-													a = false;
-													_p.add(p);
-													_c.add(centre);
-													_hOri.add(hora1);
-													_hDest.add(hora2);
-													_xcap.add(true);
-													_xcen.add(i2);
-													_xhor.add(j3);
-												}
-											}
-										}
-									}
 								}
 							}
 						}
 					}
+					if(!a){
+					j++;
+					_p.add(pe); 
+					_c.add(centre);
+					_c2.add(centre2);
+					_hOri.add(hora1);
+					_hDest.add(hora2);
+					_xcen.add(ci);
+					_xcap.add(true);
+					_xhor.add(j);
+					_xhord.add(hi);
+					}
 				}
 			}
+			
 		}while(a);
+
+
 		for(int i = 0 ; i < _p.size(); i++)
 		{
 			Estat successor = new Estat(estat) ;
@@ -165,6 +150,10 @@ public class Successor_SA implements SuccessorFunction {
 			int b1 = estat.getBenefici();
 			int b2 = successor.getBenefici();
 			s = s.concat(" El benefici passa de " + b1 + " a " + b2 + ".");
+
+			int r1 = estat.getRetard();
+			int r2 = successor.getRetard();
+			s = s.concat(" El retard passa de " + r1 + "h a " + r2 + "h.");
 			retVal.add(new Successor(s, successor));
 
 		}
