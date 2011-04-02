@@ -163,14 +163,6 @@ public class Principal {
 		estrategiaInicial = eI.charAt(0);		
 		algorisme = sc.next();
 		heuristic = sc.next();
-
-		// TODO : Commentar
-//		System.out.println(nbPeticions + ", " +
-//				capTransports[0] + ", " + capTransports[1] + ", " + capTransports[2] + ", " +
-//				probaHores[0] + ", " + probaHores[1] + ", " + probaHores[2] + ", " + probaHores[3] + ", " +	probaHores[4] + ", " +
-//				probaHores[5] + ", " + probaHores[6] + ", " + probaHores[7] + ", " + probaHores[8] + ", " + probaHores[9] + ", " +
-//				probaPesos[0] + ", " + probaPesos[1] + ", " + probaPesos[2] + ", " + probaPesos[3] + ", " + probaPesos[4] + ", " +
-//				estrategiaInicial + ", " + algorisme + ", " + heuristic + ".");
 	}
 
 

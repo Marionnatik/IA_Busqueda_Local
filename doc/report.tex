@@ -37,73 +37,93 @@
 \newpage
 \section*{Introducción}
 El objetivo de esta práctica es analizar y resolver un problema de optimización
-logistica mediante algoritmos de búsqueda local. Definiremos la representación
+logística mediante algoritmos de búsqueda local. Definiremos la representación
 del problema como estado y estudiaremos la influencia de los elementos que
 intervienen en esta búsqueda y que hemos visto a clase (estado inicial, función
-heurística y operadores) bajo diferentas condiciones sobre los parametros del
+heurística y operadores) bajo diferentes condiciones sobre los parámetros del
 problema.
 
 Usaremos dos tipos de algoritmos de búsqueda local : el Hill Climbing y el
-Simulated Annealing. Como el objectivo de la práctica no es la implementación de
+Simulated Annealing. Como el objetivo de la práctica no es la implementación de
 estos algoritmos, usaremos las herramientas proporcionadas por el package AIMA. 
-En el caso del Simulated Annealing, tambien estudiaremos la influencia de los 
-parametros del algoritmo.
+En el caso del Simulated Annealing, también estudiaremos la influencia de los 
+parámetros del algoritmo.
 
 \section{Representación del problema}
-El contexto del problema es el siguiente : Una empresa de transporte esta
-contratada por una compania para gestionar el encaminamiento de productos desde
-un almacen central hasta unos centros de producción.
+El contexto del problema es el siguiente : Una empresa de transporte está
+contratada por una compañía para gestionar el encaminamiento de productos desde
+un almacén central hasta unos centros de producción.
 
-Cada dia, los centros realizan un conjunto de peticiones de diferentes tipos y 
+Cada día, los centros realizan un conjunto de peticiones de diferentes tipos y 
 cantidades de productos que se tienen que entregar a una cierta hora. El pago se
 realiza en función de la cantidad de productos entregados y la puntualidad con
 la cual han llegado al centro.
 
-La empresa de transporte quiere optimizar estas entregas. Solucionaremos este
-problema para un dia dado.
+La empresa de transporte quiere optimizar estas entregas, sabiendo que manda un
+transporte a cada centro en cada hora en punto del día.\\
+No tenemos que gestionar la recogida de productos en el almacén, ni el recorrido
+de los transportes, ni la cantidad de camiones físicos que se necesitan :
+Suponemos que la empresa dispone de una flota suficiente para hacer todas las
+entregas en tiempo.\\
+Solucionaremos este problema para un solo día, pues las peticiones no entregadas
+no estarán desplazadas al día siguiente.
 
 \subsection{Identificación de los elementos relevantes}
-%descripcion, analisis y caracteristicas del problema
 Para cada problema, tendremos unos elementos constantes, unos elementos
-especificos del problema y unos elementos variables que se tendran que
+específicos del problema y unos elementos variables que se tendrán que
 determinar para llegar a la solución.
 
 \subsubsection{Constantes}
 \begin{description}
-\item[Centros de producción :] Como lo hemos dicho, el numero de centros esta 
-fixado a 6.
-\item[Horas de entrega :] Las entregas se haran a cada hora en punto del dia. La
-primera se hara a las 8 y la ultima a las 17, para un total de 10 horas de
-entrega.\\
-El retraso en la entrega de una peticion es simplemente la diferencia entre la
-hora de entrega deseada y la efectiva. Si la peticion no esta entregada en el
-dia, el retraso es la diferencia entre la hora de entrega deseada y las 8 del
-dia siguiente. No obstante, como solucionemos el problema solo para un dia, no
-se tendra que gestionar la entrega de estas peticiones el dia siguiente.
-\item[Transportes :] Tendremos un transporte para cada hora del dia y cada
+\item[Centros de producción :] Como lo hemos dicho, el número de centros esta 
+fijado a 6.
+\item[Horas de entrega :] Las entregas se harán a cada hora en punto del día. La
+primera se hará a las 8 y la última a las 17, para un total de 10 horas de
+entrega.
+\item[Transportes :] Tendremos un transporte para cada hora del día y cada
 centro, es decir 60 transportes en total. La capacidad de los camiones usados
-sera de 500, 1000 o 2000kgs, en proporción variable.\\
-No tenemos que gestionar la recogida de productos en el almacen, ni el recorrido
-de los transportes, ni la cantidad de camiones fisicos que se necesitan :
-Suponemos que la empresa dispone de una flota suficiente para hacer todas las
-entregas en tiempo.
-\item[Peticiones :] Las peticiones se haran para una de las horas de entregas y
-para una cantidad de productos de 100, 200, 300, 400 o 500kgs.\\
-El precio pagado para cada peticion entregada sera el indicado en la tabla 1
-menos unos 20\% del mismo para cada hora de retraso, es decir que para mas de 5h
-de retraso le tocara pagar a la empresa de transporte. Si una peticion no esta
-entregada en el dia, la empresa de transporte tendra que pagar el precio de la
-peticion mas unos 20\% para cada hora hasta las 17.
-\begin{center}
-\includegraphics[width=3cm]{preciosEntregas}\\
-{\it Tabla 1 : Precio de las entregas.} \end{center}
+sera de 500, 1000 o 2000kgs, en proporción variable.
+\item[Peticiones :] Las peticiones se harán para una de las horas de entregas y
+para una cantidad de productos de 100, 200, 300, 400 o 500kgs.
 \end{description}
 
-\subsubsection{Elementos de la solucion}
+\subsubsection{Elementos específicos del problema}
+\begin{description}
+\item[Peticiones :] Todas las peticiones estarán generadas al principio de la
+resolución mediante unos parámetros especificados por el usuario. Por lo tanto,
+serán diferentes para cada problema. Se tendrán que especificar :
+\begin{itemize}
+\item El número de peticiones
+\item La distribución de probabilidad de cantidad de productos de las entregas
+\item La distribución de probabilidad de horas de entrega
+\end{itemize}
+Las peticiones estarán repartidas de forma equiprobable entre los centros.
+\item[Transportes :] Se tendrá que especificar la distribución de probabilidad
+de capacidades de los transportes, es decir cuantos de los 60 transportes
+tendrán una capacidad de 500kgs, cuantos de 1000 y cuantos de 2000.
+\item[Parámetros de la búsqueda :] Se precisará que tipo de estado inicial,
+algoritmo de búsqueda y función heurística se tienen que usar. 
+\end{description}
+
+\subsubsection{Elementos de la solución}
+Para llegar a la solución, se tendrán que determinar :
+\begin{itemize}
+\item La repartición de los 60 transportes, es decir que capacidad de transporte
+se asignará à cada hora de cada centro.
+\item La repartición de las peticiones en los transportes.
+\end{itemize}
 
 \subsection{Estado}
 \subsubsection{Elementos del estado}
 %descripcion detallada y justificacion
+\begin{center} \includegraphics[width=16cm]{clases}\\
+{\it Diagrama de clases de representación del estado} \end{center}
+Hemos escogido una representación en acuerdo con la decripción del problema de
+la parte anterior.\\
+Las instancias de clase Petición se crearán a la inicialización y cada una se
+vinculará con la instancia de Transporte que le corresponde. Por eso, habrá 11
+instancias de Transporte para cada centro : La primera servirá para guardar las
+instancias de Petición que no se han entregadas.
 \subsubsection{Tamaño del espacio de búsqueda}
 
 
@@ -112,7 +132,7 @@ peticion mas unos 20\% para cada hora hasta las 17.
 %factor de ramificacion
 %justificacion de la eleccion
 \subsubsection{Desplazamiento de una petición dentro de un centro}
-\subsubsection{Intercanvio de capacidades de camiones}
+\subsubsection{Intercambio de capacidades de camiones}
 \subsubsection{Operadores no implementados}
 
 
@@ -121,9 +141,22 @@ peticion mas unos 20\% para cada hora hasta las 17.
 %justificacion de la eleccion de estas heuristicas y de las ponderaciones
 %explicacion del impacto de las heuristicas en la busqueda
 \subsubsection{Maximización de la ganancia}
+
+El precio pagado para cada petición entregada sera el indicado en la tabla 1
+menos unos 20\% del mismo para cada hora de retraso, es decir que para mas de 5h
+de retraso le tocara pagar a la empresa de transporte. Si una petición no esta
+entregada en el día, la empresa de transporte tendrá que pagar el precio de la
+petición mas unos 20\% para cada hora hasta las 17.
+\begin{center}
+\includegraphics[width=3cm]{preciosEntregas}\\
+{\it Tabla 1 : Precio de las entregas.} \end{center}
 \subsubsection{Minimización de la diferencia entre hora de entrega deseada y
 efectiva}
-
+El retraso en la entrega de una petición es simplemente la diferencia entre la
+hora de entrega deseada y la efectiva. Si la petición no esta entregada en el
+día, el retraso es la diferencia entre la hora de entrega deseada y las 8 del
+día siguiente. No obstante, como solucionemos el problema solo para una jornada,
+no se tendra que gestionar la entrega de estas peticiones.
 
 \subsection{Estados Iniciales}
 %justificacion de la eleccion de los estados (bondad de la solucion, coste,
