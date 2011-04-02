@@ -157,8 +157,16 @@ búsqueda local y que recorriremos solo una fracción del espacio, no es excesiv
 %descripcion detallada, condiciones de aplicacion, efecto
 %factor de ramificacion
 %justificacion de la eleccion
+Nuestro conjunto de operadores està echo por el desplazamiento de una petición y el cambio de operadores.
 \subsubsection{Desplazamiento de una petición dentro de un centro}
+El operador de desplazamiento pone una petición de el transporte pertinente a una hora, en una otra. Este operador se puede aplicar solo si en la hora destino queda una capacidad disponible bastante grande para añadir la petición en cuestión. Tampoco se puede desplazar una petición a la misma hora de orígen o a un otro centro.
+El efecto es disfrutar los huecos que se crean después de cambios de camiones para entregar peticiones que estan entre la no entragadas o que estan entregadas mas tarde de su hora de entrega.
+El factor de ramificación es O(Nºhores X Nº peticiones) 
+Una variante de este operador sería prohibendo el desplazamiento de una petición a el grupo de no entregadas. La magnitud de el factor de ramificación no cambia pero se elimina la generación de muchos succesores que no pueden ser escogidos de el Hill Climbing porqué su heurística siempre da un resultado negativo sobre estos. De todas maneras, esta variante no puede ser implementada porqué una consecuencia directa sería un número muy grande de estados (a veces el primero) sin algun succesor válido y esto bloquearia el Simulated Annealing. 
 \subsubsection{Intercambio de capacidades de camiones}
+El intercambio de capacidades de camiones intercambia las capacidades de dos transportes entre dos horas. Este operador se puede aplicar solo si la capacidad ocupada de cada transporte es inferior de la capacidad de el transporte que va a recibir. Tampoco se puede intercambiar camiones que tienen la misma capacidad. El efecto es cambiar la capacidad total disponible en un centro o ponerlas en horas diferente. Así se podría poner mas capacidad en los centros que la necesitan o en horas más tempranas para adelantar peticiones en retraso. 
+El intercambio de camiones en si mismo no hace cambiar ninguna heurística así que es necesario desplazar una petición en el mismo operadors. Así que se pone una petición no entregada en el transporte que ha subido su capacidad; si no hay peticiones no entregadas, se pone la más valorable de la que se entregan más tarde.
+El factor de ramificación es O(Nºhores^2).
 \subsubsection{Operadores no implementados}
 
 
