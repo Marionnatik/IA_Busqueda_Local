@@ -13,7 +13,7 @@ public class Successor_HC implements SuccessorFunction
 	@Override
 	public List<Successor> getSuccessors(Object state)
 	{
-		Estat estado = (Estat) state ;
+		Estado estado = (Estado) state ;
 		
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		String s;
@@ -32,7 +32,7 @@ public class Successor_HC implements SuccessorFunction
 		{
 			for(int hora1 = 0 ; hora1 < Constants.ht+1 ; hora1++)
 			{
-				LinkedList<Peticio> pp = estado.getPeticions(centre, hora1);
+				LinkedList<Peticio> pp = estado.getPeticiones(centre, hora1);
 
 				for(it = pp.iterator(); it.hasNext();)
 				{
@@ -57,14 +57,14 @@ public class Successor_HC implements SuccessorFunction
 
 		for(int i = 0 ; i < op1_p.size(); i++)
 		{
-			Estat successor = new Estat(estado) ;
+			Estado successor = new Estado(estado) ;
 			successor.desplazar(op1_p.get(i), op1_c.get(i), op1_hOri.get(i), op1_hDest.get(i));
 			s = new String("Peticion " + op1_p.get(i).getID() + " del centro " + (op1_c.get(i)+1) +
 					" con hora de entrega : " + op1_p.get(i).getH() +
 					"h desplazada de " + (op1_hOri.get(i)+7) + "h a " + (op1_hDest.get(i)+7) + "h.");
 
-			s = s.concat(" El benefici passa de " + estado.getBenefici() + "€ a " + successor.getBenefici() + "€.");
-			s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
+			s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
+			s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
 
 			retVal.add(new Successor(s, successor));
 		}
@@ -112,7 +112,7 @@ public class Successor_HC implements SuccessorFunction
 										hi = hora1;
 									}
 
-									petinoe = estado.getPeticions(ci, 0);
+									petinoe = estado.getPeticiones(ci, 0);
 									Peticio pe = null;
 
 									if(petinoe.size() >= 1)
@@ -127,7 +127,7 @@ public class Successor_HC implements SuccessorFunction
 											{
 												if(j != hi)
 												{
-													petinoe = estado.getPeticions(ci, j);
+													petinoe = estado.getPeticiones(ci, j);
 
 													if(petinoe.size() >= 1)
 													{
@@ -160,23 +160,23 @@ public class Successor_HC implements SuccessorFunction
 		
 		for(int i = 0 ; i < op2_c.size(); i++)
 		{
-			Estat successor = new Estat(estado) ;
+			Estado successor = new Estado(estado) ;
 			
-			Peticio peti = successor.removePeticio(op2_p.get(i), op2_xcen.get(i), op2_xhor.get(i));
+			Peticio peti = successor.removePeticion(op2_p.get(i), op2_xcen.get(i), op2_xhor.get(i));
 			successor.intercambioCamiones(op2_c.get(i), op2_hOri.get(i), estado.getCap(op2_c2.get(i), op2_hDest.get(i)), op2_c2.get(i), op2_hDest.get(i), estado.getCap(op2_c.get(i), op2_hOri.get(i)));				
 			s = new String("Capacitats intercanviades entre l'hora " + (op2_hOri.get(i)+7) + " del centre " + (op2_c.get(i)+1) + " (" + estado.getCap(op2_c.get(i), op2_hOri.get(i)) + "kgs) i l'hora " + (op2_hDest.get(i)+7) + " del centre " + (op2_c2.get(i)+1) + " (" + estado.getCap(op2_c2.get(i), op2_hDest.get(i)) + "kgs).");
 			
-			successor.addPeticio(peti, op2_xcen.get(i), op2_xhord.get(i));
+			successor.addPeticion(peti, op2_xcen.get(i), op2_xhord.get(i));
 			s = s.concat("Peticion " + op2_p.get(i).getID() + " del centro " + (op2_xcen.get(i)+1) + " con hora de entrega : " + op2_p.get(i).getH() + "h desplazada de " + (op2_xhor.get(i)+7) + "h a " + (op2_xhord.get(i)+7) + "h.");			
 
-			s = s.concat(" El benefici passa de " + estado.getBenefici() + "€ a " + successor.getBenefici() + "€.");
-			s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
+			s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
+			s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
 
 			retVal.add(new Successor(s, successor));
 		}
 		
 
-		// OPERADOR : INTERCAMBIO DE PETICIONES
+/*		// OPERADOR : INTERCAMBIO DE PETICIONES
 
 		ArrayList<Integer> op3_c = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h1 = new ArrayList<Integer>();
@@ -188,7 +188,7 @@ public class Successor_HC implements SuccessorFunction
 		{
 			for(int hora1 = 0 ; hora1 < Constants.ht + 1 ; hora1++)
 			{
-				LinkedList<Peticio> pp1 = estado.getPeticions(centre, hora1);
+				LinkedList<Peticio> pp1 = estado.getPeticiones(centre, hora1);
 
 				for(it = pp1.iterator(); it.hasNext();)
 				{
@@ -198,7 +198,7 @@ public class Successor_HC implements SuccessorFunction
 					{						
 						if(hora2 != hora1)
 						{
-							LinkedList<Peticio> pp2 = estado.getPeticions(centre, hora2);
+							LinkedList<Peticio> pp2 = estado.getPeticiones(centre, hora2);
 
 							for(it = pp2.iterator(); it.hasNext();)
 							{
@@ -220,20 +220,20 @@ public class Successor_HC implements SuccessorFunction
 
 		for(int i = 0 ; i < op3_c.size(); i++)
 		{
-			Estat successor = new Estat(estado) ;
+			Estado successor = new Estado(estado) ;
 			
 			successor.intercambioPeticiones(op3_c.get(i), op3_h1.get(i), op3_h2.get(i), op3_p1.get(i), op3_p2.get(i));
 			s = new String("Se han intercambiado las peticiones " + op3_p1.get(i).getID() + 
 					" (" + (op3_h1.get(i)+7) + "h) y " + op3_p2.get(i).getID() + " (" + (op3_h2.get(i)+7) + ") del centro " +
 					(op3_c.get(i)+1));
 			
-			s = s.concat(" El benefici passa de " + estado.getBenefici() + "€ a " + successor.getBenefici() + "€.");
-			s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
+			s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
+			s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
 
 
-			if(estado.getBenefici() < successor.getBenefici()) successor.getBeneficiVerbose();
+			if(estado.getBeneficio() < successor.getBeneficio()) successor.getBeneficioVerbose();
 			retVal.add(new Successor(s, successor));
-		}
+		}*/
 
 		System.out.println(retVal.size() + " successores generados.");
 		return retVal;

@@ -33,7 +33,7 @@ public class Peticio implements Comparable<Peticio>{
 	@Override
 	public int compareTo(Peticio o)
 	{
-		switch(Estat.tipord){
+		switch(Estado.tipord){
 			case 'a':
 				if(hora!=o.getH())return hora - o.getH();
 				else if(preu!=o.getPre()) return o.getPre() - preu;

@@ -7,15 +7,18 @@ import aima.search.framework.*;
 import aima.search.informed.*;
 
 
-public class Principal {
+public class Principal
+{	
+	static int nbTests;
 
-	static int nbPeticions, n;
-	static int[] capTransports = new int[Constants.cap.length];
+	static int nbPeticiones;
 	static float[] probaPesos = new float[Constants.cant.length];
-	static float[] probaHores = new float[Constants.ht];
+	static float[] probaHoras = new float[Constants.ht];
+	static int[] capTransportes = new int[Constants.cap.length];
+	
 	static char estrategiaInicial;
-	static String algorisme;
-	static String heuristic;
+	static String algoritmo;
+	static String heuristica;
 
 	public static void main(String[] args)
 	{
@@ -23,6 +26,7 @@ public class Principal {
 		float mb, mr;
 		double elapsedTimeInmSec = -1;
 		String intest;
+		
 		// Genera las constantes
 		new Constants();
 
@@ -52,32 +56,32 @@ public class Principal {
 			out.write(intest);
 			out.newLine();
 			// Genera el estat inicial amb l'estratègia desitjada
-			for(i=0;i<n;i++){
+			for(i=0;i<nbTests;i++){
 				nt = Integer.toString(i+1);
 				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
 				long start = System.nanoTime();
-				Estat e = generadorProblema();
+				Estado e = generadorProblema();
 				e.estadoInicial(estrategiaInicial);
-				bi = e.getBenefici();
-				ri = e.getRetard();
+				bi = e.getBeneficio();
+				ri = e.getRetraso();
 				String s1 = "Benefici : " + bi;
 				e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
 				// Resolució del problema
 				try {
 					Problem problem = null;
 
-					if(algorisme.equals("hc"))
+					if(algoritmo.equals("hc"))
 					{
 						// Algorisme Hill Climbing
-						if (heuristic.equals("gan"))
+						if (heuristica.equals("gan"))
 						{
 							// Heuristic 1
 							problem = new Problem(e,
 									new Successor_HC(),
 									new Goal_Test(),
 									new Heuristica_Ganancia());
-						} else if (heuristic.equals("ret")) {
+						} else if (heuristica.equals("ret")) {
 							// Heuristic 2
 							problem = new Problem(e,
 									new Successor_HC(),
@@ -89,23 +93,22 @@ public class Principal {
 						}
 						HillClimbingSearch search = new HillClimbingSearch();
 						SearchAgent agent = new SearchAgent(problem, search);
-						e = (Estat) search.getLastSearchState();			
+						e = (Estado) search.getLastSearchState();			
 						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 						printActions(agent.getActions());
-						//c						System.out.println("Search Outcome=" + search.getOutcome());
 						printInstrumentation(agent.getInstrumentation(), out);
 
-					} else if (algorisme.equals("sa"))
+					} else if (algoritmo.equals("sa"))
 					{
 						// Algorisme Simulated Annealing
-						if (heuristic.equals("gan"))
+						if (heuristica.equals("gan"))
 						{
 							// Heuristic 1
 							problem = new Problem(e,
 									new Successor_SA(),
 									new Goal_Test(),
 									new Heuristica_Ganancia());
-						} else if (heuristic.equals("ret")) {
+						} else if (heuristica.equals("ret")) {
 							// Heuristic 2
 							problem = new Problem(e,
 									new Successor_SA(),
@@ -117,10 +120,9 @@ public class Principal {
 						}				
 						SimulatedAnnealingSearch search = new SimulatedAnnealingSearch();
 						SearchAgent agent = new SearchAgent(problem, search);
-						e = (Estat) search.getLastSearchState();			
+						e = (Estado) search.getLastSearchState();			
 						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
-						printActions(agent.getActions());
-						//c						System.out.println("Search Outcome=" + search.getOutcome());
+						//c						printActions(agent.getActions());
 						printInstrumentation(agent.getInstrumentation(), out);
 
 					} else {
@@ -131,8 +133,8 @@ public class Principal {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-				bo = e.getBenefici();
-				ro = e.getRetard();
+				bo = e.getBeneficio();
+				ro = e.getRetraso();
 				mb = (float)100*(bo-bi)/Math.abs(bi);
 				String s2 = "Benefici : " + bo;
 				e.writeFile(file_out2, "ESTAT FINAL", s2);
@@ -154,13 +156,13 @@ public class Principal {
 	{
 		Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		sc.useLocale(Locale.US);
-		n = sc.nextInt();
+		nbTests = sc.nextInt();
 		// Llegeix el nombre de peticions
-		nbPeticions = sc.nextInt() ;
+		nbPeticiones = sc.nextInt() ;
 
 		// Llegeix y comproba el nombre de transports per cada capacitat
-		for(int i = 0 ; i < capTransports.length ; i++) capTransports[i] = sc.nextInt();
-		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
+		for(int i = 0 ; i < capTransportes.length ; i++) capTransportes[i] = sc.nextInt();
+		if(capTransportes[0] + capTransportes[1] + capTransportes[2] != 60)
 		{
 			System.out.println("Error en l'arxiu de prova " + file + " : La suma dels transports no és igual a 60.");
 			System.exit(1);
@@ -177,13 +179,13 @@ public class Principal {
 		}
 
 		// Llegeix y comproba la distribució de probabilitat de las hores d'entrega
-		for(int i = 0 ; i < probaHores.length ; i++) probaHores[i] = sc.nextFloat();
-		if(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
-				probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9] != 1)
+		for(int i = 0 ; i < probaHoras.length ; i++) probaHoras[i] = sc.nextFloat();
+		if(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
+				probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9] != 1)
 		{
 			System.out.println("Error en l'arxiu de prova " + file + " : La suma de las probabilitats de las hores és igual a " + 
-					(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
-							probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9]) +
+					(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
+							probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9]) +
 			".");
 			// System.exit(1);
 			// WTF ?!?!?!?! 0,1 + 0,1 + ... + 0,1 = 1,0000001 !!!!!!!!
@@ -192,28 +194,28 @@ public class Principal {
 		// Llegeix l'estratègia de generació del estat inicial, l'algorisme i l'heuristic desitjats
 		String eI = sc.next();
 		estrategiaInicial = eI.charAt(0);		
-		algorisme = sc.next();
-		heuristic = sc.next();
+		algoritmo = sc.next();
+		heuristica = sc.next();
 	}
 
 
-	private static Estat generadorProblema()
+	private static Estado generadorProblema()
 	{
-		Estat inicial =  new Estat(capTransports);
+		Estado inicial =  new Estado(capTransportes);
 
 		int numCentre = 0 ;
 
 
-		for(int i = 0 ; i < nbPeticions ; i++)
+		for(int i = 0 ; i < nbPeticiones ; i++)
 		{
 			// Genera una hora d'entrega en conformitat amb la distribució de probabilitat
 			float probaH = (float) Math.random();			
 			int horaEntrega = 0;
-			float totalProbaH = probaHores[horaEntrega];
+			float totalProbaH = probaHoras[horaEntrega];
 			while(probaH > totalProbaH)
 			{
 				horaEntrega++;
-				totalProbaH += probaHores[horaEntrega];
+				totalProbaH += probaHoras[horaEntrega];
 			}
 
 			// Genera el pes de l'entrega en conformitat amb la distribució de probabilitat
@@ -227,13 +229,13 @@ public class Principal {
 			}
 
 			// Si un centre està ple, es passa al següent
-			if( i > Math.ceil((float)(numCentre+1)*(float)nbPeticions/(float)Constants.nc)) numCentre++;
+			if( i > Math.ceil((float)(numCentre+1)*(float)nbPeticiones/(float)Constants.nc)) numCentre++;
 
 			// Creació de la petició
 			Peticio p = new Peticio(i, Constants.cant[peso], horaEntrega + Constants.h_min);
 
 			// Asignació de la petició al centre, com "no entregada"
-			inicial.addPeticio(p, numCentre, 0);
+			inicial.addPeticion(p, numCentre, 0);
 		}
 
 		return inicial ;
@@ -244,7 +246,7 @@ public class Principal {
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			System.out.println(key + " : " + property);
+			//System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
