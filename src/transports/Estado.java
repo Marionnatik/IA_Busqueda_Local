@@ -7,40 +7,42 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class Estat 
+public class Estado 
 {
 	public int[] distriCap = new int[Constants.cap.length];
 	public static char tipord;
 	private Centre[] centres = new Centre[Constants.nc];
 
-	public Estat(int[] capacitats)
+	
+	// CONSTRUCTORES
+	public Estado(int[] capacitats)
 	{
 		distriCap = capacitats ;
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre() ;
 	}
 
-	public Estat(Estat e)
+	public Estado(Estado e)
 	{
 		distriCap = e.distriCap ;
 		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(e.centres[i]);
 	}
 
-	public void estadoInicial(char tipo){
-		// Hi han diferentes tipologies
-		switch(tipo) {
+	
+	// ESTADOS INICIALES
+	public void estadoInicial(char tipo)
+	{
+		switch(tipo)
+		{
 		case 'a': 
 			tipord = 'a';
-			this.mes_aviat_possible();
+			this.mesAviatPossible();
 			break;
 		case 'b': 
 			tipord = 'b';
-			this.per_hora();
+			this.perHora();
 			break;
 		case 'f':
-			this.first_fit();
-			break;
-		case 'r': 
-			this.random();
+			this.firstFit();
 			break;
 		case 'v': 
 			this.buit();
@@ -48,31 +50,42 @@ public class Estat
 		}
 	}
 
-	private void first_fit() {
+	private void mesAviatPossible()
+	{
 		int i;
-		camions_greedy();
-		for(i = 0 ; i < Constants.nc ; i++){
-			centres[i].ff_2r();
+		this.camionsGreedy();
+		for(i = 0 ; i < Constants.nc ; i++)
+		{
+			centres[i].ordena_noassign();
+			centres[i].greedy();
 		}
 	}
-
-	private void per_hora() {
-		int i, j, a, k;
-		boolean c, r[], tr;
-		Peticio p;
+	
+	private void perHora()
+	{
+		int i, j, a, k ;
+		boolean c, r[], tr ;
+		Peticio p ;
 		Transport ts[];
 		Iterator<Peticio>[] it = new Iterator[Constants.nc];
 		r = new boolean[Constants.nc];
 		int[] cl = distriCap.clone();
-		for(i = 0 ; i < Constants.nc ; i++){
+		
+		for(i = 0 ; i < Constants.nc ; i++)
+		{
 			centres[i].ordena_noassign();
 			r[i] = true;
 			it[i] = centres[i].h_setup();
 		}
+		
 		c = true;
-		while(c){
+		
+		while(c)
+		{
 			c = false;
-			for(i = 0 ; i < Constants.nc ; i++){
+			
+			for(i = 0 ; i < Constants.nc ; i++)
+			{
 				if(r[i]){
 					p = it[i].next();
 					if(!it[i].hasNext())r[i] = false;
@@ -81,16 +94,24 @@ public class Estat
 				c = c || r[i];
 			}
 		}
-		for(i = 0 ; i < Constants.nc ; i++)centres[i].neteja();
+		
+		for(i = 0 ; i < Constants.nc ; i++) centres[i].neteja();
+		
 		a = Constants.cap.length;
-		// comprovo que hi hagi un camion cada hora
-		for(i = 0; i<Constants.nc; i++){
+		
+		for(i = 0 ; i < Constants.nc ; i++)
+		{
 			ts = centres[i].get_transports();
-			for(j = 0; j< Constants.ht+1; j++){
+			
+			for(j = 0 ; j < Constants.ht+1 ; j++)
+			{
 				tr = true;
-				if(ts[j].getCap()==0){
-					for(k = a-1; tr; k--){
-						if(cl[k]>0){
+				if(ts[j].getCap() == 0)
+				{
+					for(k = a-1 ; tr ; k--)
+					{
+						if(cl[k] > 0)
+						{
 							centres[i].set_camion(j, Constants.cap[k]);
 							tr = false;
 						}
@@ -101,38 +122,23 @@ public class Estat
 		}
 	}
 
-
-	private void random() {
-		// TODO Auto-generated method stub
+	private void firstFit()
+	{
 		int i;
-		camions_random();
-		for(i=0; i<Constants.nc;i++){
-			centres[i].ff_2r();
+		camionsGreedy();
+		for(i = 0 ; i < Constants.nc ; i++)
+		{
+			centres[i].firstFitPorHora();
 		}
 	}
 
-	private void camions_random() {
-		// TODO Auto-generated method stub
-		int i, r, j;
-		int[] cd;
-		cd = distriCap.clone();
-		for(i=0; i<Constants.nc;i++){
-			for(j=0;j<Constants.ht;j++){
-				r = (int) (Constants.cap.length*Math.random());
-				if(cd[r]==0)do r = r++ % Constants.cap.length; while(cd[r]>0);
-				centres[i].set_camion(j, Constants.cap[r]);
-				cd[r]--;
-			}
-		}
+	private void buit()
+	{
+		this.camionsGreedy();
 	}
 
-
-	private void buit() {
-		// TODO Auto-generated method stub
-		this.camions_greedy();
-	}
-
-	private void camions_greedy(){
+	private void camionsGreedy()
+	{
 		int i, j, k, cont[], v, tot[], cam[];
 		tot = new int[Constants.nc];
 		cam = new int[Constants.nc];
@@ -140,32 +146,39 @@ public class Estat
 		k = Constants.cap.length-1;
 		for(i = 0; i<=k; i++)cont[i] = distriCap[k];
 		v = Constants.ht * Constants.cap[0];
-		for(i = 0 ; i < Constants.nc ; i++){
+		
+		for(i = 0 ; i < Constants.nc ; i++)
+		{
 			tot[i] = centres[i].getCapNa();
 			cam[i] = v;
 		}
-		//Més aviat pondrem els camions amb més capacitat
-		for(j = 1 ; j< Constants.ht+1; j++){
-			for(i = 0 ; i < Constants.nc ; i++){
-				if(cont[k]==0){
+		
+		for(j = 1 ; j < Constants.ht+1 ; j++)
+		{
+			for(i = 0 ; i < Constants.nc ; i++)
+			{
+				if(cont[k] == 0)
+				{
 					/*do*/	k--; /*while(cont[k]==0);*/
 				}
-				if(cam[i]<tot[i]){
+				
+				if(cam[i] < tot[i])
+				{
 					centres[i].set_camion(j, Constants.cap[k]);
 					cont[k]--;
 					cam[i] += Constants.cap[k]-Constants.cap[0];
-				}
-				else{
-					if(k > 0 && cont[0]>0){
+				} else {
+					if(k > 0 && cont[0] > 0)
+					{
 						centres[i].set_camion(j, Constants.cap[0]);
 						cont[0]--;
 					}
-					else if(k>1 && cont[1]>0){
+					else if(k > 1 && cont[1] > 0)
+					{
 						centres[i].set_camion(j, Constants.cap[1]);
 						cont[1]--;
 						cam[i] += Constants.cap[1]-Constants.cap[0];
-					}
-					else{
+					} else {
 						centres[i].set_camion(j, Constants.cap[k]);
 						cont[k]--;
 						cam[i] += Constants.cap[k]-Constants.cap[0];
@@ -174,92 +187,76 @@ public class Estat
 			}
 		}
 	}
-	private void mes_aviat_possible() {
-		// TODO Auto-generated method stub
-		int i;
-		this.camions_greedy();
-		for(i = 0 ; i < Constants.nc ; i++){
-			centres[i].ordena_noassign();
-			centres[i].greedy();
-		}
-	}
+	
 
 	// HEURISTICAS
 	// Ganancia
-	public int getBenefici(){ return benef(false); }
-	public int getBeneficiVerbose(){ return benef(true); }
-	private int benef(boolean verb)
+	public int getBeneficio(){ return beneficio(false); }
+	public int getBeneficioVerbose(){ return beneficio(true); }
+	private int beneficio(boolean verbose)
 	{
 		int b = 0 ;
-		if(verb)
+		if(verbose)
 		{
 			for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBeneficiVerbose();
-			System.out.println("Benefici total del estat : " + b);
+			System.out.println("Beneficio total del estado : " + b);
 		}
 		else for(int i = 0 ; i < Constants.nc ; i++) b += centres[i].getBenefici();
 		return b;
 	}
 
 	// Retraso
-	public int getRetard(){ return retard(false); }	
-	public int getRetardVerbose(){ return retard(true); }	
-	private int retard(boolean verb)
+	public int getRetraso(){ return retraso(false); }	
+	public int getRetrasoVerbose(){ return retraso(true); }	
+	private int retraso(boolean verbose)
 	{
 		int r = 0 ;
-		if(verb)
+		if(verbose)
 		{
 			for(int i = 0 ; i < Constants.nc ; i++) r += centres[i].getRetardVerbose();
-			System.out.println("Retard total del estat : " + r);
+			System.out.println("Retraso total del estado : " + r);
 		}
 		else for(int i = 0 ; i < Constants.nc ; i++) r += centres[i].getRetard();
 		return r;	
 	}
 
 
-	public LinkedList<Peticio> getPeticions(int i, int j) {
-		return centres[i].get_transports()[j].get_peticiones();
-	}
-
-
-	@Override
-	public String toString()
+	// OPERADORES	
+	public LinkedList<Peticio> getPeticiones(int centre, int hora)
 	{
-		String s = "";
-		s = s.concat("Retard: " + this.getRetard() + ", benefici: " + this.getBenefici() +"\n");
-		for(int i = 0 ; i < Constants.nc ; i++)
-		{
-			s = s.concat("Centre no." + (i+1) + " :\n");
-			s = s.concat(centres[i].toString() + "\n");
-		}
-
-		return s;
+		return centres[centre].get_transports()[hora].get_peticiones();
 	}
 
-
-	public void writeFile(String file, String s1, String s2)
+	// Desplazamiento de peticion
+	public boolean desplazamientoPosible(Peticio p, int centre, int hDest)
 	{
-		PrintWriter out = null;
-		try {
-			out = new PrintWriter(new FileWriter(file));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		out.println(s1);
-		out.println(this);
-		out.println(s2);
-		out.close();
-		//c		System.out.println(s1 + " escribit en " + file);
+		return centres[centre].get_transports()[hDest].getCapR() >= p.getCan();
 	}
 
-	public boolean desplazamientoPosible(Peticio p, int c, int h_dest) {
-		return centres[c].get_transports()[h_dest].getCapR() >= p.getCan();
+	public boolean desplazar(Peticio p, int centre, int hOri, int hDest)
+	{
+		return centres[centre].desplazar_peticio(p, hOri, hDest);
 	}
 
-	public boolean desplazar(Peticio p, int c, int h_ori, int h_dest) {
-		return centres[c].desplazar_peticio(p, h_ori, h_dest);
+	// Intercambio de camiones
+	public void intercambioCamiones(int centre1, int hora1, int capacitat1, int centre2, int hora2, int capacitat2)
+	{
+		centres[centre1].set_camion(hora1, capacitat1);
+		centres[centre2].set_camion(hora2, capacitat2);
 	}
 
-	public int getCap(int c, int h) {
+	public Peticio removePeticion(Peticio p, int centre, int hora)
+	{
+		return centres[centre].removePeticio(p, hora);
+	}
+
+	public boolean addPeticion(Peticio p, Integer c, Integer h)
+	{
+		return centres[c.intValue()].addPeticio(p, h);
+	}
+
+	public int getCap(int c, int h)
+	{
 		return centres[c].get_transports()[h].getCap();
 	}
 
@@ -267,25 +264,7 @@ public class Estat
 		return centres[c].get_transports()[h].getCapO();
 	}
 
-	// OPERADOR : INTERCAMBIO DE CAMIONES
-	public void intercambioCamiones(int centre1, int hora1, int capacitat1, int centre2, int hora2, int capacitat2)
-	{
-		centres[centre1].set_camion(hora1, capacitat1);
-		centres[centre2].set_camion(hora2, capacitat2);
-
-	}
-
-	public Peticio removePeticio(Peticio peticio, int centre, int hora)
-	{
-		return centres[centre].removePeticio(peticio, hora);
-	}
-
-	public boolean addPeticio(Peticio peti, Integer c, Integer h)
-	{
-		return centres[c.intValue()].addPeticio(peti, h);
-	}
-
-	// OPERADOR : INTERCAMBIO DE PETICIONES
+	// Intercambio de peticiones
 	public boolean intercambioPosible(int c, int h1, int h2, Peticio p1, Peticio p2)
 	{
 		return (centres[c].get_transports()[h1].getCapR()+p1.getCan() >= p2.getCan()
@@ -323,5 +302,37 @@ public class Estat
 			e1.printStackTrace();
 			return false;
 		}
+	}
+
+
+	// OUTPUT
+	@Override
+	public String toString()
+	{
+		String s = "";
+		s = s.concat("Retard: " + this.getRetraso() + ", benefici: " + this.getBeneficio() +"\n");
+		for(int i = 0 ; i < Constants.nc ; i++)
+		{
+			s = s.concat("Centre no." + (i+1) + " :\n");
+			s = s.concat(centres[i].toString() + "\n");
+		}
+
+		return s;
+	}
+
+
+	public void writeFile(String file, String s1, String s2)
+	{
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(new FileWriter(file));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		out.println(s1);
+		out.println(this);
+		out.println(s2);
+		out.close();
+		//c		System.out.println(s1 + " escribit en " + file);
 	}
 }

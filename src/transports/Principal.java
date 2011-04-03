@@ -7,12 +7,16 @@ import aima.search.framework.*;
 import aima.search.informed.*;
 
 
-public class Principal {
+public class Principal
+{	
+	static int nbTests;
 
 	static int nbPeticions, n, k, paso, pasos;
 	static int[] capTransports = new int[Constants.cap.length];
 	static float[] probaPesos = new float[Constants.cant.length];
 	static float[] probaHores = new float[Constants.ht];
+	static int[] capTransportes = new int[Constants.cap.length];
+	
 	static char estrategiaInicial;
 	static String algorisme;
 	static String heuristic;
@@ -24,7 +28,8 @@ public class Principal {
 		float mb, mr;
 		double elapsedTimeInmSec = -1;
 		String intest, nt;
-		Estat e;
+		Estado e;
+		
 		// Genera las constantes
 		new Constants();
 
@@ -64,8 +69,8 @@ public class Principal {
 						e.estadoInicial(estrategiaInicial);
 						elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 						out.write(elapsedTimeInmSec + ";");
-						bi = e.getBenefici();
-						ri = e.getRetard();
+						bi = e.getBeneficio();
+						ri = e.getRetraso();
 						String s1 = "Benefici : " + bi;
 						e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
 						// Resolució del problema
@@ -95,7 +100,7 @@ public class Principal {
 								}
 								HillClimbingSearch search = new HillClimbingSearch();
 								SearchAgent agent = new SearchAgent(problem, search);
-								e = (Estat) search.getLastSearchState();			
+								e = (Estado) search.getLastSearchState();			
 								elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 								printActions(agent.getActions());
 								//c						System.out.println("Search Outcome=" + search.getOutcome());
@@ -124,7 +129,7 @@ public class Principal {
 
 								SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(pasos, paso, k, cordero);
 								SearchAgent agent = new SearchAgent(problem, search);
-								e = (Estat) search.getLastSearchState();			
+								e = (Estado) search.getLastSearchState();			
 								elapsedTimeInmSec = (System.nanoTime() - start) * 1.0e-6;
 								printActions(agent.getActions());
 								//c						System.out.println("Search Outcome=" + search.getOutcome());
@@ -138,8 +143,8 @@ public class Principal {
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-						bo = e.getBenefici();
-						ro = e.getRetard();
+						bo = e.getBeneficio();
+						ro = e.getRetraso();
 						mb = (float)100*(bo-bi)/Math.abs(bi);
 						String s2 = "Benefici : " + bo;
 						e.writeFile(file_out2, "ESTAT FINAL", s2);
@@ -165,7 +170,6 @@ public class Principal {
 			System.out.println("Error : Encoding no valid.");
 			System.exit(1);
 		}
-
 	}
 
 	private static void readFileGenerador(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
@@ -176,10 +180,9 @@ public class Principal {
 
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
-		
 		// Llegeix y comproba el nombre de transports per cada capacitat
-		for(int i = 0 ; i < capTransports.length ; i++) capTransports[i] = sc.nextInt();
-		if(capTransports[0] + capTransports[1] + capTransports[2] != 60)
+		for(int i = 0 ; i < capTransportes.length ; i++) capTransportes[i] = sc.nextInt();
+		if(capTransportes[0] + capTransportes[1] + capTransportes[2] != 60)
 		{
 			System.out.println("Error en l'arxiu de prova " + file + " : La suma dels transports no és igual a 60.");
 			System.exit(1);
@@ -215,7 +218,8 @@ public class Principal {
 		n = sc.nextInt();
 		// Llegeix l'estratègia de generació del estat inicial, l'algorisme i l'heuristic desitjats
 		String eI = sc.next();
-		estrategiaInicial = eI.charAt(0);		
+		estrategiaInicial = eI.charAt(0);	
+
 		algorisme = sc.next();
 		heuristic = sc.next();
 		if(algorisme.equals("sa")){
@@ -226,7 +230,7 @@ public class Principal {
 		}
 
 	}
-	private static Estat readFileEstat(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
+	private static Estado readFileEstat(String file) throws FileNotFoundException, InputMismatchException, UnsupportedEncodingException
 	{
 		Scanner sc = new Scanner(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		sc.useLocale(Locale.US);
@@ -242,7 +246,7 @@ public class Principal {
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
 		
-		Estat est = new Estat(capTransports);
+		Estado est = new Estado(capTransports);
 		
 		// Llegeix les peticions
 		for(int cont = 0; cont < nbPeticions; cont++){
@@ -251,7 +255,7 @@ public class Principal {
 			int cant = sc.nextInt();
 			int hor = sc.nextInt();
 			Peticio p = new Peticio(id, cant, hor);
-			est.addPeticio(p, c, 0);
+			est.addPeticion(p, c, 0);
 		}
 		return est;
 		
@@ -265,12 +269,13 @@ public class Principal {
 
 	private static Boolean escribirProblema(){
 
+<<<<<<< HEAD
 		return true;
 	}
 	 */
-	private static Estat generadorProblema()
+	private static Estado generadorProblema()
 	{
-		Estat inicial =  new Estat(capTransports);
+		Estado inicial =  new Estado(capTransportes);
 
 		int numCentre = 0 ;
 
@@ -304,7 +309,7 @@ public class Principal {
 			Peticio p = new Peticio(i, Constants.cant[peso], horaEntrega + Constants.h_min);
 
 			// Asignació de la petició al centre, com "no entregada"
-			inicial.addPeticio(p, numCentre, 0);
+			inicial.addPeticion(p, numCentre, 0);
 		}
 
 		return inicial ;
@@ -315,7 +320,7 @@ public class Principal {
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			//c			System.out.println(key + " : " + property);
+//c			System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
