@@ -13,7 +13,8 @@ public class Successor_SA implements SuccessorFunction
 	public List<Successor> getSuccessors(Object state) 
 	{
 		Estat estado = (Estat) state ;
-
+		int hora1;
+		
 		Peticio op1_p = null;
 		int op1_c = 0;
 		int op1_hOri = 0;
@@ -42,7 +43,9 @@ public class Successor_SA implements SuccessorFunction
 			if(operador < (double)1/2)
 			{
 				int centre = (int) (Constants.nc * Math.random());
-				int hora1 = (int) ((Constants.ht+1)*Math.random());
+				do{
+					hora1 = (int) ((Constants.ht+1)*Math.random());
+				}while(estado.getCapO(centre, hora1)<=0);
 				int hora2 = 0;
 				do
 				{
@@ -71,12 +74,12 @@ public class Successor_SA implements SuccessorFunction
 				LinkedList<Peticio> petinoe = new LinkedList<Peticio>();
 
 				int centre1 = (int) (Constants.nc * Math.random());
-				int hora1 = (int) ((Constants.ht+1)*Math.random());
+				hora1 = (int) (1 + (Constants.ht)*Math.random());
 				int centre2 = 0;
 				int hora2 = 0;
 				do{
 					centre2 = (int) (Constants.nc * Math.random());
-					hora2 = (int)((Constants.ht+1)*Math.random());
+					hora2 = (int)(1 + (Constants.ht)*Math.random());
 				} while(estado.getCap(centre1, hora1) == estado.getCap(centre2, hora2));
 
 				//Generacion estado
@@ -197,7 +200,7 @@ public class Successor_SA implements SuccessorFunction
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		retVal.add(new Successor(s, successor));
 
-		System.out.println(retVal.size() + " successores generados.");
+//c		System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
 }

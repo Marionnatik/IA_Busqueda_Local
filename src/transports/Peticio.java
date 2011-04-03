@@ -60,5 +60,11 @@ public class Peticio implements Comparable<Peticio>{
 	{
 		return "Peticio no." + id + " : Entrega a " + hora + "h, cantitat = " + cantitat + ", preu = " + preu + ".";
 	}
+
+	public String toFile() {
+		String output;
+		output = " " + Integer.toString(id) + " " + Integer.toString(cantitat) + " " + Integer.toString(hora);
+		return output;
+	}
 		
 }

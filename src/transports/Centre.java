@@ -9,7 +9,7 @@ public class Centre {
 	private Transport[] hores = new Transport[Constants.ht+1];
 	private ArrayList<Peticio> entregades = new ArrayList<Peticio>();
 
-	public Centre(int num)
+	public Centre()
 	{
 		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);

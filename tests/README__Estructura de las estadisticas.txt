@@ -1,24 +1,24 @@
 Fichero de input
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
 
 Fichero de input
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
-Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
+Tiempo inicial;Nodos expandidos;Beneficio final;Mejoramiento beneficio;retraso final; Mejoramento retraso;Tiempo algoritmo
 

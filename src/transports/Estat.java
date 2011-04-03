@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Estat 
 {
@@ -15,7 +16,7 @@ public class Estat
 	public Estat(int[] capacitats)
 	{
 		distriCap = capacitats ;
-		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
+		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre() ;
 	}
 
 	public Estat(Estat e)
@@ -299,5 +300,28 @@ public class Estat
 		return (centres[c].get_transports()[h2].add_peticio(p1)
 				&&
 				centres[c].get_transports()[h1].add_peticio(p2));
+	}
+
+	public boolean toFile(String fileOut) {
+		PrintWriter out = null;
+		try {
+			int i;
+			out = new PrintWriter(new FileWriter(fileOut));
+			for(i = 0; i<Constants.cap.length; i++)out.write(distriCap[i] + " ");
+			out.println();
+			out.println(Principal.nbPeticions);
+			for(i = 0; i<Constants.nc; i++){
+				for(ListIterator<Peticio> it = centres[i].get_transports()[0].get_peticiones().listIterator();it.hasNext();){
+					out.print(i);
+					Peticio p = it.next();
+					out.println(p.toFile());
+				}
+			}
+			out.close();
+			return true;		
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return false;
+		}
 	}
 }
