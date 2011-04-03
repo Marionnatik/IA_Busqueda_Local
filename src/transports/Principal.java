@@ -29,7 +29,7 @@ public class Principal {
 		new Constants();
 
 		// Prepara els fitxers d'input (test1 per defecte) i output
-		String file_in = "problemas/test1/prob1.txt";
+		String file_in = "tests/test1/test1.txt";
 
 		if(args.length != 0) file_in = args[0];
 
@@ -37,7 +37,7 @@ public class Principal {
 		try{
 			if(file_in.contains("problemas")){
 				readFileGenerador(file_in);
-				intest = file_in.substring(12, file_in.length()-4);
+				intest = file_in.substring(16, file_in.length()-4);
 					for(i=0;i<n;i++){
 						nt = Integer.toString(i+1);
 						String file_out = file_in.replace(".txt", "_" + nt + "_problema.txt");
@@ -47,7 +47,7 @@ public class Principal {
 			}
 			else{
 				readFileTest(file_in);
-				intest = file_in.substring(16, file_in.length()-4);
+				intest = file_in.substring(12, file_in.length()-4);
 				try {
 					String file_outs = file_in.substring(0, 17) + "_estadisticas.csv";
 					BufferedWriter out = new BufferedWriter(new FileWriter(file_outs, true));
