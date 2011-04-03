@@ -31,11 +31,17 @@
 \date{Primavera 2010-2011}
 
 \begin{document}
+
 \maketitle
+
 \newpage
+
 \tableofcontents
+
 \newpage
+
 \section*{Introducción}
+
 El objetivo de esta práctica es analizar y resolver un problema de optimización
 logística mediante algoritmos de búsqueda local. Definiremos la representación
 del problema como estado y estudiaremos la influencia de los elementos que
@@ -50,6 +56,7 @@ En el caso del Simulated Annealing, también estudiaremos la influencia de los
 parámetros del algoritmo.
 
 \section{Representación del problema}
+
 El contexto del problema es el siguiente : Una empresa de transporte está
 contratada por una compañía para gestionar el encaminamiento de productos desde
 un almacén central hasta unos centros de producción.
@@ -69,11 +76,13 @@ Solucionaremos este problema para un solo día, pues las peticiones no entregada
 no estarán desplazadas al día siguiente.
 
 \subsection{Identificación de los elementos relevantes}
+
 Para cada problema, tendremos unos elementos constantes, unos elementos
 específicos del problema y unos elementos variables que se tendrán que
 determinar para llegar a la solución.
 
 \subsubsection{Constantes}
+
 \begin{description}
 \item[Centros de producción :] Como lo hemos dicho, el número de centros esta 
 fijado a 6.
@@ -88,6 +97,7 @@ para una cantidad de productos de 100, 200, 300, 400 o 500kgs.
 \end{description}
 
 \subsubsection{Elementos específicos del problema}
+
 \begin{description}
 \item[Peticiones :] Todas las peticiones estarán generadas al principio de la
 resolución mediante unos parámetros especificados por el usuario. Por lo tanto,
@@ -107,25 +117,33 @@ algoritmo de búsqueda y función heurística se tienen que usar.
 \end{description}
 
 \subsubsection{Elementos de la solución}
+
 Para llegar a la solución, se tendrán que determinar :
 \begin{itemize}
 \item La repartición de los 60 transportes, es decir que capacidad de transporte
-se asignará à cada hora de cada centro.
-\item La repartición de las peticiones en los transportes.
+se asignará a cada hora de cada centro.
+\item La repartición de las peticiones en los transportes. El orden de las
+peticiones en el transporte no importa.
 \end{itemize}
 
 \subsection{Definición del Estado}
-Hemos escogido una representación en acuerdo con la decripción del problema de
+
+Hemos escogido una representación en acuerdo con la descripción del problema de
 la parte anterior.
+
 \subsubsection{Implementación}
-\begin{center} \includegraphics[width=14cm, angle=90]{clases}\\
-{\it Fig. 1.1 : Diagrama de clases de representación del problema.} \end{center}
+
+\begin{center}
+\includegraphics[width=14cm, angle=90]{clases}\\
+{\it Fig. 1.1 : Diagrama de clases de representación del problema.} 
+\end{center}
+
 \begin{itemize}
 \item Una clase singleton Constantes contiene los elementos comunes a todos los
 problemas.
-\item Los elementos especificos serán leidos desde un fichero .txt y usados por
+\item Los elementos específicos serán leídos desde un fichero .txt y usados por
 el Principal para generar un problema dado, es decir un conjunto de instancias
-de la clase Petición y un Estado ``vacio'', donde las peticiones estarán
+de la clase Petición y un Estado ``vacío'', donde las peticiones estarán
 repartidas entre las 6 instancias de clase Centro pero no entregadas. Se crearán
 11 instancias de clase Transporte : una para cada hora del día y una para
 guardar las peticiones no entregadas.
@@ -134,78 +152,175 @@ se atribuirá una capacidad a cada unos de los 60 transportes que corresponden a
 una hora (los Transporte de peticiones no entregadas tendrán capacidad máxima) y
 se repartirán las peticiones según la estrategia especificada.
 \item Durante la resolución del problema, las peticiones se desplazarán de un
-Transporte a otro, dentro del mismo Centro. Tambien se podrá modificar la
+Transporte a otro, dentro del mismo Centro. También se podrá modificar la
 repartición de las capacidades entre todos los 60 transportes. Ver la sección
 siguiente para detalles sobre los operadores.
 \end{itemize}
+
 \subsubsection{Tamaño del espacio de búsqueda}
+
 Si tenemos $N$ peticiones, repartidas igualmente entre 6 centros ($\frac{N}{6}$
 peticiones/centro), que se pueden afectar a cualquier de los $10+1$ transportes,
 contamos con $O(11^N)$ configuraciones posibles para la repartición de las
-peticiones.\\
+peticiones.
+
 Si añadimos que cada uno de los 60 transportes puede tener una de 3 capacidades,
 es decir $O(3^{60})$ configuraciones posibles, tenemos un total de
-\textbf{$O(11^Nx3^{60})$ estados posibles}.\\
-\indent Se tiene que tener en cuenta que en verdad la suma de pesos de las
-peticiones afectadas a un transporte no puede exceder su capacidad, y que
-tenemos un número limitado de transportes de cada capacidad : Eso reduce el
-tamaño del espacio de búsqueda.\\
-\indent Este tamaño es bastante importante, pero considerando que hacemos una
-búsqueda local y que recorriremos solo una fracción del espacio, no es excesivo.
+\textbf{$O(11^Nx3^{60})$ estados posibles}.
+
+Se tiene que tener en cuenta que en verdad, la suma de pesos de las peticiones
+afectadas a un transporte no puede exceder su capacidad, y que tenemos un número
+limitado de transportes de cada capacidad : Eso reduce el tamaño del espacio de
+búsqueda.
+
+Este tamaño es bastante importante, pero considerando que hacemos una búsqueda
+local y que recorreremos solo una fracción del espacio, no es excesivo.
 
 \subsection{Operadores}
-%descripcion detallada, condiciones de aplicacion, efecto
-%factor de ramificacion
-%justificacion de la eleccion
-Nuestro conjunto de operadores està echo por el desplazamiento de una petición y el cambio de operadores.
-\subsubsection{Desplazamiento de una petición dentro de un centro}
-El operador de desplazamiento pone una petición de el transporte pertinente a una hora, en una otra. Este operador se puede aplicar solo si en la hora destino queda una capacidad disponible bastante grande para añadir la petición en cuestión. Tampoco se puede desplazar una petición a la misma hora de orígen o a un otro centro.
-El efecto es disfrutar los huecos que se crean después de cambios de camiones para entregar peticiones que estan entre la no entragadas o que estan entregadas mas tarde de su hora de entrega.
-El factor de ramificación es O(Nºhores X Nº peticiones) 
-Una variante de este operador sería prohibendo el desplazamiento de una petición a el grupo de no entregadas. La magnitud de el factor de ramificación no cambia pero se elimina la generación de muchos succesores que no pueden ser escogidos de el Hill Climbing porqué su heurística siempre da un resultado negativo sobre estos. De todas maneras, esta variante no puede ser implementada porqué una consecuencia directa sería un número muy grande de estados (a veces el primero) sin algun succesor válido y esto bloquearia el Simulated Annealing. 
-\subsubsection{Intercambio de capacidades de camiones}
-El intercambio de capacidades de camiones intercambia las capacidades de dos transportes entre dos horas. Este operador se puede aplicar solo si la capacidad ocupada de cada transporte es inferior de la capacidad de el transporte que va a recibir. Tampoco se puede intercambiar camiones que tienen la misma capacidad. El efecto es cambiar la capacidad total disponible en un centro o ponerlas en horas diferente. Así se podría poner mas capacidad en los centros que la necesitan o en horas más tempranas para adelantar peticiones en retraso. 
-El intercambio de camiones en si mismo no hace cambiar ninguna heurística así que es necesario desplazar una petición en el mismo operadors. Así que se pone una petición no entregada en el transporte que ha subido su capacidad; si no hay peticiones no entregadas, se pone la más valorable de la que se entregan más tarde.
-El factor de ramificación es $O(Nºhores^2)$.
-\subsubsection{Operadores no implementados}
 
+Hemos implementado tres operadores diferentes :
+\begin{enumerate}
+\item Desplazamiento de una petición
+\item Intercambio de capacidades de camiones
+\item Intercambio de dos peticiones
+\end{enumerate}
+
+\subsubsection{Op1 : Desplazamiento de una petición}
+
+\begin{description}
+\item[Descripción :] Este operador desplaza una petición de un transporte a
+otro transporte del mismo centro (ya que la asignación de una petición a un
+centro no es cambiable). Está implementado para que sea posible desplazar una
+petición desde o hasta el grupo de peticiones no entregadas, pero no desde un
+transporte hasta sí mismo.
+\item[Efecto :] Se disfruta de los ``huecos'' que pueden existir o crearse
+dentro de los transportes, por ejemplo después de un cambio de capacidad de
+camiones, para entregar peticiones no entregadas o entregadas con retraso.
+\item[Condición de aplicación :] Este operador se puede aplicar sólo si la
+hora de destino tiene una capacidad disponible suficiente para añadir la
+petición.
+\item[Factor de ramificación :] Para un conjunto de $N$ peticiones, el factor de
+ramificación de este operador es de $O(10N)$, ya que cada petición se puede
+desplazar a las 10 otras horas de su centro. Es linear, y debemos tener en
+cuenta que la mayor parte de los desplazamientos no cumplirán la condición de
+aplicación.
+\item[Justificación de la elección :]
+Hemos decidido implementar este operador porque es lo más evidente y lo más 
+simple para desplazar peticiones, con un coste linear.
+\item[Variante :] Una variante de este operador sería prohibir el desplazamiento
+de peticiones hasta el grupo de no entregadas. El factor de ramificación pasaría
+a ser $O(9N)$, y en práctica se eliminaría la generación de muchos sucesores,
+ya que mover la petición hasta las no entregadas es el único movimiento que
+siempre cumple la condición de aplicación. Además, estos estados no pueden ser
+escogidos por el Hill Climbing porqué su heurística siempre es peor.
+
+Sin embargo, decidir de no entregar una petición puede ser una decisión útil en
+el caso del Simulated Annealing, ya que permite la evolución de más estados.
+Entonces, hemos decidido guardar la primera versión del operador.
+\end{description}
+
+\subsubsection{Op2 : Intercambio de capacidades de camiones}
+
+\begin{description}
+\item[Descripción :] Este operador intercambia las capacidades de dos
+transportes, que pueden ser de dos centros diferentes. Sólo se cambia el valor
+de la capacidad, no se intercambian las instancias de Transporte (y por lo
+tanto, las peticiones). Así, se conserva la proporción de transportes de cada
+capacidad. 
+
+Sin embargo, el intercambio de camiones solo no cambia ninguna heurística. Por
+eso, hemos decidido combinarlo con el desplazamiento de una petición : Se
+intenta desplazar una petición no entregada al transporte que ha aumentado su
+capacidad ; si no es posible, se escoge una petición entre las que se entregan
+más tarde.
+
+El operador está implementado para que no se puedan intercambiar dos camiones
+que tengan la misma capacidad, y por supuesto que no se pueda cambiar la
+capacidad máxima del transporte correspondiente a las peticiones no entregadas.
+\item[Efecto :] Permite cambiar la capacidad total disponible en un centro o
+repartir-la de forma diferente entre las horas. Así, se podría poner más
+capacidad en centros que tienen una cantidad de peticiones más grande, o en las
+horas más tempranas del día para reducir el retraso.
+\item[Condición de aplicación :] Este operador se puede aplicar sólo si la
+capacidad ocupada de cada transporte es inferior su nueva capacidad. 
+\item[Factor de ramificación :] Cada transporte puede intercambiar su capacidad
+con una diferente. Si tenemos una repartición de capacidades $\{C1,C2,C3\}$, el
+factor de ramificación es $(C2+C3)^{C1}x(C3+C1)^{C2}x(C1+C2)^{C3} = 40^{60}$ si
+tenemos una repartición equiprobable. Es constante y considerablemente más
+pequeño en práctica.
+\item[Justificación de la elección :] Intercambiar dos capacidades es la única
+forma de manipular este parámetro sin cambiar la repartición de valores, ya que
+tenemos 60 cantidades para 60 transportes. El desplazamiento de petición lo
+realizamos considerando el uso primero de este operador, que es liberar
+capacidad para entregar peticiones no entregadas o retrasadas.
+\end{description}
+
+\subsubsection{Op3 : Intercambio de dos peticiones}
+
+\begin{description}
+\item[Descripción :] Este operador intercambia dos peticiones del mismo centro,
+pero de dos horas diferentes. Se puede hacer el intercambio con una petición no
+entregada y también se pueden intercambiar dos peticiones de mismo peso.
+\item[Efecto :] Permite realizar desplazamientos de peticiones que no se
+conseguirían con los operadores precedentes, por ejemplo intercambiar una
+petición adelantada con una retrasada. 
+\item[Condición de aplicación :] Este operador se puede aplicar sólo si los
+transportes tienen capacidad suficiente. Específicamente, si las peticiones no
+tienen el mismo peso, el transporte de la más pequeña debe tener bastante
+capacidad residual para contener la diferencia de pesos.
+\item[Factor de ramificación :] Cada petición se puede intercambiar con todas
+las otras peticiones del centro, con $N$ peticiones el factor de ramificación es
+$N^{\frac{N}{6}}$, considerablemente mas elevado que para los dos previos
+operadores.
+\item[Justificación de la elección :] Hemos decidido implementar este algoritmo
+al ver el porcentaje de estados que no mejoraban : Ofreciendo mas posibilidades
+de evolución de los estados, esperemos obtener una mejoría consecuente de la
+solución a pesar del factor de ramificación elevado.
+\end{description}
 
 \subsection{Funciones Heurísticas}
-%descripcion y analisis de los factores que intervienen en las heuristicas
-%justificacion de la eleccion de estas heuristicas y de las ponderaciones
-%explicacion del impacto de las heuristicas en la busqueda
-\subsubsection{Maximización de la ganancia}
+
+\subsubsection{Maximización del beneficio}
+
 \begin{description}
-\item[Definición de la ganancia :]
-Para cada petición, la compañia pagará a la empresa de transporte un importe
-basado sobre el precio base de las peticiones (indicado en la tabla 1), que
-depende unicamente de la cantidad de productos pedida, y la puntualidad de la 
-entrega.\\
+\item[Definición de la variable evaluada :]
+Para cada petición, la compañía pagará a la empresa de transporte un importe
+basado sobre el precio base de las peticiones, indicado en la tabla 1.1. Este
+precio depende únicamente de la cantidad de productos pedida, y la puntualidad
+de la entrega.
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
 Peso & Precio\\
 \hline
-100 y 200 kg & {\it peso} euros\\
-300 y 400 kg & 1,5x{\it peso} euros\\
-500 kg & 2x{\it peso} euros\\
+100 y 200kg & {\it peso} euros\\
+300 y 400kg & 1,5x{\it peso} euros\\
+500kg & 2x{\it peso} euros\\
 \hline
 \end{tabular}\\
-{\it Tabla 1.1 : Precio base de las entregas.} \end{center}
+{\it Tabla 1.1 : Precio base de las entregas.}
+\end{center}
+
 El importe pagado para cada petición entregada será el precio base menos unos
 20\% del mismo para cada hora de retraso, es decir que para mas de 5h de retraso
-le tocara pagar a la empresa de transporte. Si una petición no esta entregada enel día, la empresa de transporte tendrá que pagar el precio base de la petición
-mas unos 20\% del mismo para cada hora hasta las 17.\\
+le tocara pagar a la empresa de transporte.
 
-Ejemplo : Para cada peso de petición, en la tabla 2 se indican los
+Si una petición no esta entregada en el día, la empresa de transporte tendrá que
+pagar el precio base de la petición mas unos 20\% del mismo para cada hora hasta
+las 17.
+
+El beneficio es la suma del importe (positivo o negativo) de todas las
+peticiones.\\
+
+Ejemplo : Para cada peso de petición, en la tabla 1.2 se indican los
 importes correspondientes a una entrega en tiempo, una entrega con 1 y 7 horas
-de retraso y no entrega, considerando que las peticiones se tenián que entregar
+de retraso y no entrega, considerando que las peticiones se tenían que entregar
 a las 10.
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-Peso & En tiempo ($<$10h) & Retraso 1h (=11h) & Retraso 7h (=17h) &
-No entregada\\
+Peso & En tiempo ($\leq$10h) & Retraso 1h (=11h) & Retraso 7h (=17h) & No
+entregada\\
 \hline
 100kg & 100 & 80 & -40 & -240\\
 200kg & 200 & 160 & -80 & -560\\
@@ -215,66 +330,188 @@ No entregada\\
 \hline
 \end{tabular}\\
 {\it Tabla 1.2 : Ejemplos de importes.} \end{center}
+
+\item[Contextualización :] La penalización para retraso y no entrega parece
+realista en comparación con lo que esperaría una empresa en realidad. Sin
+embargo, el hecho de que el beneficio no sea linear comparado con el peso y que
+el tipo de producto no afecta corresponde seguramente a una simplificación del
+problema, ya que en verdad los productos serian mas o menos caros y críticos
+(mas penalización para retraso) y el peso tendría a disminuir para cantidades
+mas grandes.
 \end{description}
 
-\subsubsection{Minimización de la diferencia entre hora de entrega deseada y
-efectiva}
-El retraso en la entrega de una petición es simplemente la diferencia entre la
-hora de entrega deseada y la efectiva. Si la petición no esta entregada en el
-día, el retraso es la diferencia entre la hora de entrega deseada y las 8 del
-día siguiente. No obstante, como solucionemos el problema solo para una jornada,
-no se tendra que gestionar la entrega de estas peticiones.
+\subsubsection{Minimización del tiempo}
+
+\begin{description}
+\item[Definición de la variable evaluada :] Para esta heurística, consideraremos
+para cada petición la diferencia \emph{absoluta} entre la hora de entrega
+deseada y la hora de entrega efectiva. Pues, una petición entregada con
+antelación afecta esta heurística de forma tan negativa como una petición
+entregada con un retraso equivalente.
+
+Si la petición no esta entregada en el día, consideraremos la diferencia entre
+la hora de entrega deseada y las 8 del día siguiente. Por ejemplo : Una petición
+que se debía entregar a las 10 y que no fue entregada tendra un ``retraso'' de
+22h.
+
+Sumaremos todas estas cantidades para obtener el valor de la heurística.
+\item[Contextualización :] Esta heurística representa un otro aspecto de la
+realidad de las empresas : Cuando se usa el método justo a tiempo, recibir
+productos con antelación y tener que gestionar el stock implica también una
+perdida de productividad, aunque en realidad una antelación de una hora no
+tendría mucho impacto, y en general la antelación tendría menos efectos que el
+retraso, que puede potencialmente paralizar la producción si el producto
+transportado es crítico.
+\end{description}
 
 \subsection{Estados Iniciales}
-%justificacion de la eleccion de los estados (bondad de la solucion, coste,
-% adaptacion a cada algoritmo)
-%descripcion de la implementacion
 
-En un primer momento hemos intentado generar estados diferentes con lógicas muy diferentes con la idea de buscar nuestros estados iniciales entre un grupo más amplio y en particular elegir dos estados que tengan características muy diferentes. Es decir tiempo de generación de el estado inicial, complejidad de el algoritmo, posibilidades de evolución, calidad de la solución buscada.
+En un primer paso, hemos intentado generar estados diferentes con lógicas muy
+distinctas, con la idea de buscar nuestros estados iniciales entre un grupo más
+amplio y en particular elegir dos estados que tengan características diferentes
+(tiempo de generación, complejidad del algoritmo, posibilidades de evolución,
+calidad de la solución inicial).
 
-\subsubsection{Cuanto antes}
-A) Este estado divide los camiones de manera ecua entre los centres asignando los camiones con mas capacidad a los transportes mas tempranos. Las entregas están entregadas lo mas pronto posible: se hace una lista de peticiones pertinentes a un centro, se ordenan crecientemente por tiempo de entrega y disminuyendo por precio y se pasa toda la lista poniendo las peticiones en el transporte más pronto que tiene más tiempo libre.
+Al final, hemos implementado cuatro tipos de estados iniciales que nos han
+parecido interesantes :
+\begin{itemize}
+\item ``Cuanto antes''
+\item ``Por hora''
+\item ``First-fit''
+\item ``Vacío''
+\end{itemize}
 
-\subsubsection{Repartición por hora}
-Este estado ordena las peticiones por precio y hora. Por cada petición, intenta entregarla en la hora pertinente con este algoritmo:
-Si no hay camión, se pone el camión disponible más pequeño y la petición, si hay camión y bastante capacidad libre también se pone la petición. Si hay camión de capacidad inferior a la capacidad máxima y hay disponibilidad de camiones más grandes, se asigna un camión mas grande en lugar de lo más pequeño y se pone la petición. Además, si no hay camiones libres más grandes intenta hacer lo mismo en las horas más tempranas hasta las 8. Si no tiene éxito, intenta hacerlo en las horas después hasta las 17.
-Después si hay oras sin camión, se asignan los camiones que se quedan libres.
+\subsubsection{Ei1 : Cuanto antes}
 
-\subsubsection{First-Fit}
-F) Los camiones se asignan como en el estado A. Sin ordinación se iteran todas las peticiones intentando ponerlas en su hora de pertinencia. Después, iterativamente por cada petición se intenta poner, las que se quedan no entregadas, en las horas más tempranas de la suya hasta las 8 y si no se tiene éxito, se intenta hacerlo en las horas después hasta las 17.
+\begin{description}
+\item[Repartición de los camiones :] Se reparten las capacidades de transporte
+de forma igual entre los centros, y se asignan los transportes con más capacidad
+a las horas más tempranas.
+\item[Repartición de las peticiones :] Las peticiones están entregadas cuanto
+antes : Para cada centro, están ordenadas de forma ascendente por hora de
+entrega, descendente por precio y asignadas a los transportes en orden,
+empezando por el mas temprano que tenga capacidad residual.
+\item[Calidad :] Este estado inicial no es muy costoso. Llega a una buena
+solución, a veces óptima para la heurística de maximización del beneficio, pero
+puede introducir mucha antelación y llevar a una solución mediocre para la
+heurística de minimización del tiempo. Además, la repartición de los camiones
+puede ser no óptima, por ejemplo si un centro se ve asignado una cantidad de
+peticiones mas importante que otro.
+\end{description}
 
-\subsubsection{Vacio}
-V) Los camiones se asignan como en el estado A. Las peticiones se quedan todas no entregadas.
+\subsubsection{Ei2 : Por hora}
+
+\begin{description}
+\item[Implementación :] Las peticiones están ordenadas por precio y hora. Para
+cada petición, se intenta entregarla en su hora de entrega con el algoritmo
+siguiente :
+\begin{enumerate}
+\item Si no hay capacidad asignada al transporte, se asigna la capacidad mínima
+disponible y se entrega la petición.
+\item Si hay una capacidad libre suficiente, se entrega la petición.
+\item Si hay una capacidad no suficiente y una capacidad más grande es
+disponible , se asigna una capacidad mas grande y se entrega la petición.
+\item Si no se puede asignar una capacidad más grande a la hora de entrega, se
+intenta entregar la petición en la hora antes, siguiendo el mismo algoritmo.
+\item Si se llega a las 8, se intenta entregar la petición en la hora siguiente,
+siempre con el mismo algoritmo.
+\item Finalmente, no se entrega la petición.
+\end{enumerate}
+Al final, si quedan transportes sin capacidad asignada, se asignan las
+capacidades que quedan.
+\item[Calidad :] Este algoritmo es mucho mas costoso, pero lleva a una solución
+de calidad para ambos heurísticas.
+\end{description}
+
+\subsubsection{Ei3 : First-Fit}
+
+\begin{description}
+\item[Repartición de los camiones :] Los camiones se asignan como en el estado
+``Cuanto antes''.
+\item[Repartición de las peticiones :] Se recorren todas las peticiones (no
+ordenadas), intentando entregarlas en su hora de entrega. Después,
+iterativamente, se intentan entregar las peticiones no entregadas en las horas
+más tempranas de la suya hasta las 8 y si no se tiene éxito, se intenta hacerlo
+en las horas después hasta las 17.
+\item[Calidad :] Similar al estado ``Cuanto antes'', este estado es más adaptado
+a la heurística de minimización del tiempo.
+\end{description}
+
+\subsubsection{Ei4 : Vacío}
+
+\begin{description}
+\item[Repartición de los camiones :] Los camiones se asignan como en el estado
+``Cuanto antes''.
+\item[Repartición de las peticiones :] Las peticiones se quedan todas no
+entregadas.
+\item[Calidad :] Este estado es lo más barato, pero genera la peor solución
+posible.
+\end{description}
 
 \newpage
-\section{Implementación}
 
-\subsection{Generación de problemas aleatorios}
+\section{Experimentos}
 
-\subsection{Uso del AIMA}
+% explicaciones y análisis detallada
+% comparar los resultados con lo que se esperaba
+% hacer los experimentos del enunciado y contestar las preguntas
+% hacer tb mas experimentos para complementar
 
-\subsection{Ejecución de pruebas}
-El programa efectúa las pruebas sacando los parametros necesarios de ficheros de texto. Los ficheros estan organizados en la siguiente manera:
+\subsection{Generalidades}
+
+\begin{description}
+\item[Condiciones de experimentación por defecto :] Si no se dice otra cosa, los
+experimentos se hacen para 250 peticiones con pesos y horas de entrega
+equiprobables. Se usa el algoritmo de Hill Climbing y la heurística de
+maximización del beneficio.
+\item[Numero de pruebas :] Al largo de los experimentos, hemos notado que en
+muchos casos, solo una pequeña fracción de los estados iniciales evolucionan, en
+particular cuando tenemos estados iniciales ``avanzados'' que se pueden
+difícilmente mejorar. Por eso, hemos decidido hacer un número de pruebas elevado
+(al menos 50) para cada experimento, y cuando es relevante considerar solo los
+resultados de los casos donde el estado mejora.
+\item[Tiempo de ejecución :] Se han indicado los valores del tiempos de
+ejecución obtenido durante las pruebas. Estos valores no tienen sentido en
+absoluto, ya que dependen de la potencia y del uso del procesador, así como de
+varios otros parámetros arquitecturales. Por ejemplo, se nota que la primera
+prueba tarda mucho mas, ya que luego el procesador puede predecir una parte
+del comportamiento y acelerar la ejecución.
+\end{description}
+
+\subsection{Implementación}
+
+\subsubsection{Workflow de ejecución de pruebas}
+
+El programa efectúa las pruebas sacando los parámetros necesarios de ficheros de
+texto. Los ficheros están organizados en la siguiente manera :
+
 \begin{itemize}
-\item Linia 1 : Numero de pruebas con estos parametros - 1 Integer
-\item Linia 2 : Numero de peticiones - 1 Integer
-\item Linia 3 : Distribucion de capacidad de los camiones - 3 Integers para 500, 1000 y 2000kg - La suma de los 3 debe ser igual a 60.
-\item Linia 4 : Distribucion de pesos de las peticiones - 5 Floats para 100 hasta 500kg - La suma de los 5 debe ser igual a 1.
-\item Linia 5 : Distribucion de las horas de entrega - 10 Floats para 8h hasta 17h - La suma de los 10 debe ser igual a 1.
-\item Linia 6 : Estrategia para generar el estado inicial - 1 Char
-\item Linia 7 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
-\item Linia 8 : Tipo de heuristica - String - Puede ser "gan" o "ret".
-La separacion entre la parte entera y decimal puede ser una coma (,) o un punto (.), si sale un error "formato no valido", intenta cambiar eso.
+\item Linea 1 : Número de pruebas con estos parámetros - 1 Integer
+\item Linea 2 : Número de peticiones - 1 Integer
+\item Linea 3 : Distribución de capacidad de los camiones - 3 Integers para 500,
+1000 y 2000kg - La suma de los 3 debe ser igual a 60.
+\item Linea 4 : Distribución de pesos de las peticiones - 5 Floats para 100
+hasta 500kg - La suma de los 5 debe ser igual a 1.
+\item Linea 5 : Distribución de las horas de entrega - 10 Floats para 8h hasta
+17h - La suma de los 10 debe ser igual a 1.
+\item Linea 6 : Estrategia para generar el estado inicial - 1 Char
+\item Linea 7 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
+\item Linea 8 : Tipo de heurística - String - Puede ser "gan" o "ret".
 \end{itemize}
-Cada experimento, pero, necesita una batería de pruebas con diferentes parametros. Así tenemos una carpeta para cada experimento con diferentes ficheros para generar pruebas. Un {\it bash script} recibe en input el numero de el experimento y resuelbe el problema con los ficheros de prueba pertinentes.
 
-\subsection{Recuperación de resultados}
-%output
-Por cada problema son generados dos ficheros de salida, uno con el estado inicial y el otro con el estado final. En estos ficheros tenemos:
+Cada experimento, pero, necesita una batería de pruebas con diferentes
+parámetros. Así tenemos una carpeta para cada experimento con diferentes
+ficheros para generar pruebas. Un {\it bash script} recibe en input el numero
+del experimento y resuelve el problema con los ficheros de prueba pertinentes.
+
+\subsubsection{Recuperación de resultados}
+
+Para cada problema, son generados dos ficheros de salida, uno con el estado
+inicial y el otro con el estado final. En estos ficheros tenemos:
+
 \begin{itemize}
-\item El beneficio
-\item El retraso
-\item Los centros y por cada centro
+\item El valor de cada heurística
+\item Los centros, y para cada centro :
 	\begin{itemize}
 		\item Cantidad de peticiones no entregadas
 		\item Las horas y por cada hora de entrega
@@ -292,43 +529,30 @@ Por cada problema son generados dos ficheros de salida, uno con el estado inicia
 		\end{itemize}
 	\end{itemize}
 \end{itemize}
-También hay un fichero de estadísticas por cada experimento a que vamos anadiendo datos sobre las pruebas. Este fichero está organizado como un CSV y por cada prueba tenemos registrados:
+También hay un fichero de estadísticas por cada experimento a que vamos
+añadiendo datos sobre las pruebas. Este fichero está organizado como un CSV y
+por cada prueba tenemos registrados:
 \begin{itemize}
 \item El numero de nodos desarrollados. 
 \item El beneficio.
-\item El percentaje de mejoría de el beneficio.
+\item El porcentaje de mejoría de el beneficio.
 \item El retraso
-\item El percentaje de mejoría de el retraso.
+\item El porcentaje de mejoría de el retraso.
 \item El tiempo de ejecución de la búsqueda.
 \end{itemize}
 Una linea vacía y una linea con el título del fichero de input dividen los diferentes grupos de pruebas (resultado de diferentes ejecuciones de el programa).
 
-\newpage
+\subsection{Experimento 1 : Elección del conjunto de operadores}
 
-\section{Pruebas}
+% comparación entre conjuntos de operadores
+% impacto sobre el coste temporal y bondad de la solución
 
-\subsection{Pruebas realizadas y Resultados}
+\subsubsection{Contexto}
 
-\subsubsection{Generalidades}
-
-\begin{description}
-\item[Condiciones de experimentación por defecto :] Si no se dice otra cosa, los
-experimentos se hacen para 250 peticiones con pesos y horas de entrega
-equiprobables. Se usa el algoritmo de Hill Climbing y la heurística de
-maximización de la ganancia.
-\item[Numero de pruebas :] Al largo de los experimentos, hemos notado que en
-muchos casos, solo una pequeña fracción de los estados iniciales evolucionan, en
-particular cuando tenemos estados iniciales ``avanzados'' que se pueden
-dificilmente mejorar. Por eso, hemos decidido hacer un número de pruebas elevado
-(al menos 50) para cada experimento, y cuando es relevante considerar solo los
-resultados de los casos donde el estado mejora.
-\end{description}
-
-\subsubsection{Experimento 1 : Elección del conjunto de operadores}
 \begin{description}
 \item[Elementos comparados :] Queremos elegir el conjunto de operadores que
 vamos a usar en el resto de experimentos, entre los tres operadores que tenemos
-implementados : \emph{Desplazamiento de peticion (Op1), intercambio de camiones
+implementados : \emph{Desplazamiento de petición (Op1), intercambio de camiones
 (Op2) y intercambio de peticiones (Op3)}. Hemos decidido probar dos conjuntos :
 \begin{enumerate}
 \item Op1 + Op2
@@ -337,16 +561,24 @@ implementados : \emph{Desplazamiento de peticion (Op1), intercambio de camiones
 Hemos decidido incluir imperativamente los operadores 1 y 2 en el conjunto, ya
 que Op1 es el único operador que nos permite desplazar peticiones no entregadas
 a las entregadas y Op2 es el único que mueve los camiones. Principalmente,
-estudiaremos la influencia del operador Op3 sobre el tiempo de ejecucción, la
+estudiaremos la influencia del operador Op3 sobre el tiempo de ejecución, la
 bondad de la solución y el porcentaje de estados que mejoran.
 \item[Numero de pruebas :] 1500 pruebas para cada conjunto. Hemos escogido un
 número elevado para poder comparar el porcentaje de estados que mejoran.
-\item[Contexto :] Hemos escogido el estado inicial ``Repartición por hora'', que
-se puede mejorar bastante frecuentemente y no consume demasiado tiempo.
-\item[Resultados :]
+\item[Estado inicial :] Hemos escogido el estado inicial ``Repartición por
+hora'', que se puede mejorar bastante frecuentemente y no consume demasiado
+tiempo.
+\end{description}
+
+\subsubsection{Resultados}
+
+El porcentaje de mejoría del beneficio se calcula con la formula :
+$\frac{ben. E_f - ben. E_i}{ben. E_f}$. Se ha calculado solo considerando los
+estados mejorados, y luego en general.
+\begin{center}
 \begin{tabular}{|l|l|l|l|}
 \hline
-Conjunto & \% de estados mejorados & Mejoria del beneficio (global) & Tiempo de
+Conjunto & \% de estados mejorados & \% de mejoría (global) & Tiempo de
 ejecución/iteración\\
 \hline
 Op1 + Op2 & 5,7\% & 3\% (0,17\%) & 23,25ms\\
@@ -354,20 +586,31 @@ Op1 + Op2 & 5,7\% & 3\% (0,17\%) & 23,25ms\\
 Op1 + Op2 + Op3 & 15,3\% & 1,5\% (0,22\%) & 75,39ms\\
 \hline
 \end{tabular}
-\begin{center}
 {\it Tabla 3.1 : Resultados del experimento 1.}
 \end{center}
 
-\item[Conclusiones :] El operador Op3 provoca la evolución de mas estados, pero
-en media la solución hallada es menos buena. Ademas, el tiempo de ejecución esta
-multiplicado por 3. Por estas razones, en el caso general usaremos el primer
-conjunto de operadores : Op1 + Op2.
+\subsubsection{Conclusiones}
 
-Sin embargo, recordamos que el operador Op3 se podra usar para obtener
+El operador Op3 provoca la evolución de mas estados, pero en media la solución
+hallada es menos buena. Ademas, el tiempo de ejecución esta multiplicado por 3.
+Por estas razones, en el caso general usaremos el primer conjunto de operadores
+: Op1 + Op2.
+
+Sin embargo, recordamos que el operador Op3 se podrá usar para obtener
 resultados en casos donde pocos estados evolucionan.
-\end{description}
 
-\subsubsection{Experimento 2 : Elección de los estados iniciales}
+\subsection{Experimento 2 : Elección del estado inicial}
+
+%coste de creación
+% influencia en la bondad de la solución y en el coste del algoritmo
+
+\subsubsection{Contexto}
+
+20 pruebas
+
+\subsubsection{Resultados}
+
+\begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 Estrategia & T. gen. (ms) & N. it. & T. ejec. (t. ejec/it) (ms) & Benef.
@@ -375,20 +618,132 @@ Estrategia & T. gen. (ms) & N. it. & T. ejec. (t. ejec/it) (ms) & Benef.
 \hline
 Cuanto antes & 2,62 & 1,00 & 65 (65) & 95065 (0,00\%)\\
 \hline
-Reparticion por hora & 3,78 & 1,40 & 106 (73) & 96930 (0,42\%)\\
+Repartición por hora & 3,78 & 1,40 & 106 (73) & 96930 (0,42\%)\\
 \hline
 First-fit & 0,386 & 2,15 & 95 (46) & 81251 (1,49\%)\\
 \hline
-Vacio & 0,0193 & 220 & 37560 (170) & 89923 (141\%)\\
+Vacío & 0,0193 & 220 & 37560 (170) & 89923 (141\%)\\
 \hline
 \end{tabular}
+{\it Tabla 3.2 : Resultados del experimento 2.}
+\end{center}
+
+\subsubsection{Conclusiones}
 
 > b!!! me gusta! <
 > a no mejora pero es bueno
 > f no da buenos resultados
 > v es demasiado lento
 
-\subsubsection{Experimento 4 : Influencia del numero de peticiones}
+\subsection{Experimento 3 : Influencia de los parámetros del Simulated
+Annealing}
+
+\subsubsection{Contexto}
+100 tests
+\begin{description}
+\item[Analiza de los parámetros :] El algoritmo de Simulated Annealing se basa
+en una función dicha ``de temperatura'' que determina si un estado sucesor
+escogido al azar se escoge como nuevo estado del problema o no. Esta función
+esta implementada en el package AIMA con la formula :
+\begin{center}
+$\tau = (t-t\%L)+L$
+$temp = K.e^{-\lambda \tau}$
+\end{center}
+La variable $t$ es el número de iteraciones del algoritmo. Vemos que la función
+$\tau$ es una escalera, que hace que la temperatura sólo evolucionará cada $L$
+iteraciones. La constante $\lambda$ es proporcional a la velocidad de
+convergencia de la función y $K$ es la amplitud. También se tiene que fijar el
+número de iteraciones total $n_{it}$ que realiza el algoritmo.
+
+En la tabla 3.3 se encuentran los resultados con los parámetros por defecto, que
+usaremos si no se precisa otra cosa. Veremos el efecto de los parámetros sobre
+el tiempo de ejecución y la bondad de la solución.
+
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+$N_{it}$ & $K$ & $L$ & $\lambda$ & \% de estados mejorados & Beneficio (\% de
+mejoría) & Tiempo de ejecución (ms)\\
+\hline
+10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
+\hline
+\end{tabular}
+
+\subsubsection{Resultados}
+
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+1 000 & 20 & 100 & 0,045 & 34 & 97910 (0,75) & 115\\
+\hline
+5 000 & 20 & 100 & 0,045 & 38 & 98155 (0,94) & 394\\
+\hline
+10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
+\hline
+100 000 & 20 & 100 & 0,045 & 41 & 98157 (1,00) & 6871\\
+\hline
+\end{tabular}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+10 000 & 20 & 1 & 0,045 & 37 & 97666 (0,70) & 762\\
+\hline
+10 000 & 20 & 10 & 0,045 & 37 & 97412 (0,97) & 756\\
+\hline
+10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
+\hline
+10 000 & 20 & 1000 & 0,045 & 38 & 97961 (1,00) & 761\\
+\hline
+10 000 & 20 & 10 000 & 0,045 & 36 & 98208 (0,86) & 762\\
+\hline
+\end{tabular}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+10 000 & 2 & 100 & 0,045 & 36 & 97650 (0,88) & 823\\
+\hline
+10 000 & 20 & 100 & 0,045 & 37 & 97666 (0,70) & 762\\
+\hline
+10 000 & 200 & 100 & 0,045 & 48 & 98183 (0,97) & 760\\
+\hline
+10 000 & 2000 & 100 & 0,045 & 40 & 97957 (0,71) & 761\\
+\hline
+\end{tabular}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+10 000 & 20 & 100 & 0.000045 & 45 & 97871 (1,17) & 780\\
+\hline
+10 000 & 20 & 100 & 0,00045 & 45 & 98137 (1,24) & 775\\
+\hline
+10 000 & 20 & 100 & 0,0045 & 43 & 97605 (0,98) & 796\\
+\hline
+10 000 & 20 & 100 & 0,045 & 40 & 97957 (0,71) & 761\\
+\hline
+10 000 & 20 & 100 & 0,45 & 35 & 97624 (0,73) & 770\\
+\hline
+\end{tabular}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+5000 & 20 & 100 & 0.00045 & 36 & 97921 (0,71) & 387\\
+\hline
+5000 & 20 & 100 & 0.0045 & 39 & 98072 (0,77) & 396\\
+\hline
+10 000 & 50 & 100 & 0.00045 & 43 & 97982 (0,71) & 774\\
+\hline
+10 000 & 100 & 100 & 0.00045 & 52 & 97988 (1,14) & 784\\
+\hline
+10 000 & 200 & 100 & 0.00045 & 42 & 97548 (0,53) & 806\\
+\hline
+10 000 & 20 & 50 & 0.00045 & 50 & 97761 (1,10) & 757\\
+\hline
+10 000 & 20 & 150 & 0.00045 & 34 & 97761 (0,85) & 755\\
+\end{tabular}
+\end{description}
+
+\subsubsection{Conclusiones}
+
+\subsection{Experimento 4 : Influencia del numero de peticiones}
+
+\subsubsection{Contexto}
+100
+
+\subsubsection{Resultados}
 200p : 
 t.gen 0,579
 n it 2,04 / 2,47
@@ -445,13 +800,20 @@ mej 0 / 0,55
 t tot 42.4 / 1650
 t/it 42.4 / 833
 
+\subsubsection{Conclusiones}
 > t gen sube
 > no mejora
-> ben baja excepto al primero xq teniamos todo entregado
+> ben baja excepto al primero porque tenemos todo entregado
 > t. tot sube 
 
-\subsubsection{Experimento 5 : Influencia de la heuristica}
-100 tests
+\subsection{Experimento 5 : Influencia de la heurística}
+
+% comparación entre las dos Heurísticas, impacto en tiempo y bondad de solución
+% hacer experimentos para ver la influencia de las ponderaciones
+\subsubsection{Contexto}
+100
+
+\subsubsection{Resultados}
 
 200
 n.it 2,46 / 2,22
@@ -477,23 +839,90 @@ ret 2039 / 2041
 mej 0 / 0
 t 24,69 / 24,71
 
+\subsubsection{Conclusiones}
 
-\subsection{Interpretacion de los resultados}
-% explicaciones y analisis detallada
-% comparar los resultados con lo que se esperaba
-% hacer los experimentos del enunciado y contestar las preguntas
-% hacer tb mas experimentos para complementar
+\subsection{Experimento 6 : Comparación de los algoritmos}
 
-\subsection{Influencia de la solución inicial}
-%coste de creacion
-% influenca en la bondad de la solucion y en el coste del algoritmo
+\subsubsection{Contexto}
+100
 
-\subsection{Influencia de los operadores}
-% comparacion entre conjuntos de operadores
-% impacto sobre el coste temporal y bondad de la solucion
+\subsubsection{Resultados}
+\subsubsection{Conclusiones}
 
-\subsection{Influencia de la heurística}
-% comparacion entre las dos heuristicas, impacto en tiempo y bondad de solucion
-% hacer experimentos para ver la influenca de las ponderaciones
+\subsection{Experimento 7 : Influencia de la repartición de capacidades
+de los camiones}
+
+\subsubsection{Contexto}
+100
+
+\subsubsection{Resultados}
+
+1 : 30 15 15
+n.it : 1
+ben 62912
+ret 1520
+t 32,24
+
+2 : 15 30 15
+n.it : 1,04
+ben 91070 (0,04)
+ret 918 (0,08)
+t 31,38 (30,73)
+
+3 : 15 15 30
+n it : 4,76
+ben : 116233 (1,076)
+ret 154 (12)
+t 178 (39,54)
+
+\subsubsection{Conclusiones}
+
+\subsection{Experimento 8 : Influencia de la distribución de probabilidad
+de horas de entregas}
+
+\subsubsection{Contexto}
+100
+
+\subsubsection{Resultados}
+
+todo junto :
+n it 1,1
+ben 97222 (0.0889)
+ret 770 (0,19)
+t g 27,12 (24,5)
+
+1era 4 :
+n it 1,03
+ben 93282 (0,039)
+ret 846 (0,042)
+t 25,39 (24,65)
+
+untimas 4
+n it 1,07
+ben 99858 (0,053)
+776 (0,13)
+29,60 (27,88)
+
+2 1os 2 ult
+n it 1,02
+ben 97703 (0,014)
+eret 777 (0,026)
+26,53 (26,23)
+
+8 11 14 17
+1,14
+ben 97836 (0,11)
+ret 744 (0,24)
+28,21 (24,75)
+
+8 12 13 17
+1,24
+97500 (0,24)
+762 (0,54)
+31,5 (25,17)
+
+\subsubsection{Conclusiones}
+
+\section*{Conclusión}
 
 \end{document}

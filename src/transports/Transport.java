@@ -35,6 +35,7 @@ public class Transport
 	public int getCapO(){ return capacidad_ocupada; }	
 	public int getCapR(){ return capacidad_residual; }	
 	public int getHora(){ return hora; }
+	public LinkedList<Peticio> getPeticiones(){ return peti;}
 
 	public void setHora(int h){ hora = h; }
 	public boolean setCap(int c)
@@ -166,10 +167,6 @@ public class Transport
 			capacidad_residual += cnp;
 		}	
 		return p;
-	}
-
-	public LinkedList<Peticio> get_peticiones(){
-		return peti;
 	}
 
 	@Override

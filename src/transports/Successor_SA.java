@@ -190,15 +190,10 @@ public class Successor_SA implements SuccessorFunction
 			s = new String("Se han intercambiado las peticiones " + op3_p1.getID() + 
 					" (" + (op3_h1+7) + "h) y " + op3_p2.getID() + " (" + (op3_h2+7) + ") del centro " +
 					(op3_c+1));
-<<<<<<< HEAD
 		}			
 		s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
 		s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
-=======
-		}*/			
-		s = s.concat(" El benefici passa de " + estado.getBenefici() + "€ a " + successor.getBenefici() + "€.");
-		s = s.concat(" El retard passa de " + estado.getRetard() + "h a " + successor.getRetard() + "h.");
->>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
+		}*/	
 
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		retVal.add(new Successor(s, successor));

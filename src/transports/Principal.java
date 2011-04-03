@@ -49,6 +49,7 @@ public class Principal
 		}
 
 		intest = file_in.substring(12, file_in.length()-4);
+		
 		try {
 			String nt;
 			String file_outs = file_in.substring(0, 17) + "_estadisticas.csv";
@@ -60,22 +61,15 @@ public class Principal
 				nt = Integer.toString(i+1);
 				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
 				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
-<<<<<<< HEAD
 				long start = System.nanoTime();
 				Estado e = generadorProblema();
 				e.estadoInicial(estrategiaInicial);
+				//t				elapsedTimeInmSec = (System.nanoTime() - initemp) * 1.0e-6;
+				//t				out.write(elapsedTimeInmSec + ";");
+				//t				long start = System.nanoTime();
 				bi = e.getBeneficio();
 				ri = e.getRetraso();
-=======
-				long start = System.nanoTime();				
-				Estat e = generadorProblema();
-				e.estadoInicial(estrategiaInicial);
-//t				elapsedTimeInmSec = (System.nanoTime() - initemp) * 1.0e-6;
-//t				out.write(elapsedTimeInmSec + ";");
-//t				long start = System.nanoTime();				
-				bi = e.getBenefici();
-				ri = e.getRetard();
->>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
+				
 				String s1 = "Benefici : " + bi;
 				e.writeFile(file_out1+"", "ESTAT INICIAL", s1);
 				// Resolució del problema
@@ -190,7 +184,7 @@ public class Principal
 		}
 
 		// Llegeix y comproba la distribució de probabilitat de las hores d'entrega
-		for(int i = 0 ; i < probaHoras.length ; i++) probaHoras[i] = sc.nextFloat();
+		for(int i = 0 ; i < probaHoras.length ; i++) probaHoras[i] = Math.round(sc.nextFloat()*100)*(float)0.01;
 		if(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
 				probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9] != 1)
 		{
@@ -198,8 +192,7 @@ public class Principal
 					(probaHoras[0] + probaHoras[1] + probaHoras[2] + probaHoras[3] + probaHoras[4] + 
 							probaHoras[5] + probaHoras[6] + probaHoras[7] + probaHoras[8] + probaHoras[9]) +
 			".");
-			// System.exit(1);
-			// WTF ?!?!?!?! 0,1 + 0,1 + ... + 0,1 = 1,0000001 !!!!!!!!
+			System.exit(1);
 		}
 
 		// Llegeix l'estratègia de generació del estat inicial, l'algorisme i l'heuristic desitjats
@@ -257,11 +250,7 @@ public class Principal
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-<<<<<<< HEAD
-			//System.out.println(key + " : " + property);
-=======
-//c			System.out.println(key + " : " + property);
->>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
+			//c			System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
@@ -269,8 +258,8 @@ public class Principal
 
 	private static void printActions(List<?> actions) {
 		for (int i = 0; i < actions.size(); i++) {
-			String action = (String) actions.get(i);
-//c			System.out.println(action);
+			//c			String action = (String) actions.get(i);
+			//c			System.out.println(action);
 		}
 	}
 }

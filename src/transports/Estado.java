@@ -34,7 +34,7 @@ public class Estado
 		{
 		case 'a': 
 			tipord = 'a';
-			this.mesAviatPossible();
+			this.cuantoAntes();
 			break;
 		case 'b': 
 			tipord = 'b';
@@ -44,19 +44,19 @@ public class Estado
 			this.firstFit();
 			break;
 		case 'v': 
-			this.buit();
+			this.vacio();
 			break;
 		}
 	}
 
-	private void mesAviatPossible()
+	private void cuantoAntes()
 	{
 		int i;
-		this.camionsGreedy();
+		this.capacidadesGreedy();
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
-			centres[i].ordena_noassign();
-			centres[i].greedy();
+			centres[i].ordenarNoEntregadas();
+			centres[i].peticionesGreedy();
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class Estado
 		
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
-			centres[i].ordena_noassign();
+			centres[i].ordenarNoEntregadas();
 			r[i] = true;
 			it[i] = centres[i].h_setup();
 		}
@@ -100,7 +100,7 @@ public class Estado
 		
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
-			ts = centres[i].get_transports();
+			ts = centres[i].getTransports();
 			
 			for(j = 0 ; j < Constants.ht+1 ; j++)
 			{
@@ -111,7 +111,7 @@ public class Estado
 					{
 						if(cl[k] > 0)
 						{
-							centres[i].set_camion(j, Constants.cap[k]);
+							centres[i].setCapacidad(j, Constants.cap[k]);
 							tr = false;
 						}
 					}
@@ -124,19 +124,19 @@ public class Estado
 	private void firstFit()
 	{
 		int i;
-		camionsGreedy();
+		capacidadesGreedy();
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
 			centres[i].firstFitPorHora();
 		}
 	}
 
-	private void buit()
+	private void vacio()
 	{
-		this.camionsGreedy();
+		this.capacidadesGreedy();
 	}
 
-	private void camionsGreedy()
+	private void capacidadesGreedy()
 	{
 		int i, j, k, cont[], v, tot[], cam[];
 		tot = new int[Constants.nc];
@@ -163,22 +163,22 @@ public class Estado
 				
 				if(cam[i] < tot[i])
 				{
-					centres[i].set_camion(j, Constants.cap[k]);
+					centres[i].setCapacidad(j, Constants.cap[k]);
 					cont[k]--;
 					cam[i] += Constants.cap[k]-Constants.cap[0];
 				} else {
 					if(k > 0 && cont[0] > 0)
 					{
-						centres[i].set_camion(j, Constants.cap[0]);
+						centres[i].setCapacidad(j, Constants.cap[0]);
 						cont[0]--;
 					}
 					else if(k > 1 && cont[1] > 0)
 					{
-						centres[i].set_camion(j, Constants.cap[1]);
+						centres[i].setCapacidad(j, Constants.cap[1]);
 						cont[1]--;
 						cam[i] += Constants.cap[1]-Constants.cap[0];
 					} else {
-						centres[i].set_camion(j, Constants.cap[k]);
+						centres[i].setCapacidad(j, Constants.cap[k]);
 						cont[k]--;
 						cam[i] += Constants.cap[k]-Constants.cap[0];
 					}
@@ -223,13 +223,13 @@ public class Estado
 	// OPERADORES	
 	public LinkedList<Peticio> getPeticiones(int centre, int hora)
 	{
-		return centres[centre].get_transports()[hora].get_peticiones();
+		return centres[centre].getTransports()[hora].getPeticiones();
 	}
 
 	// Desplazamiento de peticion
 	public boolean desplazamientoPosible(Peticio p, int centre, int hDest)
 	{
-		return centres[centre].get_transports()[hDest].getCapR() >= p.getCan();
+		return centres[centre].getTransports()[hDest].getCapR() >= p.getCan();
 	}
 
 	public boolean desplazar(Peticio p, int centre, int hOri, int hDest)
@@ -240,8 +240,8 @@ public class Estado
 	// Intercambio de camiones
 	public void intercambioCamiones(int centre1, int hora1, int capacitat1, int centre2, int hora2, int capacitat2)
 	{
-		centres[centre1].set_camion(hora1, capacitat1);
-		centres[centre2].set_camion(hora2, capacitat2);
+		centres[centre1].setCapacidad(hora1, capacitat1);
+		centres[centre2].setCapacidad(hora2, capacitat2);
 	}
 
 	public Peticio removePeticion(Peticio p, int centre, int hora)
@@ -256,28 +256,28 @@ public class Estado
 
 	public int getCap(int c, int h)
 	{
-		return centres[c].get_transports()[h].getCap();
+		return centres[c].getTransports()[h].getCap();
 	}
 
 	public int getCapO(int c, int h) {
-		return centres[c].get_transports()[h].getCapO();
+		return centres[c].getTransports()[h].getCapO();
 	}
 
 	// Intercambio de peticiones
 	public boolean intercambioPosible(int c, int h1, int h2, Peticio p1, Peticio p2)
 	{
-		return (centres[c].get_transports()[h1].getCapR()+p1.getCan() >= p2.getCan()
+		return (centres[c].getTransports()[h1].getCapR()+p1.getCan() >= p2.getCan()
 				&&
-				centres[c].get_transports()[h2].getCapR()+p2.getCan() >= p1.getCan());
+				centres[c].getTransports()[h2].getCapR()+p2.getCan() >= p1.getCan());
 	}
 
 	public boolean intercambioPeticiones(int c, int h1, int h2, Peticio p1, Peticio p2)
 	{
-		centres[c].get_transports()[h1].remove_peticio(p1);
-		centres[c].get_transports()[h2].remove_peticio(p2);
-		return (centres[c].get_transports()[h2].add_peticio(p1)
+		centres[c].getTransports()[h1].remove_peticio(p1);
+		centres[c].getTransports()[h2].remove_peticio(p2);
+		return (centres[c].getTransports()[h2].add_peticio(p1)
 				&&
-				centres[c].get_transports()[h1].add_peticio(p2));
+				centres[c].getTransports()[h1].add_peticio(p2));
 	}
 
 

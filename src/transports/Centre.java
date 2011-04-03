@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Centre {
-
+public class Centre
+{
 	private Transport[] hores = new Transport[Constants.ht+1];
 	private ArrayList<Peticio> entregades = new ArrayList<Peticio>();
 
+	// CONSTRUCTORES
 	public Centre(int num)
 	{
 		hores[0] = new Transport(0);
 		hores[0].setCap(Integer.MAX_VALUE);
+		
 		for(int i = 1 ; i < Constants.ht+1 ; i++)
 		{
 			hores[i] = new Transport(i+Constants.h_min-1) ;
@@ -27,38 +29,40 @@ public class Centre {
 		}
 	}
 
-	public Transport[] get_transports()
+	// GETTERS / SETTERS
+	public Transport[] getTransports()
 	{
 		return hores; 
 	}
 
-	public void initPeticio(Peticio p)
+	public boolean setCapacidad(int h, int c)
 	{
-		hores[0].add_peticio(p);
-	}
-
-	public boolean set_camion(int h, int c){
 		return hores[h].setCap(c);
 	}
 
-	public void ordena_noassign(){
+	// ESTADOS INICIALES
+	public void ordenarNoEntregadas()
+	{
 		hores[0].ordenar();
 	}
 
-	public void greedy() {
+	public void peticionesGreedy()
+	{
 		Peticio p;
 		int i, ini;
 		boolean ep;
 		LinkedList<Peticio> petis;
 		LinkedList<Peticio> puestas;
 		Iterator<Peticio> it;
-		petis = hores[0].get_peticiones();
+		petis = hores[0].getPeticiones();
 		ini = 1;
 		puestas = new LinkedList<Peticio>();
+		
 		for(it = petis.iterator(); it.hasNext();){
 			p = it.next();
 			ep = false;
-			for(i=ini; i<hores.length && ep == false; i++){
+			for(i=ini; i<hores.length && ep == false; i++)
+			{
 				/*if(p.getCan() < hores[i].getCapR()){
 					hores[0].remove_peticio(p);
 					hores[i].add_peticio(p);
@@ -73,14 +77,16 @@ public class Centre {
 			}
 
 		}
-		for(it = puestas.iterator(); it.hasNext();){
+		for(it = puestas.iterator(); it.hasNext();)
+		{
 			p = it.next();
 			hores[0].remove_peticio(p);
 		}
 	}
 
-	public Iterator<Peticio> h_setup(){
-		return hores[0].get_peticiones().iterator();
+	public Iterator<Peticio> h_setup()
+	{
+		return hores[0].getPeticiones().iterator();
 	}
 
 	public int[] h_step(Peticio p, int[] cl, int h){
@@ -158,7 +164,7 @@ public class Centre {
 		Peticio p;
 		boolean f;
 		int i;
-		LinkedList<Peticio> noEntregadas = hores[0].get_peticiones();
+		LinkedList<Peticio> noEntregadas = hores[0].getPeticiones();
 		
 		for(Iterator<Peticio> it = noEntregadas.iterator(); it.hasNext();)
 		{

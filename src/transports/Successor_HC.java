@@ -176,13 +176,8 @@ public class Successor_HC implements SuccessorFunction
 		}
 		
 
-<<<<<<< HEAD
 /*		// OPERADOR : INTERCAMBIO DE PETICIONES
 
-=======
-		// OPERADOR : INTERCAMBIO DE PETICIONES
-/*
->>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
 		ArrayList<Integer> op3_c = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h1 = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h2 = new ArrayList<Integer>();
@@ -235,19 +230,11 @@ public class Successor_HC implements SuccessorFunction
 			s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
 			s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
 
-
-<<<<<<< HEAD
 			if(estado.getBeneficio() < successor.getBeneficio()) successor.getBeneficioVerbose();
 			retVal.add(new Successor(s, successor));
 		}*/
 
-		System.out.println(retVal.size() + " successores generados.");
-=======
-			retVal.add(new Successor(s, successor));
-		}
-*/
 //		System.out.println(retVal.size() + " successores generados.");
->>>>>>> e5c3a2f89027ce77108a05db4d392e294ae20ae8
 		return retVal;
 	}
 }
