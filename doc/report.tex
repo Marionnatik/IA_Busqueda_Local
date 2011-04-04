@@ -496,7 +496,7 @@ Las últimas dos lineas aparecen solo cuando vamos a utilizar el Simulated Annea
 
 Cada experimento, pero, necesita una batería de pruebas con diferentes
 parámetros. Así tenemos una carpeta para cada experimento con diferentes
-ficheros para generar pruebas. Un {\it bash script} recibe en input el numero
+ficheros para generar pruebas que resolven las instancias de el problema generados. Un {\it bash script} recibe en input el numero
 del experimento y resuelve el problema con los ficheros de prueba pertinentes.
 
 \subsubsection{Recuperación de resultados}
@@ -528,6 +528,7 @@ También hay un fichero de estadísticas por cada experimento a que vamos
 añadiendo datos sobre las pruebas. Este fichero está organizado como un CSV y
 por cada prueba tenemos registrados:
 \begin{itemize}
+\item El tiempo de generación de el estado inicial.
 \item El numero de nodos desarrollados. 
 \item El beneficio.
 \item El porcentaje de mejoría de el beneficio.
