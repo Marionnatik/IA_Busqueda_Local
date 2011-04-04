@@ -457,13 +457,11 @@ posible.
 
 \subsection{Implementación}
 
-\subsubsection{Workflow de ejecución de pruebas}
-
-El programa efectúa las pruebas sacando los parámetros necesarios de ficheros de
-texto. Los ficheros están organizados en la siguiente manera :
-
+\subsubsection{Generación de los problemas}
+Las pruebas para los diferentes experimentos han sido ejecutadas sobre un conjunto de diferentes escenarios de el problema. Esos escenarios han sido reutilizado cada vez que se tenia que hacer pruebas sobre istancias generadas con los mismos parametros. Así la aleatoriedad en la generación de el problema ha tenido un impacto mucho menor sobre la fiabilidad de los resultados obtenidos. 
+Por los experimentos que han necesitado la generación de nuevas instancias de los problemas, hemos utilizado ficheros structurados así:
 \begin{itemize}
-\item Linea 1 : Número de pruebas con estos parámetros - 1 Integer
+\item Linea 1 : Número de diferentes instancias - 1 Integer
 \item Linea 2 : Número de peticiones - 1 Integer
 \item Linea 3 : Distribución de capacidad de los camiones - 3 Integers para 500,
 1000 y 2000kg - La suma de los 3 debe ser igual a 60.
@@ -471,14 +469,34 @@ texto. Los ficheros están organizados en la siguiente manera :
 hasta 500kg - La suma de los 5 debe ser igual a 1.
 \item Linea 5 : Distribución de las horas de entrega - 10 Floats para 8h hasta
 17h - La suma de los 10 debe ser igual a 1.
-\item Linea 6 : Estrategia para generar el estado inicial - 1 Char
-\item Linea 7 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
-\item Linea 8 : Tipo de heurística - String - Puede ser "gan" o "ret".
 \end{itemize}
+Los problemas así generados, han sido memorizados en ficheros con la siguiente estructura:
+\begin{itemize}
+\item Linea 1 : Distribución de capacidad de los camiones - 3 Integers para 500,
+1000 y 2000kg - La suma de los 3 debe ser igual a 60.
+\item Linea 2 : Número de peticiones - 1 Integer
+\item Lineas n : Peticiones: centro de entrega, identificativo, cantidad, hora de entrega - 4 Integer
+\end{itemize}
+
+\subsubsection{Workflow de ejecución de pruebas}
+
+El programa efectúa las pruebas sacando los parámetros necesarios de ficheros de
+texto. Los ficheros están organizados en la siguiente manera :
+
+\begin{itemize}
+\item Linea 1 : Número de pruebas con estos parámetros - 1 Integer
+\item Linea 2 : Estrategia para generar el estado inicial - 1 Char
+\item Linea 3 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
+\item Linea 4 : Tipo de heurística - String - Puede ser "gan" o "ret".
+\item Linea 5 : Parametros por el SA - Numero de iteraciónes, L y K - 3 Integer
+\item Linea 6 : Parametro por el SA - \greek{lambda} - 1 Double
+\end{itemize}
+
+Las últimas dos lineas aparecen solo cuando vamos a utilizar el Simulated Annealing. 
 
 Cada experimento, pero, necesita una batería de pruebas con diferentes
 parámetros. Así tenemos una carpeta para cada experimento con diferentes
-ficheros para generar pruebas. Un {\it bash script} recibe en input el numero
+ficheros para generar pruebas que resolven las instancias de el problema generados. Un {\it bash script} recibe en input el numero
 del experimento y resuelve el problema con los ficheros de prueba pertinentes.
 
 \subsubsection{Recuperación de resultados}
@@ -510,6 +528,7 @@ También hay un fichero de estadísticas por cada experimento a que vamos
 añadiendo datos sobre las pruebas. Este fichero está organizado como un CSV y
 por cada prueba tenemos registrados:
 \begin{itemize}
+\item El tiempo de generación de el estado inicial.
 \item El numero de nodos desarrollados. 
 \item El beneficio.
 \item El porcentaje de mejoría de el beneficio.

@@ -1,1 +1,5 @@
-Prueba!
+Como hacer una prueba.
+Ejecutar el programa con argomento el fichero "problemas/test1/test1.txt" (oportunamente modificado con los parametros deseados).
+Esto genererá las instancias del problema.
+Ejecutar el programa con argomento el fichero "tests/test1/test1.txt" (oportunamente modificado con los parametros deseados).
+Esto genererá los tres ficheros de salida: estado inicial, estado final y estadisticas. 
