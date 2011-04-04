@@ -488,11 +488,13 @@ texto. Los ficheros están organizados en la siguiente manera :
 \item Linea 2 : Estrategia para generar el estado inicial - 1 Char
 \item Linea 3 : Tipo de algoritmo - String - Puede ser "hc" o "sa".
 \item Linea 4 : Tipo de heurística - String - Puede ser "gan" o "ret".
-\item Linea 5 : Parametros por el SA - Numero de iteraciónes, L y K - 3 Integer
-\item Linea 6 : Parametro por el SA - \greek{lambda} - 1 Double
+\item Linea 5 : Parametros del Simulated Annealing - Numero de iteraciónes,
+$L$ y $K$ - 3 Integer
+\item Linea 6 : Parametro del Simulated Annealing - $\lambda$ - 1 Double
 \end{itemize}
 
-Las últimas dos lineas aparecen solo cuando vamos a utilizar el Simulated Annealing. 
+Las últimas dos lineas aparecen solo cuando vamos a utilizar el Simulated
+Annealing. 
 
 Cada experimento, pero, necesita una batería de pruebas con diferentes
 parámetros. Así tenemos una carpeta para cada experimento con diferentes
@@ -542,7 +544,7 @@ Una linea vacía y una linea con el título del fichero de input dividen los dif
 
 \subsubsection{Condiciones de experimento por defecto}
 
-Las condiciones de experimento por defecto seran :
+\noindent Las condiciones de experimento por defecto seran :
 \begin{itemize}
 \item 250 peticiones
 \item Reparticion equiprobable de los pesos y horas de entrega
@@ -550,6 +552,10 @@ Las condiciones de experimento por defecto seran :
 \item Heuristica de maximizacion del beneficio
 \item Algoritmo de Hill Climbing
 \end{itemize}
+
+Seran usadas para todos los experimentos cuando no se precisan otros valores.
+Ademas, despues de los dos primeros experimentos se usaran el estado inicial y
+conjunto de operadores definidos en ellos.
 
 \subsubsection{Comentario sobre el numero de pruebas}
 
@@ -577,9 +583,9 @@ diferentes condiciones, no considerar el valor en si mismo.
 \subsubsection{Contexto}
 
 \begin{description}
-\item[Condiciones del experimento :] Haremos 100 pruebas para cada conjunto de
-operadores. Hemos escogido el estado inicial ``Por hora'', que se puede mejorar
-bastante frecuentemente y no consume demasiado tiempo.
+\item[Condiciones del experimento :] Hemos escogido el estado inicial ``Por
+hora'', que se puede mejorar bastante frecuentemente y no consume demasiado
+tiempo. Se usaran los parametros por defecto.
 \item[Elementos comparados :] Queremos elegir el conjunto de operadores que
 vamos a usar en el resto de experimentos, entre los tres operadores que tenemos
 implementados : \emph{Desplazamiento de petición (Op1), intercambio de camiones
@@ -633,7 +639,8 @@ estados evolucionan.
 
 \begin{description}
 \item[Condiciones del experimento :] Se haran 20 pruebas para cada tipo de
-estado inicial, ya que algunos tardan mucho en ejecutarse. Se usaran 
+estado inicial, ya que algunos tardan mucho en ejecutarse. Aparte de eso, se
+usaran los parametros por defecto.
 \item[Elementos comparados :] Queremos elegir el estado inicial que vamos a usar
 para el resto de los experimentos, entre los 4 que hemos implementado :
 \begin{itemize}
@@ -689,6 +696,8 @@ Annealing}
 
 \subsubsection{Contexto}
 \begin{description}
+\item[Condiciones del experimento :] Se usaran los parametros por defecto con
+el algoritmo de Simulated Annealing.
 \item[Analiza de los parámetros :] El algoritmo de Simulated Annealing se basa
 en una función dicha ``de temperatura'' que determina si un estado sucesor
 escogido al azar se escoge como nuevo estado del problema o no. Esta función
@@ -879,6 +888,7 @@ Annealing :
 
 \subsubsection{Contexto}
 \begin{description}
+\item[Condiciones del experimento :] Se usaran los parametros por defecto.
 \item[Elementos comparados :] Queremos evaluar el impacto del número de
 peticiones sobre el tiempo de resolucion del problema y la bondad de la solucion
 hallada. Probaremos resolver el problema con los parametros por defecto y entre
@@ -888,10 +898,8 @@ Recordamos que el número de peticion en si mismo no es relevante : Lo que tiene
 un real impacto en el problema es el ratio del volumen total de peticiones
 $V_p\simeq = \#p * 300$ kgs (con la equiprobabilidad de pesos, las peticiones
 tienen un volumen medio de 300kgs) por el volumen de transporte disponible
-$V_t = 20*500+20*1000+20*2000 = 70 000$ kgs con una reparticion equiprobable de
-las capacidades.
-
-\item[Número de pruebas :] 100 para cada numero de peticiones diferente.
+$V_t = 20*500+20*1000+20*2000 = 70 000$ kgs (con una reparticion equiprobable de
+las capacidades).
 \end{description}
 
 \subsubsection{Resultados}
@@ -899,57 +907,79 @@ las capacidades.
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
-\#peticiones & Tiempo de generación & \#iteraciones & Estados mejorados &
-Beneficio (mejoria) & Tiempo total (por iteracion)\\
+\#peticiones ($\frac{V_p}{V_t}$) & Tiempo de generación & \#iteraciones &
+Estados mejorados & Beneficio (mejoria) & Tiempo total (por iteracion)\\
 \hline
-200 & 0,693ms & 2,16 & 24 & 94014 (0,297\%) & 74,02ms (35,78)\\
+200 (0,85) & 0,693ms & 2,16 & 24 & 94014 (0,297\%) & 74,02ms (35,78)\\
 \hline
-300 & 1,44ms & 1 & 0 & 69027 (0,00\%) & 25,14ms (25,14ms)\\
+250 (1,07) & 3,460ms & 1,20 & 24 & 95670 (0,161\%) & 55,87ms (42,89)\\
 \hline
-350 & 1,26ms & 1 & 0 & 35226 (0,00\%) & 27,30ms (27,30ms)\\
+300 (1,29) & 1,44ms & 1,00 & 0 & 69027 (0,00\%) & 25,14ms (25,14ms)\\
 \hline
-400 & 1,49ms & 1 & 0 & -584 (0,00\%) & 28,24ms (28,24ms)\\
+350 (1,50) & 1,26ms & 1,00 & 0 & 35226 (0,00\%) & 27,30ms (27,30ms)\\
+\hline
+400 (1,71) & 1,49ms & 1,00 & 0 & -584 (0,00\%) & 28,24ms (28,24ms)\\
 \hline
 \end{tabular}\\
 {\it Tabla 2.8 : Resultados del experimento 4.}
 \end{center}
 
 \subsubsection{Conclusiones}
-%TODO
+Vemos que el valor por defecto \#p=250 halla los mejores resultados en terminos
+de bondad de la solucion, y vemos que para los demas no se ``resuelve''
+realmente el problema, ya que en el primer caso todas las peticiones se entregan
+sin que sea necesario hacer mucha optimizacion, y en los siguientes los estados
+iniciales no mejoran ya que no se pueden aplicar ningun de los operadores.
+
+El coste superior en tiempo traduce el hecho de que se hace efectivamente la
+busqueda y la optimizacion de la solucion.
+
+Concluimos que para tener resultados interesantes, el factor $\frac{V_p}{V_t}$
+debe ser ligeramente superior a 1.
 
 \subsection{Experimento 5 : Influencia de la heurística}
 
 \subsubsection{Contexto}
 \begin{description}
-\item[Numero de pruebas :] 100 para cada numero de peticiones y heuristica
-diferente.
+\item[Condiciones del experimento :] Se usaran los parametros por defecto.
+\item[Elementos comparados :] Estudiaremos la influencia de la heuristica sobre
+el porcentaje de estados mejorados y la bondad de la solucion hallada.
+Compararemos los valores de ambas heuristicas cuando se usa una u otra.
+
+Se haran pruebas para diferentes numero de peticiones para ver el impacto de la
+complejidad del problema sobre la resolucion.
 \end{description}
 
 \subsubsection{Resultados}
-con ret / con gan
-200
-n.it 6,88
-ben 93850
-mej 0,123
-ret 58,67 / 71,9
-mej 20,67 / 3,44
-t 198,5/29,15
-
+\noindent 
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\#peticiones & \#iteraciones & Estados mejorados & Beneficio (mejoria) &
+Tiempo (mejoria) & Tiempo total de ejecucion (por iteracion)\\
+\hline
+200 & 6,88 / 2,16 & 69 / 24 & 93850 (0,123\%) / 94014 (0,297\%) & 58,67h
+(20,67\%)/ 71,9 (3,44\%) & 198,5ms (29,15ms) / 74,02ms (35,78)\\
+\hline
 250
-n.it 3,07
+n.it 3,07 1,20
 ben 97405
 mej 0,0523
 ret 747,5 / 754,1
 mej 1,211 / 0,268
-t 62,02/21,37
-
+t 62,02/21,37\\
+\hline
 300
 n.it 1,1
 ben 69022
 mej -0,00683
 ret 2046,39 / 2046,16
 mej 0,0113 / 0
-t 26,60/24,56
+t 26,60/24,56\\
+\hline
+\end{tabular}\\
+{\it Tabla 2.9 : Resultados del experimento 5.}
+\end{center}
 
 \subsubsection{Conclusiones}
 %TODO
