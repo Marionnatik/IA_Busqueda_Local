@@ -175,7 +175,7 @@ public class Successor_HC implements SuccessorFunction
 			retVal.add(new Successor(s, successor));
 		}
 		
-
+		
 /*		// OPERADOR : INTERCAMBIO DE PETICIONES
 
 		ArrayList<Integer> op3_c = new ArrayList<Integer>();
