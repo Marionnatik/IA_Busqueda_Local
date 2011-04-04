@@ -34,7 +34,7 @@ public class Principal
 		new Constants();
 
 		// Prepara els fitxers d'input (test1 per defecte) i output
-		String file_in = "problemas/test8/test8_b0123.txt";
+		String file_in = "problemas/test1/test1.txt";
 
 		if(args.length != 0) file_in = args[0];
 
