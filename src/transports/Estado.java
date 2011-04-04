@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Estado 
 {
@@ -17,7 +18,7 @@ public class Estado
 	public Estado(int[] capacitats)
 	{
 		distriCap = capacitats ;
-		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre(i+1) ;
+		for(int i = 0 ; i < Constants.nc ; i++) centres[i] = new Centre() ;
 	}
 
 	public Estado(Estado e)
@@ -52,7 +53,7 @@ public class Estado
 	private void cuantoAntes()
 	{
 		int i;
-		this.capacidadesGreedy();
+		capacidadesGreedy();
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
 			centres[i].ordenarNoEntregadas();
@@ -64,9 +65,9 @@ public class Estado
 	{
 		int i, j, a, k ;
 		boolean c, r[], tr ;
-		Peticio p ;
+		Peticion p ;
 		Transport ts[];
-		Iterator<Peticio>[] it = new Iterator[Constants.nc];
+		Iterator<Peticion>[] it = new Iterator[Constants.nc];
 		r = new boolean[Constants.nc];
 		int[] cl = distriCap.clone();
 		
@@ -74,7 +75,7 @@ public class Estado
 		{
 			centres[i].ordenarNoEntregadas();
 			r[i] = true;
-			it[i] = centres[i].h_setup();
+			it[i] = centres[i].getTransports()[0].getPeticiones().iterator();
 		}
 		
 		c = true;
@@ -88,13 +89,13 @@ public class Estado
 				if(r[i]){
 					p = it[i].next();
 					if(!it[i].hasNext())r[i] = false;
-					cl = centres[i].h_step(p, cl, p.getH()+1-Constants.h_min);
+					cl = centres[i].perHoraStep(p, cl, p.getH()+1-Constants.h_min);
 				}
 				c = c || r[i];
 			}
 		}
 		
-		for(i = 0 ; i < Constants.nc ; i++) centres[i].neteja();
+		for(i = 0 ; i < Constants.nc ; i++) centres[i].cleanUp();
 		
 		a = Constants.cap.length;
 		
@@ -127,7 +128,7 @@ public class Estado
 		capacidadesGreedy();
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
-			centres[i].firstFitPorHora();
+			centres[i].firstFit();
 		}
 	}
 
@@ -148,7 +149,7 @@ public class Estado
 		
 		for(i = 0 ; i < Constants.nc ; i++)
 		{
-			tot[i] = centres[i].getCapNa();
+			tot[i] = centres[i].getTransports()[0].getCapO();
 			cam[i] = v;
 		}
 		
@@ -221,20 +222,20 @@ public class Estado
 
 
 	// OPERADORES	
-	public LinkedList<Peticio> getPeticiones(int centre, int hora)
+	public LinkedList<Peticion> getPeticiones(int centre, int hora)
 	{
 		return centres[centre].getTransports()[hora].getPeticiones();
 	}
 
 	// Desplazamiento de peticion
-	public boolean desplazamientoPosible(Peticio p, int centre, int hDest)
+	public boolean desplazamientoPosible(Peticion p, int centre, int hDest)
 	{
 		return centres[centre].getTransports()[hDest].getCapR() >= p.getCan();
 	}
 
-	public boolean desplazar(Peticio p, int centre, int hOri, int hDest)
+	public boolean desplazar(Peticion p, int centre, int hOri, int hDest)
 	{
-		return centres[centre].desplazar_peticio(p, hOri, hDest);
+		return centres[centre].desplazarPeticion(p, hOri, hDest);
 	}
 
 	// Intercambio de camiones
@@ -244,12 +245,12 @@ public class Estado
 		centres[centre2].setCapacidad(hora2, capacitat2);
 	}
 
-	public Peticio removePeticion(Peticio p, int centre, int hora)
+	public Peticion removePeticion(Peticion p, int centre, int hora)
 	{
 		return centres[centre].removePeticio(p, hora);
 	}
 
-	public boolean addPeticion(Peticio p, Integer c, Integer h)
+	public boolean addPeticion(Peticion p, Integer c, Integer h)
 	{
 		return centres[c.intValue()].addPeticio(p, h);
 	}
@@ -264,24 +265,47 @@ public class Estado
 	}
 
 	// Intercambio de peticiones
-	public boolean intercambioPosible(int c, int h1, int h2, Peticio p1, Peticio p2)
+	public boolean intercambioPosible(int c, int h1, int h2, Peticion p1, Peticion p2)
 	{
 		return (centres[c].getTransports()[h1].getCapR()+p1.getCan() >= p2.getCan()
 				&&
 				centres[c].getTransports()[h2].getCapR()+p2.getCan() >= p1.getCan());
 	}
 
-	public boolean intercambioPeticiones(int c, int h1, int h2, Peticio p1, Peticio p2)
+	public boolean intercambioPeticiones(int c, int h1, int h2, Peticion p1, Peticion p2)
 	{
-		centres[c].getTransports()[h1].remove_peticio(p1);
-		centres[c].getTransports()[h2].remove_peticio(p2);
-		return (centres[c].getTransports()[h2].add_peticio(p1)
+		centres[c].getTransports()[h1].removePeticio(p1);
+		centres[c].getTransports()[h2].removePeticio(p2);
+		return (centres[c].getTransports()[h2].addPeticio(p1)
 				&&
-				centres[c].getTransports()[h1].add_peticio(p2));
+				centres[c].getTransports()[h1].addPeticio(p2));
 	}
 
-
+	
 	// OUTPUT
+	public boolean toFile(String fileOut) {
+		PrintWriter out = null;
+		try {
+			int i;
+			out = new PrintWriter(new FileWriter(fileOut));
+			for(i = 0; i<Constants.cap.length; i++)out.write(distriCap[i] + " ");
+			out.println();
+			out.println(Principal.nbPeticions);
+			for(i = 0; i<Constants.nc; i++){
+				for(ListIterator<Peticion> it = centres[i].getTransports()[0].getPeticiones().listIterator();it.hasNext();){
+					out.print(i);
+					Peticion p = it.next();
+					out.println(p.toFile());
+				}
+			}
+			out.close();
+			return true;		
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+	}
+
 	@Override
 	public String toString()
 	{
@@ -292,10 +316,8 @@ public class Estado
 			s = s.concat("Centre no." + (i+1) + " :\n");
 			s = s.concat(centres[i].toString() + "\n");
 		}
-
 		return s;
 	}
-
 
 	public void writeFile(String file, String s1, String s2)
 	{

@@ -12,14 +12,16 @@ public class Successor_SA implements SuccessorFunction
 	@Override
 	public List<Successor> getSuccessors(Object state) 
 	{
+		int hora1;
+		
 		Estado estado = (Estado) state ;
 
-		Peticio op1_p = null;
+		Peticion op1_p = null;
 		int op1_c = 0;
 		int op1_hOri = 0;
 		int op1_hDest = 0;
 
-		Peticio op2_p = null;
+		Peticion op2_p = null;
 		int op2_c = 0;
 		int op2_c2 = 0;
 		int op2_hOri = 0;
@@ -42,16 +44,18 @@ public class Successor_SA implements SuccessorFunction
 			if(operador < (double)1/2)
 			{
 				int centre = (int) (Constants.nc * Math.random());
-				int hora1 = (int) ((Constants.ht+1)*Math.random());
+				do{
+					hora1 = (int) ((Constants.ht+1)*Math.random());
+				}while(estado.getCapO(centre, hora1)<=0);
 				int hora2 = 0;
 				do
 				{
 					hora2 = (int)((Constants.ht+1)*Math.random());
 				} while(hora1 == hora2);
 
-				LinkedList<Peticio> pp = estado.getPeticiones(centre, hora1);
+				LinkedList<Peticion> pp = estado.getPeticiones(centre, hora1);
 				int np = (int) (pp.size()*Math.random());
-				Peticio p = pp.get(np);
+				Peticion p = pp.get(np);
 
 				if(estado.desplazamientoPosible(p, centre, hora2))
 				{
@@ -67,16 +71,16 @@ public class Successor_SA implements SuccessorFunction
 			{
 				boolean a;
 				int j=0, ci, hi;
-				Peticio pe = null;
-				LinkedList<Peticio> petinoe = new LinkedList<Peticio>();
+				Peticion pe = null;
+				LinkedList<Peticion> petinoe = new LinkedList<Peticion>();
 
 				int centre1 = (int) (Constants.nc * Math.random());
-				int hora1 = (int) ((Constants.ht+1)*Math.random());
+				hora1 = (int) (1 + (Constants.ht)*Math.random());
 				int centre2 = 0;
 				int hora2 = 0;
 				do{
 					centre2 = (int) (Constants.nc * Math.random());
-					hora2 = (int)((Constants.ht+1)*Math.random());
+					hora2 = (int)(1 + (Constants.ht)*Math.random());
 				} while(estado.getCap(centre1, hora1) == estado.getCap(centre2, hora2));
 
 				//Generacion estado
@@ -175,30 +179,32 @@ public class Successor_SA implements SuccessorFunction
 					" con hora de entrega : " + op1_p.getH() +
 					"h desplazada de " + (op1_hOri+7) + "h a " + (op1_hDest+7) + "h.");
 		}
+
 		else if (op2_p != null) 
 		{
-			Peticio peti = successor.removePeticion(op2_p, op2_xcen, op2_xhor);
+			Peticion peti = successor.removePeticion(op2_p, op2_xcen, op2_xhor);
 			successor.intercambioCamiones(op2_c, op2_hOri, estado.getCap(op2_c2, op2_hDest), op2_c2, op2_hDest, estado.getCap(op2_c, op2_hOri));				
 			s = new String("Capacitats intercanviades entre l'hora " + (op2_hOri+7) + " del centre " + (op2_c+1) + " (" + estado.getCap(op2_c, op2_hOri) + "kgs) i l'hora " + (op2_hDest+7) + " del centre " + (op2_c2+1) + " (" + estado.getCap(op2_c2, op2_hDest) + "kgs).");
 
 			successor.addPeticion(peti, op2_xcen, op2_xhord);
 			s = s.concat("Peticion " + op2_p.getID() + " del centro " + (op2_xcen+1) + " con hora de entrega : " + op2_p.getH() + "h desplazada de " + (op2_xhor+7) + "h a " + (op2_xhord+7) + "h.");			
 		}
+
 /*		else if (op3_p1 != null)
 		{
 			successor.intercambioPeticiones(op3_c, op3_h1, op3_h2, op3_p1, op3_p2);
 			s = new String("Se han intercambiado las peticiones " + op3_p1.getID() + 
 					" (" + (op3_h1+7) + "h) y " + op3_p2.getID() + " (" + (op3_h2+7) + ") del centro " +
 					(op3_c+1));
-		}			
+		}
+*/			
+
 		s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
 		s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
-		}*/	
-
+		
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		retVal.add(new Successor(s, successor));
 
-		//System.out.println(retVal.size() + " successores generados.");
 		return retVal;
 	}
 }

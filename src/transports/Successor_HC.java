@@ -18,12 +18,12 @@ public class Successor_HC implements SuccessorFunction
 		ArrayList<Successor> retVal = new ArrayList<Successor>();
 		String s;
 		
-		Iterator<Peticio> it ;
+		Iterator<Peticion> it ;
 
 
 		// OPERADOR : DESPLAZAMIENTO DE PETICIONES
 
-		ArrayList<Peticio> op1_p = new ArrayList<Peticio>();
+		ArrayList<Peticion> op1_p = new ArrayList<Peticion>();
 		ArrayList<Integer> op1_c = new ArrayList<Integer>();
 		ArrayList<Integer> op1_hOri = new ArrayList<Integer>();
 		ArrayList<Integer> op1_hDest = new ArrayList<Integer>();
@@ -32,11 +32,11 @@ public class Successor_HC implements SuccessorFunction
 		{
 			for(int hora1 = 0 ; hora1 < Constants.ht+1 ; hora1++)
 			{
-				LinkedList<Peticio> pp = estado.getPeticiones(centre, hora1);
+				LinkedList<Peticion> pp = estado.getPeticiones(centre, hora1);
 
 				for(it = pp.iterator(); it.hasNext();)
 				{
-					Peticio p = it.next();
+					Peticion p = it.next();
 
 					for(int hora2 = 0 ; hora2 < Constants.ht+1 ; hora2++)
 					{						
@@ -72,7 +72,7 @@ public class Successor_HC implements SuccessorFunction
 
 		// OPERADOR : INTERCAMBIO DE CAPACIDADES DE CAMIONES
 
-		ArrayList<Peticio> op2_p = new ArrayList<Peticio>();
+		ArrayList<Peticion> op2_p = new ArrayList<Peticion>();
 		ArrayList<Integer> op2_c = new ArrayList<Integer>();
 		ArrayList<Integer> op2_c2 = new ArrayList<Integer>();
 		ArrayList<Integer> op2_hOri = new ArrayList<Integer>();
@@ -83,7 +83,7 @@ public class Successor_HC implements SuccessorFunction
 
 		int ci, hi, j = 0;
 		boolean a ;
-		LinkedList<Peticio> petinoe = new LinkedList<Peticio>();
+		LinkedList<Peticion> petinoe = new LinkedList<Peticion>();
 		
 		for(int centre = 0 ; centre < Constants.nc ; centre++)
 		{
@@ -113,7 +113,7 @@ public class Successor_HC implements SuccessorFunction
 									}
 
 									petinoe = estado.getPeticiones(ci, 0);
-									Peticio pe = null;
+									Peticion pe = null;
 
 									if(petinoe.size() >= 1)
 									{
@@ -162,7 +162,7 @@ public class Successor_HC implements SuccessorFunction
 		{
 			Estado successor = new Estado(estado) ;
 			
-			Peticio peti = successor.removePeticion(op2_p.get(i), op2_xcen.get(i), op2_xhor.get(i));
+			Peticion peti = successor.removePeticion(op2_p.get(i), op2_xcen.get(i), op2_xhor.get(i));
 			successor.intercambioCamiones(op2_c.get(i), op2_hOri.get(i), estado.getCap(op2_c2.get(i), op2_hDest.get(i)), op2_c2.get(i), op2_hDest.get(i), estado.getCap(op2_c.get(i), op2_hOri.get(i)));				
 			s = new String("Capacitats intercanviades entre l'hora " + (op2_hOri.get(i)+7) + " del centre " + (op2_c.get(i)+1) + " (" + estado.getCap(op2_c.get(i), op2_hOri.get(i)) + "kgs) i l'hora " + (op2_hDest.get(i)+7) + " del centre " + (op2_c2.get(i)+1) + " (" + estado.getCap(op2_c2.get(i), op2_hDest.get(i)) + "kgs).");
 			
@@ -230,11 +230,13 @@ public class Successor_HC implements SuccessorFunction
 			s = s.concat(" El benefici passa de " + estado.getBeneficio() + "€ a " + successor.getBeneficio() + "€.");
 			s = s.concat(" El retard passa de " + estado.getRetraso() + "h a " + successor.getRetraso() + "h.");
 
+
 			if(estado.getBeneficio() < successor.getBeneficio()) successor.getBeneficioVerbose();
 			retVal.add(new Successor(s, successor));
 		}*/
-
+		
 //		System.out.println(retVal.size() + " successores generados.");
+		
 		return retVal;
 	}
 }

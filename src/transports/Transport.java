@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class Transport
 {
-	private LinkedList<Peticio> peti ;
+	private LinkedList<Peticion> peti ;
 	private int capacidad ;
 	private int capacidad_ocupada;
 	private int capacidad_residual;
@@ -15,7 +15,7 @@ public class Transport
 	public Transport(int h)
 	{
 		capacidad = 0;
-		peti = new LinkedList<Peticio>() ;
+		peti = new LinkedList<Peticion>() ;
 		capacidad_residual = 0;
 		capacidad_ocupada = 0;
 		hora = h;
@@ -24,7 +24,7 @@ public class Transport
 	public Transport(Transport t)
 	{
 		capacidad = t.capacidad;
-		peti = new LinkedList<Peticio>() ;
+		peti = new LinkedList<Peticion>() ;
 		peti.addAll(t.peti);
 		capacidad_residual = t.capacidad_residual;
 		capacidad_ocupada = t.capacidad_ocupada;
@@ -35,7 +35,7 @@ public class Transport
 	public int getCapO(){ return capacidad_ocupada; }	
 	public int getCapR(){ return capacidad_residual; }	
 	public int getHora(){ return hora; }
-	public LinkedList<Peticio> getPeticiones(){ return peti;}
+	public LinkedList<Peticion> getPeticiones(){ return peti;}
 
 	public void setHora(int h){ hora = h; }
 	public boolean setCap(int c)
@@ -56,14 +56,14 @@ public class Transport
 	private int benef(boolean verb)
 	{
 		int b = 0;
-		Peticio p;
+		Peticion p;
 
 		if( hora == 0 )
 		{
 			// No entregadas
 			if(verb) System.out.println("No entregadas : ");
 
-			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			for( Iterator<Peticion> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no fue entregada.");
@@ -80,7 +80,7 @@ public class Transport
 			// Entregadas
 			if(verb) System.out.println(hora + "h : ");
 
-			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			for( Iterator<Peticion> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y fue entregada a las " + hora + ".");
@@ -110,14 +110,14 @@ public class Transport
 	private int retard(boolean verb)
 	{
 		int r = 0;
-		Peticio p;
+		Peticion p;
 
 		if( hora != 0 )
 		{
 			// Entregadas
 			if(verb) System.out.println(hora + "h : ");
 
-			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			for( Iterator<Peticion> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y fue entregada a las " + hora + ".");
@@ -132,7 +132,7 @@ public class Transport
 			// No entregadas
 			if(verb) System.out.println("No entregadas : ");
 
-			for( Iterator<Peticio> it = peti.iterator(); it.hasNext(); )
+			for( Iterator<Peticion> it = peti.iterator(); it.hasNext(); )
 			{
 				p = it.next();
 				if(verb) System.out.println("La peticion de " + p.getCan() + "kgs se debia entregar a las " + p.getH() + " y no ha sido entregada.");
@@ -149,7 +149,7 @@ public class Transport
 		Collections.sort(peti);
 	}
 
-	public boolean add_peticio(Peticio p){
+	public boolean addPeticio(Peticion p){
 		int cnp;
 		cnp = p.getCan();
 		if(cnp > capacidad - capacidad_ocupada)return false;
@@ -159,7 +159,7 @@ public class Transport
 		return true;
 	}
 
-	public Peticio remove_peticio(Peticio p){
+	public Peticion removePeticio(Peticion p){
 		int cnp;
 		cnp = p.getCan();
 		if(peti.remove(p)){
@@ -190,8 +190,8 @@ public class Transport
 	}
 
 	public void capfix() {
-		Iterator<Peticio> it;
-		Peticio p;
+		Iterator<Peticion> it;
+		Peticion p;
 		int c = 0;
 		for(it = peti.iterator(); it.hasNext();){
 			p = it.next();

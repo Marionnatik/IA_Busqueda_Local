@@ -165,8 +165,8 @@ contamos con $O(11^N)$ configuraciones posibles para la repartición de las
 peticiones.
 
 Si añadimos que cada uno de los 60 transportes puede tener una de 3 capacidades,
-es decir $O(3^{60})$ configuraciones posibles, tenemos un total de
-\textbf{$O(11^Nx3^{60})$ estados posibles}.
+es decir $O(3^{60})$ configuraciones posibles, tenemos \textbf{un total de
+$O(11^N*3^{60})$ estados posibles}.
 
 Se tiene que tener en cuenta que en verdad, la suma de pesos de las peticiones
 afectadas a un transporte no puede exceder su capacidad, y que tenemos un número
@@ -178,7 +178,7 @@ local y que recorreremos solo una fracción del espacio, no es excesivo.
 
 \subsection{Operadores}
 
-Hemos implementado tres operadores diferentes :
+\noindent Hemos implementado tres operadores diferentes :
 \begin{enumerate}
 \item Desplazamiento de una petición
 \item Intercambio de capacidades de camiones
@@ -245,7 +245,7 @@ horas más tempranas del día para reducir el retraso.
 capacidad ocupada de cada transporte es inferior su nueva capacidad. 
 \item[Factor de ramificación :] Cada transporte puede intercambiar su capacidad
 con una diferente. Si tenemos una repartición de capacidades $\{C1,C2,C3\}$, el
-factor de ramificación es $(C2+C3)^{C1}x(C3+C1)^{C2}x(C1+C2)^{C3} = 40^{60}$ si
+factor de ramificación es $(C2+C3)^{C1}*(C3+C1)^{C2}*(C1+C2)^{C3} = 40^{60}$ si
 tenemos una repartición equiprobable. Es constante y considerablemente más
 pequeño en práctica.
 \item[Justificación de la elección :] Intercambiar dos capacidades es la única
@@ -362,6 +362,9 @@ perdida de productividad, aunque en realidad una antelación de una hora no
 tendría mucho impacto, y en general la antelación tendría menos efectos que el
 retraso, que puede potencialmente paralizar la producción si el producto
 transportado es crítico.
+
+Ademas, se tendra que tenir en cuenta que un valor bueno del primer heuristica
+no implica necesariamente un valor bueno del segundo.
 \end{description}
 
 \subsection{Estados Iniciales}
@@ -374,12 +377,12 @@ calidad de la solución inicial).
 
 Al final, hemos implementado cuatro tipos de estados iniciales que nos han
 parecido interesantes :
-\begin{itemize}
+\begin{enumerate}
 \item ``Cuanto antes''
 \item ``Por hora''
 \item ``First-fit''
 \item ``Vacío''
-\end{itemize}
+\end{enumerate}
 
 \subsubsection{Ei1 : Cuanto antes}
 
@@ -452,32 +455,6 @@ posible.
 
 \section{Experimentos}
 
-% explicaciones y análisis detallada
-% comparar los resultados con lo que se esperaba
-% hacer los experimentos del enunciado y contestar las preguntas
-% hacer tb mas experimentos para complementar
-
-\subsection{Generalidades}
-
-\begin{description}
-\item[Condiciones de experimentación por defecto :] Si no se dice otra cosa, los
-experimentos se hacen para 250 peticiones con pesos y horas de entrega
-equiprobables. Se usa el algoritmo de Hill Climbing y la heurística de
-maximización del beneficio.
-\item[Numero de pruebas :] Al largo de los experimentos, hemos notado que en
-muchos casos, solo una pequeña fracción de los estados iniciales evolucionan, en
-particular cuando tenemos estados iniciales ``avanzados'' que se pueden
-difícilmente mejorar. Por eso, hemos decidido hacer un número de pruebas elevado
-(al menos 50) para cada experimento, y cuando es relevante considerar solo los
-resultados de los casos donde el estado mejora.
-\item[Tiempo de ejecución :] Se han indicado los valores del tiempos de
-ejecución obtenido durante las pruebas. Estos valores no tienen sentido en
-absoluto, ya que dependen de la potencia y del uso del procesador, así como de
-varios otros parámetros arquitecturales. Por ejemplo, se nota que la primera
-prueba tarda mucho mas, ya que luego el procesador puede predecir una parte
-del comportamiento y acelerar la ejecución.
-\end{description}
-
 \subsection{Implementación}
 
 \subsubsection{Workflow de ejecución de pruebas}
@@ -544,9 +521,6 @@ Una linea vacía y una linea con el título del fichero de input dividen los dif
 
 \subsection{Experimento 1 : Elección del conjunto de operadores}
 
-% comparación entre conjuntos de operadores
-% impacto sobre el coste temporal y bondad de la solución
-
 \subsubsection{Contexto}
 
 \begin{description}
@@ -563,8 +537,7 @@ que Op1 es el único operador que nos permite desplazar peticiones no entregadas
 a las entregadas y Op2 es el único que mueve los camiones. Principalmente,
 estudiaremos la influencia del operador Op3 sobre el tiempo de ejecución, la
 bondad de la solución y el porcentaje de estados que mejoran.
-\item[Numero de pruebas :] 1500 pruebas para cada conjunto. Hemos escogido un
-número elevado para poder comparar el porcentaje de estados que mejoran.
+\item[Número de pruebas :] 100 pruebas para cada conjunto de operadores.
 \item[Estado inicial :] Hemos escogido el estado inicial ``Repartición por
 hora'', que se puede mejorar bastante frecuentemente y no consume demasiado
 tiempo.
@@ -575,79 +548,102 @@ tiempo.
 El porcentaje de mejoría del beneficio se calcula con la formula :
 $\frac{ben. E_f - ben. E_i}{ben. E_f}$. Se ha calculado solo considerando los
 estados mejorados, y luego en general.
+
 \begin{center}
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-Conjunto & \% de estados mejorados & \% de mejoría (global) & Tiempo de
-ejecución/iteración\\
+Conjunto & Estados mejorados & Beneficio &  \% de mejoría (global) & Tiempo de
+ejecución (por iteración)\\
 \hline
-Op1 + Op2 & 5,7\% & 3\% (0,17\%) & 23,25ms\\
+Op1 + Op2 & 5 & 97452 & 2,02\% (0,10\%) & 30,07ms (25,99ms)\\
 \hline
-Op1 + Op2 + Op3 & 15,3\% & 1,5\% (0,22\%) & 75,39ms\\
-\hline
+Op1 + Op2 + Op3 & 16 & 97533 & 1,16\% (0,19\%) & 191,8ms (119,9ms)\\
+\hline\\
 \end{tabular}
-{\it Tabla 3.1 : Resultados del experimento 1.}
+{\it Tabla 2.1 : Resultados del experimento 1.}
 \end{center}
 
 \subsubsection{Conclusiones}
 
-El operador Op3 provoca la evolución de mas estados, pero en media la solución
-hallada es menos buena. Ademas, el tiempo de ejecución esta multiplicado por 3.
-Por estas razones, en el caso general usaremos el primer conjunto de operadores
-: Op1 + Op2.
+Como lo habiamos previsto, el operador Op3 provoca la evolución de mas estados.
+Sin embargo, en media la solución hallada es menos buena. Ademas, el tiempo de
+ejecución esta multiplicado por mas de 4.
 
-Sin embargo, recordamos que el operador Op3 se podrá usar para obtener
-resultados en casos donde pocos estados evolucionan.
+Al comparar las ventajas e inconvenientes, deduimos que la mejora no es bastante
+significativa para justificar la perdida de tiempo : En el caso general usaremos
+\textbf{el primer conjunto de operadores, Op1 + Op2}. Sin embargo, recordamos
+que el operador Op3 se podrá usar para obtener resultados en casos donde pocos
+estados evolucionan.
 
 \subsection{Experimento 2 : Elección del estado inicial}
 
-%coste de creación
-% influencia en la bondad de la solución y en el coste del algoritmo
-
 \subsubsection{Contexto}
 
-20 pruebas
+\begin{description}
+\item[Elementos comparados :] Queremos elegir el estado inicial que vamos a usar
+para el resto de los experimentos, entre los 4 que hemos implementado :
+\begin{itemize}
+\item Ei1 : ``Cuanto antes''
+\item Ei2 : ``Por hora''
+\item Ei3 : ``First-fit''
+\item Ei4 : ``Vacío''
+\end{itemize}
+
+Consideraremos el tiempo de generación de este estado y la influencia en la
+resolución del problema, es decir la bondad de la solución hallada, el numero de
+iteraciones y el tiempo de ejecución.
+\item[Número de pruebas :] 20 pruebas para cada tipo de estado inicial, ya que
+algunos tardan mucho en ejecutarse.
+\end{description}
 
 \subsubsection{Resultados}
 
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-Estrategia & T. gen. (ms) & N. it. & T. ejec. (t. ejec/it) (ms) & Benef.
-(mejora)\\
+ & Tiempo de generación & Beneficio (\% de mejoría) & \#iteraciones &
+Tiempo de ejecución (por iteración)\\
 \hline
-Cuanto antes & 2,62 & 1,00 & 65 (65) & 95065 (0,00\%)\\
+Ei1 & 0,948ms & 96633 (0,00\%) & 1,00 & 45,75ms (45,75ms)\\
 \hline
-Repartición por hora & 3,78 & 1,40 & 106 (73) & 96930 (0,42\%)\\
+Ei2 & 3,46ms & 95670 (0,161\%) & 1,2 & 55,87ms (42,89ms)\\
 \hline
-First-fit & 0,386 & 2,15 & 95 (46) & 81251 (1,49\%)\\
+Ei3 & 0,979ms & 79364 (0,894\%) & 1,79 & 66,40ms (38,42ms)\\
 \hline
-Vacío & 0,0193 & 220 & 37560 (170) & 89923 (141\%)\\
-\hline
+Ei4 & 0,0212ms & 89161 (139,6\%) & 215 & 36486ms (170,1ms)\\
+\hline\\
 \end{tabular}
-{\it Tabla 3.2 : Resultados del experimento 2.}
+{\it Tabla 2.2 : Resultados del experimento 2.}
 \end{center}
 
 \subsubsection{Conclusiones}
 
-> b!!! me gusta! <
-> a no mejora pero es bueno
-> f no da buenos resultados
-> v es demasiado lento
+Se destacan dos estados que claramente llevan a una solución de calidad : Ei1 y
+Ei2. Ei1 lleva a una solución un poco mejora y es mas rapido que generar, sin
+embargo la solución generada no permite que se mejora ningun estado!
+
+Ei3 genera soluciones menos buena, pues mejoran un porcentaje mas elevado de
+estados, sin embargo la solución final hallada es muy inferior a la de los dos
+primeros.
+
+Como previsto, Ei4 consume mucho demasiado tiempo, y tampoco se llega a una
+solución mejor que la de los dos primeros.\\
+
+Para el resto de los experimentos, usaremos \textbf{la estrategia inicial Ei2 : 
+``Por hora''}.
 
 \subsection{Experimento 3 : Influencia de los parámetros del Simulated
 Annealing}
 
 \subsubsection{Contexto}
-100 tests
 \begin{description}
 \item[Analiza de los parámetros :] El algoritmo de Simulated Annealing se basa
 en una función dicha ``de temperatura'' que determina si un estado sucesor
 escogido al azar se escoge como nuevo estado del problema o no. Esta función
 esta implementada en el package AIMA con la formula :
 \begin{center}
-$\tau = (t-t\%L)+L$
-$temp = K.e^{-\lambda \tau}$
+$\tau = (t-t\%L)+L$\\
+$T = K.e^{-\lambda \tau}$
 \end{center}
 La variable $t$ es el número de iteraciones del algoritmo. Vemos que la función
 $\tau$ es una escalera, que hace que la temperatura sólo evolucionará cada $L$
@@ -655,198 +651,289 @@ iteraciones. La constante $\lambda$ es proporcional a la velocidad de
 convergencia de la función y $K$ es la amplitud. También se tiene que fijar el
 número de iteraciones total $n_{it}$ que realiza el algoritmo.
 
-En la tabla 3.3 se encuentran los resultados con los parámetros por defecto, que
-usaremos si no se precisa otra cosa. Veremos el efecto de los parámetros sobre
-el tiempo de ejecución y la bondad de la solución.
+En la tabla 2.3 se encuentran los resultados con los parámetros por defecto que
+se han usado hasta aqui. Para cada variable, determinaremos el valor que da el
+mejor resultado y lo usaremos para los experimentos siguientes.
 
-\begin{tabular}{|l|l|l|l||l|l|l|}
+Veremos el efecto de los parámetros sobre el tiempo de ejecución, la bondad de
+la solución y el porcentaje de estados mejorados.
+
+\begin{center}
+\begin{tabular}{|l|l|l|l||l|l|l|l|}
 \hline
-$N_{it}$ & $K$ & $L$ & $\lambda$ & \% de estados mejorados & Beneficio (\% de
-mejoría) & Tiempo de ejecución (ms)\\
+$N_{it}$ & $\lambda$ & $L$ & $K$ & Estados mejorados & Beneficio & Mejoría & 
+Tiempo de ejecución\\
 \hline
-10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
-\hline
+10 000 & 0,045 & 100 & 20 & 39\% & 98123 & 0,80\% & 733ms\\
+\hline\\
 \end{tabular}
+{\it Tabla 2.3 : Parámetros por defecto.}
+\end{center}
+\item[Número de pruebas :] 100 pruebas para cada configuración.
+\end{description}
 
 \subsubsection{Resultados}
 
-\begin{tabular}{|l|l|l|l||l|l|l|}
+\textbf{Influencia de $n_{it}$ : }
+
+Guardamos los valores por defecto $\lambda =0,045$, $L=100$ y $K=20$.
+
+\begin{center}
+\begin{tabular}{|l||l|l|l|l|}
 \hline
-1 000 & 20 & 100 & 0,045 & 34 & 97910 (0,75) & 115\\
+$N_{it}$ & Estados mejorados & Beneficio & Mejoría & Tiempo de ejecución\\
 \hline
-5 000 & 20 & 100 & 0,045 & 38 & 98155 (0,94) & 394\\
+1 000 & 30 & 97937 & 0,618\% & 101ms\\
 \hline
-10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
+10 000 & 39 & 98123 & 0,800\% & 733ms\\
 \hline
-100 000 & 20 & 100 & 0,045 & 41 & 98157 (1,00) & 6871\\
-\hline
+100 000 & 38 & 98173 & 0,860\% & 6100ms\\
+\hline\\
 \end{tabular}
-\begin{tabular}{|l|l|l|l||l|l|l|}
+{\it Tabla 2.4 : Influencia de $n_{it}$.}
+\end{center}
+
+La influencia del número de iteraciones es bastante intuitiva : El tiempo de
+ejecución aumenta, y tambien se aumenta la bondad de la solucion hallada, ya que
+se hacen mas pasos hasta ella.
+
+Constatamos que al cabo de un momento, el algoritmo llega a un extrema local
+(cuando la función de temperatura ya no es suficiente para escoger un estado
+peor), y entonces es inutil hacer mas iteraciones : La solución hallada no
+mejora significativamente.
+
+Para continuar los experimentos, escogeremos $N_{it}=10 000$ iteraciones.\\
+
+\textbf{Influencia de $\lambda$ : }
+La constante $\lambda$ representa la velocidad de convergencia de la función de
+temperatura. Podemos ver su efecto sobre el valor de $T$ en la figura Fig. 2.1 :
+\begin{center}
+\includegraphics[width=12cm]{cordero}\\
+{\it Fig. 2.1 : Influencia de $\lambda$ sobre la temperatura.}
+\end{center}
+
+Guardamos los valores por defecto $L=100$ y $K=20$ ; $N_{it} = 10 000$.
+Se nota que el tiempo de ejecución no varia significativamente (~700ms), asi que
+no muestraremos su valor para el resto de los experimentos.\\
+
+\begin{center}
+\begin{tabular}{|l||l|l|l|}
 \hline
-10 000 & 20 & 1 & 0,045 & 37 & 97666 (0,70) & 762\\
+$\lambda$ & Estados mejorados & Beneficio & Mejoría\\
 \hline
-10 000 & 20 & 10 & 0,045 & 37 & 97412 (0,97) & 756\\
+0.000045 & 41 & 98185 & 0,869\%\\
 \hline
-10 000 & 20 & 100 & 0,045 & 41 & 98177 (0,94) & 748\\
+0,00045 & 40 & 98223 & 0,915\%\\
 \hline
-10 000 & 20 & 1000 & 0,045 & 38 & 97961 (1,00) & 761\\
+0,0045 & 39 & 98148 & 0,833\%\\
 \hline
-10 000 & 20 & 10 000 & 0,045 & 36 & 98208 (0,86) & 762\\
+0,045 & 39 & 98123 & 0,800\%\\
 \hline
+0,45 & 30 & 97908 & 0,575\%\\
+\hline\\
 \end{tabular}
-\begin{tabular}{|l|l|l|l||l|l|l|}
+{\it Tabla 2.5 : Influencia de $\lambda$.}
+\end{center}
+
+El valor de lambda debe ser suficiente para tener una funcion de temperatura que
+converga en 10 000 iteraciones, pero bastante pequeno para que no converga
+demasiado rapido.
+
+Escogemos $\lambda = 0,00045$ para el resto de experimentos.\\
+
+\textbf{Influencia de $L$ : }
+
+La constante $L$ representa la granularidad de la función de temperatura, es
+decir el numero de iteraciones que se hacen entre cada canvio del valor de la
+función. Podemos ver su efecto sobre el valor de $T$ en la figura Fig. 2.2 :
+\begin{center}
+\includegraphics[width=12cm]{L}\\
+{\it Fig. 2.2 : Influencia de $L$ sobre la temperatura.}
+\end{center}
+
+Guardamos el valor por defecto $K=20$ ; $N_{it} = 10 000$ y $\lambda = 0,00045$.
+
+\begin{center}
+\begin{tabular}{|l||l|l|l|}
 \hline
-10 000 & 2 & 100 & 0,045 & 36 & 97650 (0,88) & 823\\
+$L$ & Estados mejorados & Beneficio & Mejoría\\
 \hline
-10 000 & 20 & 100 & 0,045 & 37 & 97666 (0,70) & 762\\
+10 & 40 & 98172 & 0,857\%\\
 \hline
-10 000 & 200 & 100 & 0,045 & 48 & 98183 (0,97) & 760\\
+100 & 40 & 98223 & 0,915\%\\
 \hline
-10 000 & 2000 & 100 & 0,045 & 40 & 97957 (0,71) & 761\\
+500 & 37 & 98044 & 0,721\%\\
 \hline
+1000 & 36 & 98140 & 0,820\%\\
+\hline\\
 \end{tabular}
-\begin{tabular}{|l|l|l|l||l|l|l|}
+{\it Tabla 2.6 : Influencia de $L$.}
+\end{center}
+
+Constatamos que una granularidad demasiado importante disminuye el porcentaje de
+estados mejorados, pero una granularidad demasiado fina tambien impacta
+negativamente el resultado del algoritmo.
+
+Decidimos conservar el valor $L=100$ para el resto de experimentos.\\
+
+\textbf{Influencia de $K$ : }
+
+La constante $K$ representa l'amplituda de la función de temperatura.
+Podemos ver su efecto sobre el valor de $T$ en la figura Fig. 2.3 :
+\begin{center}
+\includegraphics[width=12cm]{K}\\
+{\it Fig. 2.3 : Influencia de $K$ sobre la temperatura.}
+\end{center}
+
+Ejecutamos las pruebas con los valores $N_{it} = 10 000$, $\lambda = 0,00045$ y
+$L=100$.
+
+\begin{center}
+\begin{tabular}{|l||l|l|l|}
 \hline
-10 000 & 20 & 100 & 0.000045 & 45 & 97871 (1,17) & 780\\
+$K$ & Estados mejorados & Beneficio & Mejoría\\
 \hline
-10 000 & 20 & 100 & 0,00045 & 45 & 98137 (1,24) & 775\\
+1 & 38 & 98195 & 0,882\%\\
 \hline
-10 000 & 20 & 100 & 0,0045 & 43 & 97605 (0,98) & 796\\
+10 & 35 & 98134 & 0,813\%\\
 \hline
-10 000 & 20 & 100 & 0,045 & 40 & 97957 (0,71) & 761\\
+20 & 40 & 98223 & 0,915\%\\
 \hline
-10 000 & 20 & 100 & 0,45 & 35 & 97624 (0,73) & 770\\
+100 & 39 & 98067 & 0,760\%\\
 \hline
+500 & 11 & 97428 & 0,0764\%\\
+\hline\\
 \end{tabular}
-\begin{tabular}{|l|l|l|l||l|l|l|}
-\hline
-5000 & 20 & 100 & 0.00045 & 36 & 97921 (0,71) & 387\\
-\hline
-5000 & 20 & 100 & 0.0045 & 39 & 98072 (0,77) & 396\\
-\hline
-10 000 & 50 & 100 & 0.00045 & 43 & 97982 (0,71) & 774\\
-\hline
-10 000 & 100 & 100 & 0.00045 & 52 & 97988 (1,14) & 784\\
-\hline
-10 000 & 200 & 100 & 0.00045 & 42 & 97548 (0,53) & 806\\
-\hline
-10 000 & 20 & 50 & 0.00045 & 50 & 97761 (1,10) & 757\\
-\hline
-10 000 & 20 & 150 & 0.00045 & 34 & 97761 (0,85) & 755\\
-\end{tabular}
-\end{description}
+{\it Tabla 2.7 : Influencia de $K$.}
+\end{center}
+
+$K$ es el factor que adapta la magnitud de la funcion de temperatura a la
+cantidad a la cual se compara dentro del algoritmo del Simulated Annealing. Esta
+cantidad es la diferencia entre los valores de la heuristica del estado y de su
+sucesor. Decidimos conservar el valor $K=20$.
 
 \subsubsection{Conclusiones}
+
+Al ver el resultados de los tests, escogiremos como parámetros del Simulated
+Annealing :
+\begin{itemize}
+\item 10 000 iteraciones
+\item $\lambda = 0,00045$ para el coeficient de la exponencial
+\item $L=100$ para la granularidad
+\item $K=20$ para el coeficiente multiplicativo
+\end{itemize}
 
 \subsection{Experimento 4 : Influencia del numero de peticiones}
 
 \subsubsection{Contexto}
-100
+\begin{description}
+\item[Numero de pruebas :] 100 para cada numero de peticiones diferente.
+\end{description}
 
 \subsubsection{Resultados}
-200p : 
-t.gen 0,579
-n it 2,04 / 2,47
-ben 94600 / 93800
-mej 0,316 / 0,53
-t. tot 77,0ms / 206
-t/it 40,7 / 88,2
 
-250 :
-t.gen 0,887
-n it 1,22 / 1,48
-ben 98000 / 97000
-mej 0,164 / 0,259
-t tot 32,5ms / 132
-t/it 26.6 / 86,4
-
-300 :
-t. gen 1,01
-n it 1 / 2,76
-ben 69900 / 70300
-mej 0 / 0,737
-t tot 29.0 / 408
-t/it 29 / 145
-
-350
-t.gen 1.61
-n it 1 / 3,62
-ben 35400 / 37100
-mej 0 / 2,58
-t tot 28.8 / 855
-t/it 28.8 / 243
-
-400
-t.gen 1,15
-n it 1 / 2,69
-ben -456 / 222
-mej 0 / 30,31
-t tot 32.7 /935
-t/it 32.7 / 358
-
-450
-t gen 1.67
-n it 1 / 1,92
-be -36100 / -36300
-mej 0 / 0,856
-t tot 34.85 / 960
-t/it 34.85 / 505
-
-500
-t gen 1.75
-n it 1 / 1,97
-be -72600 / -73000
-mej 0 / 0,55
-t tot 42.4 / 1650
-t/it 42.4 / 833
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\#peticiones & Tiempo de generación & \#iteraciones & Estados mejorados &
+Beneficio (mejoria) & Tiempo total (por iteracion)\\
+\hline
+200 & 0,693ms & 2,16 & 24 & 94014 (0,297\%) & 74,02ms (35,78)\\
+\hline
+300 & 1,44ms & 1 & 0 & 69027 (0,00\%) & 25,14ms (25,14ms)\\
+\hline
+350 & 1,26ms & 1 & 0 & 35226 (0,00\%) & 27,30ms (27,30ms)\\
+\hline
+400 & 1,49ms & 1 & 0 & -584 (0,00\%) & 28,24ms (28,24ms)\\
+\hline\\
+\end{tabular}
+{\it Tabla 2.8 : Resultados del experimento 4.}
+\end{center}
 
 \subsubsection{Conclusiones}
-> t gen sube
-> no mejora
-> ben baja excepto al primero porque tenemos todo entregado
-> t. tot sube 
+%TODO
 
 \subsection{Experimento 5 : Influencia de la heurística}
 
-% comparación entre las dos Heurísticas, impacto en tiempo y bondad de solución
-% hacer experimentos para ver la influencia de las ponderaciones
 \subsubsection{Contexto}
-100
+\begin{description}
+\item[Numero de pruebas :] 100 para cada numero de peticiones y heuristica
+diferente.
+\end{description}
 
 \subsubsection{Resultados}
-
+con ret / con gan
 200
-n.it 2,46 / 2,22
-ben 93453 / 93290
-mej 0,454 / 0,346
-ret 68,6 / 64,7
-mej 4,40 / 5,78
-t 91,58 / 85,1
+n.it 6,88
+ben 93850
+mej 0,123
+ret 58,67 / 71,9
+mej 20,67 / 3,44
+t 198,5/29,15
 
 250
-n.it 1,15 / 1,02
-ben 97672 / 97675
-mej 0,127 / 0,0216
-ret 755 / 748
-mej 0,28 / 0,0542
-t 31,93 / 26,40
+n.it 3,07
+ben 97405
+mej 0,0523
+ret 747,5 / 754,1
+mej 1,211 / 0,268
+t 62,02/21,37
 
 300
-n.it 1 / 1
-ben 69036 / 69970
-mej 0 / 0
-ret 2039 / 2041
-mej 0 / 0
-t 24,69 / 24,71
+n.it 1,1
+ben 69022
+mej -0,00683
+ret 2046,39 / 2046,16
+mej 0,0113 / 0
+t 26,60/24,56
 
 \subsubsection{Conclusiones}
+%TODO
 
 \subsection{Experimento 6 : Comparación de los algoritmos}
 
 \subsubsection{Contexto}
-100
+\begin{description}
+\item[Numero de pruebas :] 100 para cada numero de peticiones y algoritmo
+diferente.
+\end{description}
 
 \subsubsection{Resultados}
+SA-gan
+\begin{center}
+\begin{tabular}{|l||l|l|l||l|l|l|}
+\hline
+\#peticiones & Estados mejorados & Beneficio & Mejoría & ret & Tiempo de
+ejecucion\\
+200 & 89 & 94445 & 0,748\% & 282 & -344\% & 526ms\\
+\hline
+250 & & & & & & \\
+\hline
+300 & 0 & 69027 & 0\% & 2046 & 0\% & 836ms\\
+\hline
+\end{tabular}
+{\it Tabla}
+\end{center}
+SA-ret
+\begin{center}
+\begin{tabular}{|l||l|l|l||l|l|l|}
+\hline
+\#peticiones & Estados mejorados & Beneficio & Mejoría & ret & Tiempo de
+ejecucion\\
+\hline
+200 & 7 & 93442 & -0,310\% & 74,75 & 1,07\% & 628ms\\
+\hline
+250 & 83 & 70853 & -27,3\% & 664 & 11,2\% & 711ms\\
+\hline
+300 & 100 & 16909 & -76,4\% & 1431 & 30,0\% & 854ms\\
+\hline
+\end{tabular}
+{\it Tabla}
+\end{center}
+
+retrso > baja del beneficio
+
+
 \subsubsection{Conclusiones}
 
 \subsection{Experimento 7 : Influencia de la repartición de capacidades
@@ -858,22 +945,26 @@ de los camiones}
 \subsubsection{Resultados}
 
 1 : 30 15 15
+t. gen init : 1,95
 n.it : 1
-ben 62912
-ret 1520
-t 32,24
+ben 62989
+ret 1517
+t 30,05
 
 2 : 15 30 15
-n.it : 1,04
-ben 91070 (0,04)
-ret 918 (0,08)
-t 31,38 (30,73)
+gen 1,73
+n.it : 1
+ben 90560
+ret 929
+t 28,16
 
 3 : 15 15 30
-n it : 4,76
-ben : 116233 (1,076)
-ret 154 (12)
-t 178 (39,54)
+gen 0,484
+n it : 5,3
+57\% de mejora
+ben : 115851 (1,16)
+ret 147 (14,5)
+t 218,7 (44,74)
 
 \subsubsection{Conclusiones}
 
@@ -886,40 +977,51 @@ de horas de entregas}
 \subsubsection{Resultados}
 
 todo junto :
-n it 1,1
-ben 97222 (0.0889)
-ret 770 (0,19)
-t g 27,12 (24,5)
+t gen 1,00
+n it 1,15
+ben 97201 (0.135)
+ret 768 (0,299)
+t g 32,10 (26,49)
 
 1era 4 :
-n it 1,03
-ben 93282 (0,039)
-ret 846 (0,042)
-t 25,39 (24,65)
+t gen 1,19
+n it 1,09
+mej 3
+ben 97298 (0,0726)
+ret 759 (0,213)
+t 32,66 (29,42)
 
 untimas 4
-n it 1,07
-ben 99858 (0,053)
-776 (0,13)
-29,60 (27,88)
+t gen 0,94
+n it 1,28
+mej 8
+ben 97673 (0,234)
+746 (0,63)
+33,46 (25,27)
 
 2 1os 2 ult
-n it 1,02
-ben 97703 (0,014)
-eret 777 (0,026)
-26,53 (26,23)
+t gen 0,819
+n it 1,32
+mej 11
+ben 97547 (0,313)
+ret 741 (0,653)
+41,53 (32,34)
 
 8 11 14 17
-1,14
-ben 97836 (0,11)
-ret 744 (0,24)
-28,21 (24,75)
+0,911
+1,08
+mej 3
+ben 96740 (0,0787)
+ret 779 (0,166)
+32,98 (27,67)
 
 8 12 13 17
-1,24
-97500 (0,24)
-762 (0,54)
-31,5 (25,17)
+0,832
+1,12
+4
+97625 (0,108)
+769 (0,195)
+30,05 (25,91)
 
 \subsubsection{Conclusiones}
 
