@@ -176,8 +176,8 @@ public class Successor_HC implements SuccessorFunction
 		}
 		
 
-/*		// OPERADOR : INTERCAMBIO DE PETICIONES
-		ArrayList<Integer> op3_c = new ArrayList<Integer>();
+		// OPERADOR : INTERCAMBIO DE PETICIONES
+/*		ArrayList<Integer> op3_c = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h1 = new ArrayList<Integer>();
 		ArrayList<Integer> op3_h2 = new ArrayList<Integer>();
 		ArrayList<Peticio> op3_p1 = new ArrayList<Peticio>();

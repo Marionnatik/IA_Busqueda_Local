@@ -24,12 +24,14 @@ elif [ "$1" -eq 4 ]; then
 	done
 elif [ "$1" -eq 5 ]; then
 	rm tests/test5/*output*
-	for mia_var in tests/test5/test5_???0.txt; do
+	for mia_var in tests/test5/test5_??0?.txt; do
 		java -jar provaex.jar "$mia_var"
 	done
 elif [ "$1" -eq 6 ]; then
 	rm tests/test6/*output*
-
+	for mia_var in tests/test6/test6_??0?.txt; do
+		java -jar provaex.jar "$mia_var"
+	done
 elif [ "$1" -eq 7 ]; then
 	rm tests/test7/*output*
 	for mia_var in tests/test7/test7_??00.txt; do

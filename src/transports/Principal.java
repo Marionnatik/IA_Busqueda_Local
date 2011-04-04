@@ -16,7 +16,7 @@ public class Principal
 	static float[] probaPesos = new float[Constants.cant.length];
 	static float[] probaHores = new float[Constants.ht];
 	static int[] capTransportes = new int[Constants.cap.length];
-	
+
 	static char estrategiaInicial;
 	static String algorisme;
 	static String heuristic;
@@ -27,14 +27,14 @@ public class Principal
 		int i, bi, bo, ri, ro;
 		float mb, mr;
 		double elapsedTimeInmSec = -1;
-		String intest, nt;
+		String intest, nt, ficherstat = null;
 		Estado e;
-		
+
 		// Genera las constantes
 		new Constants();
 
 		// Prepara els fitxers d'input (test1 per defecte) i output
-		String file_in = "tests/test1/test1.txt";
+		String file_in = "problemas/test8/test8_b0123.txt";
 
 		if(args.length != 0) file_in = args[0];
 
@@ -43,12 +43,12 @@ public class Principal
 			if(file_in.contains("problemas")){
 				readFileGenerador(file_in);
 				intest = file_in.substring(16, file_in.length()-4);
-					for(i=0;i<n;i++){
-						nt = Integer.toString(i+1);
-						String file_out = file_in.replace(".txt", "_" + nt + "_problema.txt");
-						e = generadorProblema();
-						e.toFile(file_out);
-					}
+				for(i=0;i<n;i++){
+					nt = Integer.toString(i+1);
+					String file_out = file_in.replace(".txt", "_" + nt + "_problema.txt");
+					e = generadorProblema();
+					e.toFile(file_out);
+				}
 			}
 			else{
 				readFileTest(file_in);
@@ -61,9 +61,13 @@ public class Principal
 					// Genera el estat inicial amb l'estratègia desitjada
 					for(i=0;i<n;i++){
 						nt = Integer.toString(i+1);
-/*elim*/				String file_out1 = file_in.replace(".txt", "." + nt + "_output1.txt");
-/*elim*/				String file_out2 = file_in.replace(".txt", "." + nt + "_output2.txt");
-						String ficherstat = "problemas/test" + intest.charAt(4) + "/" + intest + "_" + nt + "_problema.txt";
+						/*elim*/				String file_out1 = file_in.replace(".txt", "_" + nt + "_output1.txt");
+						/*elim*/				String file_out2 = file_in.replace(".txt", "_" + nt + "_output2.txt");
+						if(intest.equals("test5_250r")||intest.equals("test6_250r"))ficherstat = "problemas/test1/test1" + "_" + nt + "_problema.txt";
+						else
+							if(intest.charAt(4)=='4' || intest.charAt(4)=='7' || intest.charAt(4)=='8')ficherstat = "problemas/test" + intest.charAt(4) + "/" + intest + "_" + nt + "_problema.txt";						
+							else if(intest.charAt(4)=='6' || intest.charAt(4)=='5')ficherstat = "problemas/test4/" + intest.substring(0, 4) + "4" + intest.substring(5, 9) + "_" + nt + "_problema.txt";
+							else ficherstat = "problemas/test1/test1" + "_" + nt + "_problema.txt";
 						e = readFileEstat(ficherstat);
 						long start = System.nanoTime();				
 						e.estadoInicial(estrategiaInicial);
@@ -156,7 +160,7 @@ public class Principal
 					out.close();
 				} 
 				catch (IOException ex) {
-					System.out.println("Error : escritura fichero estadisticas");
+					System.out.println("Error : errore en un fichero " + ficherstat);
 					System.exit(1);
 				}
 			}
@@ -199,7 +203,7 @@ public class Principal
 		}
 
 		// Llegeix y comproba la distribució de probabilitat de las hores d'entrega
-		for(int i = 0 ; i < probaHores.length ; i++) probaHores[i] = (Math.round(sc.nextFloat()*100)*(float) 0.01);
+		for(int i = 0 ; i < probaHores.length ; i++) probaHores[i] = (Math.round(sc.nextFloat()*10)*(float) 0.1);
 		if(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
 				probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9] != 1.0)
 		{
@@ -207,7 +211,7 @@ public class Principal
 					(probaHores[0] + probaHores[1] + probaHores[2] + probaHores[3] + probaHores[4] + 
 							probaHores[5] + probaHores[6] + probaHores[7] + probaHores[8] + probaHores[9]) +
 			".");
-			System.exit(1);
+//			System.exit(1);
 		}
 
 	}
@@ -245,9 +249,9 @@ public class Principal
 
 		// Llegeix el nombre de peticions
 		nbPeticions = sc.nextInt() ;
-		
+
 		Estado est = new Estado(capTransports);
-		
+
 		// Llegeix les peticions
 		for(int cont = 0; cont < nbPeticions; cont++){
 			int c = sc.nextInt();
@@ -258,7 +262,7 @@ public class Principal
 			est.addPeticion(p, c, 0);
 		}
 		return est;
-		
+
 	}
 
 	/*	private static Estat leerProblema(){
@@ -269,7 +273,6 @@ public class Principal
 
 	private static Boolean escribirProblema(){
 
-<<<<<<< HEAD
 		return true;
 	}
 	 */
@@ -320,7 +323,7 @@ public class Principal
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-//c			System.out.println(key + " : " + property);
+			//c			System.out.println(key + " : " + property);
 			out.write(property + ";");
 		}
 
