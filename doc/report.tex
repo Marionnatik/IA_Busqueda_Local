@@ -519,11 +519,48 @@ por cada prueba tenemos registrados:
 \end{itemize}
 Una linea vacía y una linea con el título del fichero de input dividen los diferentes grupos de pruebas (resultado de diferentes ejecuciones de el programa).
 
+\subsection{Generalidades}
+
+\subsubsection{Condiciones de experimento por defecto}
+
+Las condiciones de experimento por defecto seran :
+\begin{itemize}
+\item 250 peticiones
+\item Reparticion equiprobable de los pesos y horas de entrega
+\item Reparticion equiprobable de las capacidades de transportes
+\item Heuristica de maximizacion del beneficio
+\item Algoritmo de Hill Climbing
+\end{itemize}
+
+\subsubsection{Comentario sobre el numero de pruebas}
+
+Si no se menciona un numero diferente, haremos 100 pruebas para cada valor de
+los elementos evaluados probado. Este numero elevado lo justificamos por la
+observacion que hemos hecho durante los experimentos de debug : En muchos casos,
+pasa que el problema no puede evolucionar desde su estado inicial (no se puede
+aplicar ningun operador), asi que un numero de pruebas mas bajo habria llevado a
+resultados no relevantes.
+
+En consecuencia, al largo de los experimentos tambien consideraremos el
+porcentaje de estados mejorados.
+
+\subsubsection{Comentario sobre valores empiricos}
+
+Algunos de los valores que vamos a comprobar en estos experimentos, en
+particular el tiempo de ejecucion, pueden variar en funcion del problema
+generado o incluso de factores como la potencia y ocupacion del procesador.
+
+Guardamos en mente que lo interesante es comparar el ratio de los valores para
+diferentes condiciones, no considerar el valor en si mismo.
+
 \subsection{Experimento 1 : Elección del conjunto de operadores}
 
 \subsubsection{Contexto}
 
 \begin{description}
+\item[Condiciones del experimento :] Haremos 100 pruebas para cada conjunto de
+operadores. Hemos escogido el estado inicial ``Por hora'', que se puede mejorar
+bastante frecuentemente y no consume demasiado tiempo.
 \item[Elementos comparados :] Queremos elegir el conjunto de operadores que
 vamos a usar en el resto de experimentos, entre los tres operadores que tenemos
 implementados : \emph{Desplazamiento de petición (Op1), intercambio de camiones
@@ -537,10 +574,6 @@ que Op1 es el único operador que nos permite desplazar peticiones no entregadas
 a las entregadas y Op2 es el único que mueve los camiones. Principalmente,
 estudiaremos la influencia del operador Op3 sobre el tiempo de ejecución, la
 bondad de la solución y el porcentaje de estados que mejoran.
-\item[Número de pruebas :] 100 pruebas para cada conjunto de operadores.
-\item[Estado inicial :] Hemos escogido el estado inicial ``Repartición por
-hora'', que se puede mejorar bastante frecuentemente y no consume demasiado
-tiempo.
 \end{description}
 
 \subsubsection{Resultados}
@@ -558,8 +591,8 @@ ejecución (por iteración)\\
 Op1 + Op2 & 5 & 97452 & 2,02\% (0,10\%) & 30,07ms (25,99ms)\\
 \hline
 Op1 + Op2 + Op3 & 16 & 97533 & 1,16\% (0,19\%) & 191,8ms (119,9ms)\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.1 : Resultados del experimento 1.}
 \end{center}
 
@@ -580,6 +613,8 @@ estados evolucionan.
 \subsubsection{Contexto}
 
 \begin{description}
+\item[Condiciones del experimento :] Se haran 20 pruebas para cada tipo de
+estado inicial, ya que algunos tardan mucho en ejecutarse. Se usaran 
 \item[Elementos comparados :] Queremos elegir el estado inicial que vamos a usar
 para el resto de los experimentos, entre los 4 que hemos implementado :
 \begin{itemize}
@@ -592,8 +627,6 @@ para el resto de los experimentos, entre los 4 que hemos implementado :
 Consideraremos el tiempo de generación de este estado y la influencia en la
 resolución del problema, es decir la bondad de la solución hallada, el numero de
 iteraciones y el tiempo de ejecución.
-\item[Número de pruebas :] 20 pruebas para cada tipo de estado inicial, ya que
-algunos tardan mucho en ejecutarse.
 \end{description}
 
 \subsubsection{Resultados}
@@ -611,8 +644,8 @@ Ei2 & 3,46ms & 95670 (0,161\%) & 1,2 & 55,87ms (42,89ms)\\
 Ei3 & 0,979ms & 79364 (0,894\%) & 1,79 & 66,40ms (38,42ms)\\
 \hline
 Ei4 & 0,0212ms & 89161 (139,6\%) & 215 & 36486ms (170,1ms)\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.2 : Resultados del experimento 2.}
 \end{center}
 
@@ -665,8 +698,8 @@ $N_{it}$ & $\lambda$ & $L$ & $K$ & Estados mejorados & Beneficio & Mejoría &
 Tiempo de ejecución\\
 \hline
 10 000 & 0,045 & 100 & 20 & 39\% & 98123 & 0,80\% & 733ms\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.3 : Parámetros por defecto.}
 \end{center}
 \item[Número de pruebas :] 100 pruebas para cada configuración.
@@ -688,8 +721,8 @@ $N_{it}$ & Estados mejorados & Beneficio & Mejoría & Tiempo de ejecución\\
 10 000 & 39 & 98123 & 0,800\% & 733ms\\
 \hline
 100 000 & 38 & 98173 & 0,860\% & 6100ms\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.4 : Influencia de $n_{it}$.}
 \end{center}
 
@@ -730,8 +763,8 @@ $\lambda$ & Estados mejorados & Beneficio & Mejoría\\
 0,045 & 39 & 98123 & 0,800\%\\
 \hline
 0,45 & 30 & 97908 & 0,575\%\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.5 : Influencia de $\lambda$.}
 \end{center}
 
@@ -765,8 +798,8 @@ $L$ & Estados mejorados & Beneficio & Mejoría\\
 500 & 37 & 98044 & 0,721\%\\
 \hline
 1000 & 36 & 98140 & 0,820\%\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.6 : Influencia de $L$.}
 \end{center}
 
@@ -802,8 +835,8 @@ $K$ & Estados mejorados & Beneficio & Mejoría\\
 100 & 39 & 98067 & 0,760\%\\
 \hline
 500 & 11 & 97428 & 0,0764\%\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.7 : Influencia de $K$.}
 \end{center}
 
@@ -823,11 +856,23 @@ Annealing :
 \item $K=20$ para el coeficiente multiplicativo
 \end{itemize}
 
-\subsection{Experimento 4 : Influencia del numero de peticiones}
+\subsection{Experimento 4 : Influencia del número de peticiones}
 
 \subsubsection{Contexto}
 \begin{description}
-\item[Numero de pruebas :] 100 para cada numero de peticiones diferente.
+\item[Elementos comparados :] Queremos evaluar el impacto del número de
+peticiones sobre el tiempo de resolucion del problema y la bondad de la solucion
+hallada. Probaremos resolver el problema con los parametros por defecto y entre
+200 y 400 peticiones, por pasos de 50.
+
+Recordamos que el número de peticion en si mismo no es relevante : Lo que tiene
+un real impacto en el problema es el ratio del volumen total de peticiones
+$V_p\simeq = \#p * 300$ kgs (con la equiprobabilidad de pesos, las peticiones
+tienen un volumen medio de 300kgs) por el volumen de transporte disponible
+$V_t = 20*500+20*1000+20*2000 = 70 000$ kgs con una reparticion equiprobable de
+las capacidades.
+
+\item[Número de pruebas :] 100 para cada numero de peticiones diferente.
 \end{description}
 
 \subsubsection{Resultados}
@@ -845,8 +890,8 @@ Beneficio (mejoria) & Tiempo total (por iteracion)\\
 350 & 1,26ms & 1 & 0 & 35226 (0,00\%) & 27,30ms (27,30ms)\\
 \hline
 400 & 1,49ms & 1 & 0 & -584 (0,00\%) & 28,24ms (28,24ms)\\
-\hline\\
-\end{tabular}
+\hline
+\end{tabular}\\
 {\it Tabla 2.8 : Resultados del experimento 4.}
 \end{center}
 
